@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifySessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/session";
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/portal/login") {
@@ -16,9 +16,9 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // This is an optimistic, route-level check (per Next.js's Proxy guidance);
-  // the API routes re-verify the session and role independently — Proxy is
-  // not the actual authorization boundary, just a fast redirect for UX.
+  // This is an optimistic, route-level check; the API routes re-verify the
+  // session and role independently — this is not the actual authorization
+  // boundary, just a fast redirect for UX.
   const roleHome: Record<string, string> = {
     patient: "/portal/patient",
     doctor: "/portal/doctor",
