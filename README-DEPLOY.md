@@ -1,15 +1,21 @@
 نشر المشروع إلى Vercel (خطوات سريعة)
 
 0) متغيرات البيئة المطلوبة (انسخ .env.example إلى .env.local محلياً، وأضفها في Vercel → Settings → Environment Variables عند النشر)
+   - POSTGRES_URL (إلزامي): رابط الاتصال بقاعدة البيانات — يُضاف تلقائيًا لما تربط Vercel Postgres/Neon من تبويب Storage بالمشروع
    - SESSION_SECRET (إلزامي): مفتاح توقيع الجلسات، ولّده بالأمر: openssl rand -base64 32
    - DEMO_DOCTOR_PASSWORD / DEMO_HOSPITAL_ADMIN_PASSWORD / DEMO_PATIENT_PASSWORD (اختياري): كلمات مرور الحسابات التجريبية الثلاثة، غيّرها قبل أي نشر حقيقي
    - WEB3FORMS_ACCESS_KEY (اختياري): مفتاح استقبال نموذج التواصل (بدون بادئة NEXT_PUBLIC_)
    - NEXT_PUBLIC_FIREBASE_* (اختياري): إعدادات Firebase للقياس الحي عبر Web Serial/Firebase
 
-   الحسابات التجريبية الافتراضية (اطّلع على src/lib/auth/users.ts):
+   الحسابات التجريبية الافتراضية (مخزّنة بقاعدة البيانات عبر seed، راجع src/lib/db/seed.ts):
    - طبيب: dr.khalid@dithar.sa / Dithar@Doctor2026!
    - إدارة منشأة: admin@kfshrc.edu.sa / Dithar@Admin2026!
    - مريض: sara.alotaibi@dithar.sa / Dithar@Patient2026!
+
+0.5) إعداد قاعدة البيانات (مرة واحدة، بعد ربط Vercel Postgres وتحديث .env.local بقيمة POSTGRES_URL)
+   npm run db:generate   # يولّد ملفات الهجرة من src/lib/db/schema.ts
+   npm run db:migrate    # ينشئ الجداول فعليًا بقاعدة البيانات
+   npm run db:seed       # يزرع بيانات المرضى والحسابات التجريبية
 
 1) تأكد أن المشروع جاهز محلياً
    npm install

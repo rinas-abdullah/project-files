@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { MockAPI } from "@/lib/api/mock-api";
 import { Patient } from "@/lib/types/portal";
 import { PageLoader, EmptyState } from "@/components/ui/loading-states";
 import { AlertTriangle } from "lucide-react";

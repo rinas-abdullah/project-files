@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifySessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/session";
-import { getPatientById } from "@/lib/data/patients";
+import { getPatientById, addMedicalNote, updateRecommendation } from "@/lib/data/patients";
 
 export async function GET(
   request: Request,
@@ -22,7 +22,7 @@ export async function GET(
     return NextResponse.json({ error: "لا تملك صلاحية الوصول لهذا السجل" }, { status: 403 });
   }
 
-  const patient = getPatientById(id);
+  const patient = await getPatientById(id);
   if (!patient) {
     return NextResponse.json({ error: "المريض غير موجود" }, { status: 404 });
   }
@@ -47,22 +47,15 @@ export async function POST(
   }
 
   const { id } = await params;
-  const patient = getPatientById(id);
-  if (!patient) {
+  const existing = await getPatientById(id);
+  if (!existing) {
     return NextResponse.json({ error: "المريض غير موجود" }, { status: 404 });
   }
 
   const body = await request.json();
 
   if (body.type === "add_note" && body.content) {
-    const newNote = {
-      id: `n-${Date.now()}`,
-      author: user.name,
-      date: new Date().toISOString().split("T")[0],
-      content: body.content
-    };
-    patient.medicalNotes.unshift(newNote);
-
+    const patient = await addMedicalNote(id, user.name, body.content);
     return NextResponse.json({
       success: true,
       message: "تم حفظ الملاحظة السريرية بنجاح",
@@ -71,7 +64,7 @@ export async function POST(
   }
 
   if (body.type === "update_recommendation" && body.recommendation) {
-    patient.recommendation = body.recommendation;
+    const patient = await updateRecommendation(id, body.recommendation);
     return NextResponse.json({
       success: true,
       message: "تم تحديث التوصية الطبية",

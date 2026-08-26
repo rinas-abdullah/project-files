@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { MockAPI } from "@/lib/api/mock-api";
 import { Patient, PatientStatus } from "@/lib/types/portal";
 import { PageLoader, EmptyState } from "@/components/ui/loading-states";
 import { GlassCard, GlassBadge } from "@/components/ui/glass";
@@ -26,13 +25,9 @@ export default function DoctorPortalPage() {
         if (filterStatus && filterStatus !== "all") params.set("status", filterStatus);
 
         const res = await fetch(`/api/patients?${params.toString()}`);
-        if (res.ok) {
-          const json = await res.json();
-          setPatients(json.patients || []);
-        } else {
-          const data = await MockAPI.getPatients(searchQuery, filterStatus);
-          setPatients(data);
-        }
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || t.error);
+        setPatients(json.patients || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : t.error);
       } finally {
