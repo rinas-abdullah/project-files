@@ -1,0 +1,272 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary-blue: #0B4D8D;
+  --color-medical-blue: #1E88C8;
+  --color-smart-green: #39B56A;
+  --color-soft-green: #7DD37A;
+  --color-light-bg: #F8FAFC;
+  --color-dark-text: var(--dark-text);
+  --color-muted-text: var(--muted-text);
+
+  --color-brand: hsl(var(--brand));
+  --color-brand-foreground: hsl(var(--brand-foreground));
+  --color-background: hsl(var(--background-hsl));
+  --color-foreground: hsl(var(--foreground-hsl));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --font-sans: var(--font-inter), var(--font-ibm-arabic), sans-serif;
+  --font-arabic: var(--font-ibm-arabic), var(--font-inter), sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulseSlow 4s ease-in-out infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+
+  --animate-appear: appear 0.5s ease-out forwards;
+  --animate-appear-zoom: appear-zoom 0.8s ease-out forwards;
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-15px) rotate(1deg);
+    }
+  }
+
+  @keyframes pulseSlow {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(0.98);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.02);
+    }
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 10px rgba(30, 136, 200, 0.2), 0 0 20px rgba(57, 181, 106, 0.1);
+    }
+    to {
+      box-shadow: 0 0 25px rgba(30, 136, 200, 0.5), 0 0 40px rgba(57, 181, 106, 0.3);
+    }
+  }
+
+  @keyframes appear {
+    0% { 
+      opacity: 0; 
+      transform: translateY(10px); 
+    }
+    100% { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes appear-zoom {
+    0% { 
+      opacity: 0; 
+      transform: scale(0.98); 
+    }
+    100% { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+  }
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0F172A;
+
+  --background-hsl: 0 0% 100%;
+  --foreground-hsl: 222 47% 11%;
+
+  --brand: 210 100% 50%;
+  --brand-foreground: 213 100% 60%;
+
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+
+  --dark-text: #0F172A;
+  --muted-text: #64748B;
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+  max-width: 100vw;
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+.font-sans {
+  font-family: var(--font-sans) !important;
+}
+
+.font-arabic {
+  font-family: var(--font-arabic) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E88C8;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #39B56A;
+}
+
+/* Glassmorphism Class Utilities */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.dark-glassmorphism {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Smooth Scrolling Support */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom Gradients */
+.gradient-bg {
+  background: radial-gradient(circle at 50% 50%, rgba(30, 136, 200, 0.05) 0%, rgba(248, 250, 252, 0) 70%);
+}
+
+.gradient-bg-dark {
+  background: radial-gradient(circle at 50% 50%, rgba(11, 77, 141, 0.15) 0%, rgba(15, 23, 42, 0) 80%);
+}
+
+/* Hide Three.js Canvas outline focus */
+canvas:focus {
+  outline: none;
+}
+
+/* ===== Enhanced Animations from 21st.dev ===== */
+
+/* Marquee Animations */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap))); }
+}
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% - var(--gap))); }
+}
+.animate-marquee {
+  animation: marquee var(--duration, 40s) linear infinite;
+}
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration, 40s) linear infinite;
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Subtle border glow */
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(11, 77, 141, 0.1); }
+  50% { border-color: rgba(30, 136, 200, 0.3); }
+}
+.animate-border-glow {
+  animation: borderGlow 3s ease-in-out infinite;
+}
+
+/* Spotlight hover effect */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Unified typography utilities to make Arabic and English match visually */
+.unified-typography {
+  color: var(--dark-text) !important;
+  font-family: var(--font-arabic) !important;
+}
+
+.unified-muted {
+  color: var(--muted-text) !important;
+  font-family: var(--font-arabic) !important;
+}
+
+/* Unified class for English headings/subtitles to match IntroducingDithar style */
+.unified-english {
+  color: var(--color-primary-blue) !important;
+  font-family: var(--font-sans) !important;
+}
+
+/* Global SVG text stroke reset to prevent bubble text outlines */
+svg text {
+  stroke: none !important;
+}
+
+/* Custom styling for realistic foot heatmap blending in light/dark themes */
+.twin-footprint {
+  filter: sepia(1) hue-rotate(185deg) saturate(3) brightness(1.05) contrast(1.25) opacity(0.8);
+  mix-blend-mode: multiply;
+}
+
+.dark .twin-footprint {
+  filter: invert(1) brightness(0.9) contrast(1.1) sepia(1) hue-rotate(185deg) saturate(4) opacity(0.95);
+  mix-blend-mode: screen;
+}

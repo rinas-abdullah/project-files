@@ -1,0 +1,17 @@
+export { default as Hero } from "./Hero";
+export { default as HealthcareGap } from "./HealthcareGap";
+export { default as IntroducingDithar } from "./IntroducingDithar";
+export { default as AiEngine } from "./AiEngine";
+export { default as SmartInsoleExplodedView } from "./SmartInsoleExplodedView";
+export { default as HowItWorks } from "./HowItWorks";
+export { default as DigitalTwin } from "./DigitalTwin";
+export { default as PlatformDashboard } from "./PlatformDashboard";
+export { default as PatientJourney } from "./PatientJourney";
+export { default as UseCases } from "./UseCases";
+export { default as WhyDithar } from "./WhyDithar";
+export { default as BusinessModel } from "./BusinessModel";
+export { default as MarketOpportunity } from "./MarketOpportunity";
+export { default as Roadmap } from "./Roadmap";
+export { default as Team } from "./Team";
+export { default as Contact } from "./Contact";
+export { default as Footer } from "./Footer";

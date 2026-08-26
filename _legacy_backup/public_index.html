@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دِثار • DITHAR | المنصة الطبية الذكية والأولى من نوعها</title>
+  <link rel="icon" href="/logo.png" type="image/png">
+  <link rel="shortcut icon" href="/logo.png">
+  <link rel="apple-touch-icon" href="/logo.png">
+  <!-- Temporary script: hide injected browser/extension overlays that contain the word 'Issue' -->
+  <script>
+    window.addEventListener('load', function () {
+      try {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, null, false);
+        const toHide = [];
+        let node;
+        while ((node = walker.nextNode())) {
+          try {
+            if (node.innerText && /\bIssue\b/i.test(node.innerText.trim())) {
+              toHide.push(node);
+            }
+          } catch (e) {}
+        }
+        toHide.forEach(n => n.style.display = 'none');
+      } catch (e) {}
+    });
+  </script>
+  
+  <!-- Search Engine Optimization Tags -->
+  <meta name="description" content="منصة صحية متكاملة تعتمد على نعل طبي ذكي (PAD) لمراقبة الحالة الحركية والحرارية لمرضى السكري والوقاية من القرح.">
+  <meta name="keywords" content="دثار, dithar, نعل ذكي, قدم سكري, تتبع الحركة, استشعار حراري, ذكاء اصطناعي طبي">
+  <meta name="author" content="Dithar Health Tech">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'medical-blue': '#1E88C8',
+            'primary-blue': '#0B4D8D',
+            'smart-green': '#39B56A',
+            'accent-purple': '#8E54E9',
+            'alert-red': '#FF5E5E',
+            'dark-obsidian': '#030712',
+            'card-obsidian': '#080F25',
+            'muted-text': '#9DAABA',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"IBM Plex Sans Arabic"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Premium Styles & 3D Perspective Rules -->
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #030712;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+
+    /* Selection Color */
+    ::selection {
+      background: rgba(30, 136, 200, 0.3);
+      color: #ffffff;
+    }
+
+    /* Custom Animations */
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.25; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(1.08); }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 8s infinite ease-in-out;
+    }
+
+    @keyframes scanner-sweep {
+      0% { transform: translateY(-100%); }
+      50% { transform: translateY(100%); }
+      100% { transform: translateY(-100%); }
+    }
+    .animate-scanner {
+      animation: scanner-sweep 6s infinite ease-in-out;
+    }
+
+    @keyframes rotate-slow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .animate-rotate-slow {
+      animation: rotate-slow 20s infinite linear;
+    }
+
+    /* 21st.dev Trailing Border Dash Keyframes */
+    @keyframes border-dash {
+      0% {
+        stroke-dashoffset: 100;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Trailing Neon Borders classes */
+    .neon-border-trail {
+      stroke-dasharray: 20 80;
+      stroke-dashoffset: 100;
+      animation: border-dash 6s linear infinite;
+    }
+    .neon-border-trail-slow {
+      stroke-dasharray: 12 88;
+      stroke-dashoffset: 100;
+      animation: border-dash 10s linear infinite;
+    }
+    .neon-border-trail-fast {
+      stroke-dasharray: 6 94;
+      stroke-dashoffset: 100;
+      animation: border-dash 2s linear infinite;
+    }
+    .neon-border-trail-magic {
+      stroke-dasharray: 18 82;
+      stroke-dashoffset: 100;
+      animation: border-dash 8s linear infinite;
+      transition: animation-duration 0.3s;
+    }
+
+    /* Tab active border classes */
+    .tab-border-trail {
+      transition: stroke 0.4s ease, stroke-width 0.4s ease;
+    }
+    .tab-border-trail-active {
+      stroke-dasharray: 16 84;
+      stroke-dashoffset: 100;
+      animation: border-dash 4.5s linear infinite;
+    }
+
+    /* Glassmorphism Classes */
+    .glass-panel {
+      background: rgba(8, 15, 37, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    .glass-card-hover {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      background: rgba(11, 77, 141, 0.08);
+      border-color: rgba(30, 136, 200, 0.25);
+      box-shadow: 0 10px 30px -10px rgba(11, 77, 141, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* 3D Exploded Stack Scene Styling */
+    .perspective-container {
+      perspective: 1500px;
+      perspective-origin: 50% 30%;
+    }
+    .exploded-stack {
+      transform-style: preserve-3d;
+      transform: rotateX(58deg) rotateZ(-28deg);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .layer-container {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      transform: translateZ(calc(var(--index) * var(--gap, 0px)));
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, filter 0.5s ease;
+      will-change: transform, opacity, filter;
+    }
+    
+    /* 3D Connector Lines pointing through the layers */
+    .connector-line {
+      position: absolute;
+      width: 1.5px;
+      background: linear-gradient(to bottom, 
+        rgba(30, 136, 200, 0) 0%, 
+        rgba(30, 136, 200, 0.8) 20%, 
+        rgba(57, 181, 106, 0.8) 50%, 
+        rgba(142, 84, 233, 0.8) 80%, 
+        rgba(142, 84, 233, 0) 100%
+      );
+      transform-style: preserve-3d;
+      transform: rotateX(-90deg);
+      transform-origin: top;
+      height: calc(7 * var(--gap, 0px));
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.7;
+      transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* CSS Mesh Backgrounds */
+    .mesh-gradient-1 {
+      background: radial-gradient(circle at 10% 20%, rgba(11, 77, 141, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 90% 80%, rgba(57, 181, 106, 0.08) 0%, transparent 50%);
+    }
+
+    /* Heatmap Overlay Transition helper */
+    .heatmap-point {
+      transition: fill 0.3s ease, fill-opacity 0.3s ease, r 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-dark-obsidian text-white font-sans overflow-x-hidden selection:bg-medical-blue/30 selection:text-white">
+
+  <!-- ================= GLOBAL GRADIENT DEFINITIONS FOR SVG NEON TRAILS ================= -->
+  <svg class="hidden" aria-hidden="true">
+    <defs>
+      <!-- Pressure blue/cyan gradient -->
+      <linearGradient id="grad-pressure-border" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#1E88C8" />
+        <stop offset="50%" stop-color="#39B56A" />
+        <stop offset="100%" stop-color="#1E88C8" />
+      </linearGradient>
+      <!-- Thermal red/orange gradient -->
+      <linearGradient id="grad-thermal-border" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FF5E5E" />
+        <stop offset="50%" stop-color="#fbbf24" />
+        <stop offset="100%" stop-color="#FF5E5E" />
+      </linearGradient>
+      <!-- Gait green/teal gradient -->
+      <linearGradient id="grad-gait-border" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#39B56A" />
+        <stop offset="50%" stop-color="#22d3ee" />
+        <stop offset="100%" stop-color="#39B56A" />
+      </linearGradient>
+      <!-- Humidity teal/cyan gradient -->
+      <linearGradient id="grad-humidity-border" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0d9488" />
+        <stop offset="50%" stop-color="#38bdf8" />
+        <stop offset="100%" stop-color="#0d9488" />
+      </linearGradient>
+      <!-- AI purple/blue gradient -->
+      <linearGradient id="grad-ai-border" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#8E54E9" />
+        <stop offset="50%" stop-color="#60a5fa" />
+        <stop offset="100%" stop-color="#8E54E9" />
+      </linearGradient>
+      <!-- Energy amber gradient -->
+      <linearGradient id="grad-energy-border" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#d97706" />
+        <stop offset="50%" stop-color="#fbbf24" />
+        <stop offset="100%" stop-color="#d97706" />
+      </linearGradient>
+      <!-- General telemetry trail gradient -->
+      <linearGradient id="grad-telemetry-trail" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#39B56A" stop-opacity="0" />
+        <stop offset="50%" stop-color="#39B56A" stop-opacity="1" />
+        <stop offset="100%" stop-color="#39B56A" stop-opacity="0" />
+      </linearGradient>
+      <!-- General BLE trail gradient -->
+      <linearGradient id="grad-ble-trail" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#1E88C8" stop-opacity="0" />
+        <stop offset="50%" stop-color="#1E88C8" stop-opacity="1" />
+        <stop offset="100%" stop-color="#1E88C8" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Ambient Glow Effects -->
+  <div class="fixed top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-primary-blue/10 blur-[150px] pointer-events-none -z-20"></div>
+  <div class="fixed bottom-0 right-1/4 w-[600px] h-[600px] rounded-full bg-smart-green/5 blur-[180px] pointer-events-none -z-20"></div>
+
+  <!-- FLOATING NAVIGATION HEADER (ELEVATED NEON BORDER) -->
+  <header class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl h-16 rounded-full glass-panel z-50 px-6 sm:px-10 flex items-center justify-between shadow-[0_10px_40px_rgba(3,7,18,0.6)] relative overflow-hidden">
+    
+    <!-- 21st.dev Neon Trail Border Overlay for Navbar -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+      <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="9999" 
+            stroke="url(#grad-pressure-border)" stroke-width="1.5" 
+            pathLength="100" class="neon-border-trail-slow" />
+    </svg>
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3 group relative z-10">
+      <div class="relative w-8 h-8 rounded-lg bg-gradient-to-tr from-primary-blue to-medical-blue flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+        <span class="font-sans font-extrabold text-white text-base">D</span>
+        <div class="absolute inset-0 rounded-lg border border-white/20"></div>
+      </div>
+      <div class="flex flex-col items-start leading-none text-right">
+        <span class="font-arabic font-bold text-lg tracking-tight text-white group-hover:text-medical-blue transition-colors duration-300">دِثار</span>
+        <span class="font-sans text-[10px] text-muted-text font-semibold uppercase tracking-wider">DITHAR</span>
+      </div>
+    </a>
+
+    <!-- Nav Links (Desktop) -->
+    <nav class="hidden md:flex items-center gap-8 font-arabic text-sm font-medium relative z-10">
+      <a href="#hero" class="text-white/80 hover:text-white transition-colors duration-200">الرئيسية</a>
+      <a href="#exploded-view" class="text-white/80 hover:text-white transition-colors duration-200">العرض المفكك</a>
+      <a href="#clinical-metrics" class="text-white/80 hover:text-white transition-colors duration-200">المؤشرات الطبية</a>
+      <a href="#digital-twin" class="text-white/80 hover:text-white transition-colors duration-200">التوأم الرقمي</a>
+    </nav>
+
+    <!-- Right Side Actions & Telemetry Badge -->
+    <div class="flex items-center gap-4 relative z-10">
+      <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-xs" dir="ltr">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-smart-green opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-smart-green"></span>
+        </span>
+        <span class="font-sans text-[10px] font-semibold text-white tracking-wider">LIVE TELEMETRY</span>
+      </div>
+
+      <!-- Compact CTA Trigger -->
+      <a href="#clinical-metrics" class="hidden sm:inline-flex bg-gradient-to-r from-primary-blue to-medical-blue hover:from-medical-blue hover:to-primary-blue text-xs font-semibold px-5 py-2.5 rounded-full shadow-lg hover:shadow-medical-blue/20 transition-all duration-300 hover:-translate-y-0.5 font-arabic">
+        شاشة التحكم
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="relative min-h-screen w-full flex items-center justify-center pt-32 pb-20 px-6 mesh-gradient-1 overflow-hidden">
+    <!-- Grid Overlay background -->
+    <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none -z-10"></div>
+    
+    <div class="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      
+      <!-- Text Column -->
+      <div class="lg:col-span-7 flex flex-col items-start text-right">
+        
+        <!-- Badge label -->
+        <div class="inline-flex items-center gap-2 bg-primary-blue/15 border border-primary-blue/30 px-4 py-2 rounded-full mb-6" dir="ltr">
+          <span class="h-2 w-2 rounded-full bg-medical-blue animate-pulse"></span>
+          <span class="font-sans uppercase text-[11px] font-bold text-medical-blue tracking-widest">DITHAR HEALTH PLATFORM</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold font-arabic leading-[1.2] text-white tracking-tight">
+          الرعاية الصحية <br>
+          <span class="bg-clip-text text-transparent bg-gradient-to-l from-medical-blue via-smart-green to-accent-purple font-extrabold">لا تنتهي</span> 
+          عند مغادرة المستشفى
+        </h1>
+
+        <p class="font-sans text-lg md:text-xl font-light text-muted-text mt-3" dir="ltr">
+          Clinical continuous telemetry beyond the hospital walls.
+        </p>
+
+        <!-- Description -->
+        <p class="text-base sm:text-lg text-muted-text font-arabic leading-relaxed font-light mt-6 max-w-2xl">
+          نظام نعل حركي طبي متكامل (دِثار) مصمم خصيصاً لمرضى السكري والرياضيين. يراقب النعل الضغط السريري، التوزيع الحراري، والرطوبة، ليتنبأ بالتهابات القدم والقرح قبل تشكلها بفضل المعالجة العصبية المحلية بالذكاء الاصطناعي.
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex flex-wrap items-center gap-4 mt-10">
+          <a href="#exploded-view" class="group relative px-8 py-4 bg-gradient-to-r from-primary-blue to-medical-blue hover:shadow-[0_15px_30px_rgba(11,77,141,0.4)] rounded-full text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 flex items-center gap-2">
+            <span class="font-arabic">استكشف البنية التقنية</span>
+            <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+          </a>
+          <a href="#clinical-metrics" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2">
+            <span class="font-arabic">لوحة قياس المؤشرات</span>
+            <i data-lucide="activity" class="w-4 h-4 text-smart-green"></i>
+          </a>
+        </div>
+
+        <!-- Mini Stats Grid -->
+        <div class="grid grid-cols-3 gap-6 mt-16 w-full max-w-xl border-t border-white/5 pt-8">
+          <div>
+            <div class="text-2xl md:text-3xl font-extrabold text-white font-sans">14</div>
+            <div class="text-xs text-muted-text font-arabic mt-1">منطقة استشعار ضغط</div>
+          </div>
+          <div>
+            <div class="text-2xl md:text-3xl font-extrabold text-smart-green font-sans">98.4%</div>
+            <div class="text-xs text-muted-text font-arabic mt-1">دقة تتبع اتزان المشي</div>
+          </div>
+          <div>
+            <div class="text-2xl md:text-3xl font-extrabold text-medical-blue font-sans">24/7</div>
+            <div class="text-xs text-muted-text font-arabic mt-1">حماية سريرية متواصلة</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Visual Render Column -->
+      <div class="lg:col-span-5 flex items-center justify-center relative">
+        <div class="absolute w-[400px] h-[400px] rounded-full bg-primary-blue/20 blur-[100px] pointer-events-none -z-10"></div>
+        
+        <!-- Glowing Ring decoration -->
+        <div class="absolute w-80 h-80 rounded-full border border-white/5 animate-rotate-slow"></div>
+        <div class="absolute w-[240px] h-[240px] rounded-full border border-dashed border-medical-blue/20"></div>
+
+        <!-- 3D skew graphic overlay simulating high-end tech drawing -->
+        <div class="relative w-full max-w-[350px] aspect-[1/2] rounded-3xl overflow-hidden glass-panel border border-white/10 p-6 flex flex-col justify-between shadow-2xl transition-transform duration-500 hover:scale-[1.02]">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-smart-green animate-pulse"></div>
+              <span class="font-sans text-[10px] text-white tracking-widest font-semibold">DITHAR SOLE v1.2</span>
+            </div>
+            <i data-lucide="shield-check" class="w-5 h-5 text-medical-blue"></i>
+          </div>
+
+          <!-- Technical Sole Drawing representation in SVG -->
+          <div class="my-auto py-8 flex justify-center">
+            <svg viewBox="0 0 100 200" class="w-full max-w-[160px] text-medical-blue/30 drop-shadow-[0_0_20px_rgba(30,136,200,0.2)]">
+              <!-- Outline -->
+              <path 
+                d="M 50,10 C 35,10 22.5,17.5 22.5,32.5 C 22.5,55 20,80 24,110 C 26,130 26,160 30,180 C 32.5,190 40,195 50,195 C 60,195 67.5,190 70,180 C 74,160 74,130 76,110 C 80,80 77.5,55 77.5,32.5 C 77.5,17.5 65,10 50,10 Z" 
+                fill="none" 
+                stroke="currentColor" 
+                stroke-width="1.5"
+              />
+              <!-- Internal copper grid traces -->
+              <path d="M 50,20 L 50,180 M 35,50 L 50,90 L 65,50 M 30,100 L 50,110 L 70,100" fill="none" stroke="currentColor" stroke-width="0.75" stroke-dasharray="2,3" />
+              <!-- Highlight sensors -->
+              <circle cx="35" cy="50" r="5" fill="#39B56A" fill-opacity="0.6" class="animate-pulse" />
+              <circle cx="65" cy="50" r="5" fill="#39B56A" fill-opacity="0.6" class="animate-pulse" />
+              <circle cx="50" cy="90" r="6" fill="#1E88C8" fill-opacity="0.8" />
+              <circle cx="50" cy="180" r="8" fill="#FF5E5E" fill-opacity="0.6" class="animate-pulse" />
+            </svg>
+          </div>
+
+          <div class="bg-black/35 rounded-xl p-3 border border-white/5 text-right">
+            <div class="text-[10px] text-muted-text font-sans">NEURAL CONTROLLER DIAGNOSTIC</div>
+            <div class="text-xs font-bold text-white font-arabic mt-0.5">النظام يعمل بكفاءة 100%</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- THE 3D EXPLODED VIEW SECTION -->
+  <section id="exploded-view" class="relative min-h-screen w-full bg-[#050814] py-28 px-6 md:px-12 flex flex-col justify-center items-center overflow-hidden">
+    
+    <!-- Large Section Header -->
+    <div class="w-full max-w-7xl mx-auto z-10 text-center mb-16 select-none">
+      <span class="text-xs font-semibold tracking-widest text-medical-blue uppercase mb-3 font-sans flex items-center gap-2 justify-center">
+        <i data-lucide="layers" class="w-4 h-4"></i>
+        APPLE-STYLE DESIGN SCHEMATIC
+      </span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-arabic leading-tight">
+        العرض المفكك التقني للنعل
+      </h2>
+      <h3 class="text-xl sm:text-2xl font-light text-medical-blue mt-2 font-sans">
+        Exploded Clinical Smart Pad View
+      </h3>
+      <p class="text-muted-text text-sm md:text-base mt-4 max-w-2xl mx-auto font-light leading-relaxed font-arabic">
+        تأمل الهيكل الداخلي المذهل المكون من 8 طبقات طبية إلكترونية دقيقة تعمل بانسجام مطلق. استخدم شريط السحب أو اسحب الماوس لتدوير النعل في الفراغ واستكشاف كل طبقة.
+      </p>
+    </div>
+
+    <!-- Exploded Interactive Work Area -->
+    <div class="w-full max-w-7xl mx-auto z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      
+      <!-- Interactive 3D Stack (Left Column - Elevated with 21st.dev Magic Border Container) -->
+      <div class="lg:col-span-6 flex flex-col items-center justify-center min-h-[550px] relative w-full">
+        
+        <!-- Outer Wrapper with Magic Trailing Glow Border -->
+        <div class="relative w-full max-w-md p-1 rounded-3xl overflow-hidden group select-none shadow-[0_20px_50px_rgba(3,7,18,0.8)]">
+          
+          <!-- Background Magic Gradient Glow -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-medical-blue/15 via-transparent to-accent-purple/15 opacity-60 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
+          
+          <!-- 21st.dev Neon Trailing SVG Border for Exploded view wrapper -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="24" 
+                  stroke="url(#grad-ai-border)" stroke-width="2" 
+                  pathLength="100" id="explodedMagicBorder" class="neon-border-trail-magic" />
+          </svg>
+
+          <!-- Inner Canvas Panel -->
+          <div class="bg-card-obsidian/75 backdrop-blur-xl rounded-[23px] p-6 flex flex-col items-center justify-center">
+            
+            <!-- Drag instructions badge -->
+            <div class="glass-panel border border-white/10 rounded-full px-4 py-2 text-xs flex items-center gap-2 select-none pointer-events-none mb-6 relative z-20">
+              <i data-lucide="move" class="w-3.5 h-3.5 text-medical-blue animate-bounce"></i>
+              <span class="font-arabic text-muted-text">اسحب الماوس لتدوير النعل في الأبعاد الثلاثية</span>
+            </div>
+
+            <!-- 3D Perspective Canvas Container -->
+            <div class="perspective-container relative w-full h-[400px] flex items-center justify-center cursor-grab active:cursor-grabbing">
+              
+              <!-- The Stack that rotates -->
+              <div id="explodedStack" class="exploded-stack relative w-[200px] h-[400px] flex items-center justify-center" style="--gap: 0px;">
+                
+                <!-- Three vertical connector lines passing through exact coordinate spots across layers -->
+                <!-- Toe connector: left 38%, top 18% -->
+                <div class="connector-line" style="left: 38%; top: 18%; --index: 0;"></div>
+                <!-- Arch connector: left 60%; top: 50% -->
+                <div class="connector-line" style="left: 60%; top: 50%; --index: 0;"></div>
+                <!-- Heel connector: left: 50%; top: 82% -->
+                <div class="connector-line" style="left: 50%; top: 82%; --index: 0;"></div>
+
+                <!-- Layer 0: Comfort Cover -->
+                <div class="layer-container" style="--index: 0;" data-layer-idx="0">
+                  <svg viewBox="0 0 200 400" class="w-full h-full drop-shadow-[0_5px_15px_rgba(11,77,141,0.25)]">
+                    <path d="M 100,20 C 70,20 45,35 45,65 C 45,110 40,160 48,220 C 52,260 52,320 60,360 C 65,380 80,390 100,390 C 120,390 135,380 140,360 C 148,320 148,260 135,220 C 120,170 155,115 155,65 C 155,35 130,20 100,20 Z" 
+                          fill="rgba(11, 77, 141, 0.88)" stroke="#1E88C8" stroke-width="2"/>
+                    <path d="M 60,60 C 75,50 125,50 140,60 M 50,120 C 70,110 130,110 150,120 M 50,200 C 70,190 130,190 140,200 M 60,300 C 75,290 125,290 140,300" 
+                          fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                    <circle cx="76" cy="72" r="3" fill="#ffffff"/>
+                    <circle cx="120" cy="200" r="3" fill="#ffffff"/>
+                    <circle cx="100" cy="328" r="3" fill="#ffffff"/>
+                  </svg>
+                </div>
+
+                <!-- Layer 1: Pressure Grid -->
+                <div class="layer-container" style="--index: 1;" data-layer-idx="1">
+                  <svg viewBox="0 0 200 400" class="w-full h-full drop-shadow-[0_5px_15px_rgba(57,181,106,0.2)]">
+                    <path d="M 100,20 C 70,20 45,35 45,65 C 45,110 40,160 48,220 C 52,260 52,320 60,360 C 65,380 80,390 100,390 C 120,390 135,380 140,360 C 148,320 148,260 135,220 C 120,170 155,115 155,65 C 155,35 130,20 100,20 Z" 
+                          fill="rgba(15, 23, 42, 0.95)" stroke="#39B56A" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <path d="M 76,72 L 100,140 L 120,200 L 100,328 M 120,72 L 100,140 M 76,140 L 100,140 M 80,260 L 120,200" 
+                          fill="none" stroke="rgba(57, 181, 106, 0.4)" stroke-width="1"/>
+                    <circle cx="76" cy="72" r="6" fill="#39B56A" fill-opacity="0.8"/>
+                    <circle cx="76" cy="72" r="2" fill="#fff"/>
+                    <circle cx="120" cy="72" r="6" fill="#39B56A" fill-opacity="0.8"/>
+                    <circle cx="100" cy="100" r="6" fill="#39B56A" fill-opacity="0.8"/>
+                    <circle cx="76" cy="140" r="6" fill="#39B56A" fill-opacity="0.8"/>
+                    <circle cx="124" cy="140" r="6" fill="#39B56A" fill-opacity="0.8"/>
+                    <circle cx="120" cy="200" r="6" fill="#39B56A" fill-opacity="0.8"/>
+                    <circle cx="120" cy="200" r="2" fill="#fff"/>
+                    <circle cx="100" cy="328" r="6" fill="#39B56A" fill-opacity="0.8"/>
+                    <circle cx="100" cy="328" r="2" fill="#fff"/>
+                  </svg>
+                </div>
+
+                <!-- Layer 2: Thermal Sensor Layer -->
+                <div class="layer-container" style="--index: 2;" data-layer-idx="2">
+                  <svg viewBox="0 0 200 400" class="w-full h-full">
+                    <path d="M 100,20 C 70,20 45,35 45,65 C 45,110 40,160 48,220 C 52,260 52,320 60,360 C 65,380 80,390 100,390 C 120,390 135,380 140,360 C 148,320 148,260 135,220 C 120,170 155,115 155,65 C 155,35 130,20 100,20 Z" 
+                          fill="rgba(88, 28, 135, 0.4)" stroke="#8E54E9" stroke-width="1.5"/>
+                    <path d="M 70,80 Q 100,50 130,80" fill="none" stroke="#FF5E5E" stroke-width="2" stroke-opacity="0.6"/>
+                    <path d="M 60,160 Q 100,120 140,160" fill="none" stroke="#FF5E5E" stroke-width="1.5" stroke-opacity="0.4"/>
+                    <path d="M 80,320 Q 100,290 120,320" fill="none" stroke="#1E88C8" stroke-width="2" stroke-opacity="0.5"/>
+                    <rect x="73" y="69" width="6" height="6" fill="#FF5E5E" transform="rotate(45 76 72)"/>
+                    <rect x="117" y="197" width="6" height="6" fill="#1E88C8" transform="rotate(45 120 200)"/>
+                    <rect x="97" y="325" width="6" height="6" fill="#FF5E5E" transform="rotate(45 100 328)"/>
+                  </svg>
+                </div>
+
+                <!-- Layer 3: Humidity & Aeration -->
+                <div class="layer-container" style="--index: 3;" data-layer-idx="3">
+                  <svg viewBox="0 0 200 400" class="w-full h-full">
+                    <path d="M 100,20 C 70,20 45,35 45,65 C 45,110 40,160 48,220 C 52,260 52,320 60,360 C 65,380 80,390 100,390 C 120,390 135,380 140,360 C 148,320 148,260 135,220 C 120,170 155,115 155,65 C 155,35 130,20 100,20 Z" 
+                          fill="rgba(13, 148, 136, 0.4)" stroke="#0d9488" stroke-width="1.5"/>
+                    <circle cx="100" cy="50" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="80" cy="90" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="120" cy="90" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="100" cy="130" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="80" cy="170" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="120" cy="170" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="100" cy="220" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="80" cy="280" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="120" cy="280" r="2" fill="rgba(255,255,255,0.4)"/>
+                    <circle cx="100" cy="340" r="2" fill="rgba(255,255,255,0.4)"/>
+                  </svg>
+                </div>
+
+                <!-- Layer 4: IMU Motion Tracking -->
+                <div class="layer-container" style="--index: 4;" data-layer-idx="4">
+                  <svg viewBox="0 0 200 400" class="w-full h-full">
+                    <path d="M 100,20 C 70,20 45,35 45,65 C 45,110 40,160 48,220 C 52,260 52,320 60,360 C 65,380 80,390 100,390 C 120,390 135,380 140,360 C 148,320 148,260 135,220 C 120,170 155,115 155,65 C 155,35 130,20 100,20 Z" 
+                          fill="rgba(30, 41, 59, 0.85)" stroke="#64748b" stroke-width="1.5"/>
+                    <circle cx="100" cy="260" r="20" fill="none" stroke="#FF5E5E" stroke-width="1" stroke-dasharray="2,2"/>
+                    <line x1="100" y1="230" x2="100" y2="290" stroke="#FF5E5E" stroke-width="0.75"/>
+                    <line x1="70" y1="260" x2="130" y2="260" stroke="#FF5E5E" stroke-width="0.75"/>
+                    <rect x="90" y="250" width="20" height="20" rx="3" fill="#1e293b" stroke="#FF5E5E" stroke-width="1.5"/>
+                    <text x="100" y="263" font-family="sans-serif" font-size="7" font-weight="bold" fill="#fff" text-anchor="middle">IMU</text>
+                  </svg>
+                </div>
+
+                <!-- Layer 5: AI Neuro-Processor -->
+                <div class="layer-container" style="--index: 5;" data-layer-idx="5">
+                  <svg viewBox="0 0 200 400" class="w-full h-full">
+                    <path d="M 100,20 C 70,20 45,35 45,65 C 45,110 40,160 48,220 C 52,260 52,320 60,360 C 65,380 80,390 100,390 C 120,390 135,380 140,360 C 148,320 148,260 135,220 C 120,170 155,115 155,65 C 155,35 130,20 100,20 Z" 
+                          fill="rgba(5, 15, 30, 0.96)" stroke="#0b4d8d" stroke-width="2"/>
+                    <path d="M 100,210 L 70,150 L 55,150 M 100,210 L 130,150 L 145,150 M 100,210 L 80,290 L 60,300 M 100,210 L 120,290 L 140,300" 
+                          fill="none" stroke="#1E88C8" stroke-width="1.25" stroke-opacity="0.8"/>
+                    <rect x="86" y="196" width="28" height="28" rx="4" fill="#080F25" stroke="#1E88C8" stroke-width="2"/>
+                    <rect x="92" y="202" width="16" height="16" fill="rgba(30,136,200,0.2)" stroke="#39B56A" stroke-width="1"/>
+                    <circle cx="100" cy="210" r="3" fill="#39B56A" class="animate-pulse"/>
+                  </svg>
+                </div>
+
+                <!-- Layer 6: Energy Harvesting -->
+                <div class="layer-container" style="--index: 6;" data-layer-idx="6">
+                  <svg viewBox="0 0 200 400" class="w-full h-full">
+                    <path d="M 100,20 C 70,20 45,35 45,65 C 45,110 40,160 48,220 C 52,260 52,320 60,360 C 65,380 80,390 100,390 C 120,390 135,380 140,360 C 148,320 148,260 135,220 C 120,170 155,115 155,65 C 155,35 130,20 100,20 Z" 
+                          fill="rgba(217, 119, 6, 0.45)" stroke="#d97706" stroke-width="1.5"/>
+                    <circle cx="100" cy="340" r="22" fill="none" stroke="#d97706" stroke-width="2"/>
+                    <circle cx="100" cy="340" r="16" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <circle cx="100" cy="340" r="10" fill="none" stroke="#d97706" stroke-width="1"/>
+                    <circle cx="100" cy="110" r="22" fill="none" stroke="#d97706" stroke-width="2"/>
+                    <circle cx="100" cy="110" r="16" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <circle cx="100" cy="110" r="10" fill="none" stroke="#d97706" stroke-width="1"/>
+                  </svg>
+                </div>
+
+                <!-- Layer 7: BLE Communication -->
+                <div class="layer-container" style="--index: 7;" data-layer-idx="7">
+                  <svg viewBox="0 0 200 400" class="w-full h-full drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
+                    <path d="M 100,20 C 70,20 45,35 45,65 C 45,110 40,160 48,220 C 52,260 52,320 60,360 C 65,380 80,390 100,390 C 120,390 135,380 140,360 C 148,320 148,260 135,220 C 120,170 155,115 155,65 C 155,35 130,20 100,20 Z" 
+                          fill="rgba(8, 10, 18, 0.98)" stroke="#111827" stroke-width="2.5"/>
+                    <path d="M 60,360 C 58,340 60,300 70,300 L 90,300 L 90,320 L 80,320 L 80,340" 
+                          fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round"/>
+                    <rect x="96" y="294" width="12" height="12" rx="2" fill="#1e293b" stroke="#eab308" stroke-width="1"/>
+                    <circle cx="102" cy="300" r="2" fill="#eab308"/>
+                  </svg>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- 3D Exploded manual control slider -->
+            <div class="w-full bg-[#030712]/50 border border-white/5 p-4 rounded-2xl mt-8 flex flex-col items-center gap-3">
+              <div class="flex justify-between w-full text-[10px] font-semibold">
+                <span class="font-arabic text-muted-text">تفكيك كامل (100%)</span>
+                <span class="font-arabic text-muted-text">تجميع كامل (0%)</span>
+              </div>
+              <input 
+                type="range" 
+                id="explodeSlider" 
+                min="0" 
+                max="65" 
+                value="35" 
+                class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-medical-blue transition-all"
+              >
+              <span class="text-[9px] font-sans font-bold text-medical-blue tracking-widest uppercase">EXPLODED DISPERSION SLIDER</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Exploded View Information Side Panel (Right Column) -->
+      <div class="lg:col-span-6 flex flex-col justify-center text-right select-none">
+        
+        <!-- Interactive Layer Selector List -->
+        <div class="flex flex-col gap-3.5 w-full max-h-[500px] overflow-y-auto pr-2" id="layersInfoList">
+          
+          <!-- Card 1 -->
+          <div class="layer-info-card p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end cursor-pointer transition-all duration-300 hover:border-medical-blue/30" data-layer-idx="0">
+            <div class="flex flex-row-reverse items-center justify-between w-full">
+              <h4 class="text-sm sm:text-base font-bold text-white font-arabic">
+                1. طبقة الغطاء السريري المريح
+              </h4>
+              <span class="font-sans text-[10px] bg-medical-blue/10 text-medical-blue font-bold px-2.5 py-1 rounded-full uppercase">Comfort Layer</span>
+            </div>
+            <p class="text-xs text-muted-text leading-relaxed font-arabic mt-2">
+              نعل خارجي طبي مضاد للبكتيريا ومطابق لمعايير جودة الرعاية الطبية، مصمم لامتصاص الصدمات وتوفير راحة قصوى للقدم طوال فترة الاستخدام اليومي.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="layer-info-card p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end cursor-pointer transition-all duration-300 hover:border-smart-green/30" data-layer-idx="1">
+            <div class="flex flex-row-reverse items-center justify-between w-full">
+              <h4 class="text-sm sm:text-base font-bold text-white font-arabic">
+                2. مصفوفة قياس مستشعرات الضغط
+              </h4>
+              <span class="font-sans text-[10px] bg-smart-green/10 text-smart-green font-bold px-2.5 py-1 rounded-full uppercase font-medium">Pressure Sensor Grid</span>
+            </div>
+            <p class="text-xs text-muted-text leading-relaxed font-arabic mt-2">
+              تضم 14 مستشعراً فائق المرونة يقيس القوة الحركية ونقاط الضغط الحيوية، للكشف عن انحراف الأحمال الحركية ومنع القروح السكرية الصامتة.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="layer-info-card p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end cursor-pointer transition-all duration-300 hover:border-accent-purple/30" data-layer-idx="2">
+            <div class="flex flex-row-reverse items-center justify-between w-full">
+              <h4 class="text-sm sm:text-base font-bold text-white font-arabic">
+                3. طبقة الاستشعار الحراري الدقيق
+              </h4>
+              <span class="font-sans text-[10px] bg-accent-purple/10 text-accent-purple font-bold px-2.5 py-1 rounded-full uppercase">Thermal Grid</span>
+            </div>
+            <p class="text-xs text-muted-text leading-relaxed font-arabic mt-2">
+              مصفوفة من الحساسات الحرارية تقرأ التوزيع الحراري للقدم باستمرار، للكشف المبكر عن بؤر الالتهابات أو نقص التروية الدموية الطرفية.
+            </p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="layer-info-card p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end cursor-pointer transition-all duration-300 hover:border-teal-500/30" data-layer-idx="3">
+            <div class="flex flex-row-reverse items-center justify-between w-full">
+              <h4 class="text-sm sm:text-base font-bold text-white font-arabic">
+                4. طبقة قياس الرطوبة والتكييف
+              </h4>
+              <span class="font-sans text-[10px] bg-teal-500/10 text-teal-400 font-bold px-2.5 py-1 rounded-full uppercase">Humidity Control</span>
+            </div>
+            <p class="text-xs text-muted-text leading-relaxed font-arabic mt-2">
+              تفحص البيئة الرطبة داخل الحذاء وتنبئ بالتسرب أو التعرق الشديد، وتضمن الحفاظ على تهوية متوازنة لحماية تشققات الجلد الجافة.
+            </p>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="layer-info-card p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end cursor-pointer transition-all duration-300 hover:border-slate-400/30" data-layer-idx="4">
+            <div class="flex flex-row-reverse items-center justify-between w-full">
+              <h4 class="text-sm sm:text-base font-bold text-white font-arabic">
+                5. معالج تتبع الحركة والقصور IMU
+              </h4>
+              <span class="font-sans text-[10px] bg-slate-400/10 text-slate-300 font-bold px-2.5 py-1 rounded-full uppercase">Motion Tracking IMU</span>
+            </div>
+            <p class="text-xs text-muted-text leading-relaxed font-arabic mt-2">
+              معالج قياس القصور الذاتي ذو الست محاور يسجل معدل تسارع الحركة وزاوية المشي لتسجيل معايير خط سير المريض وتوازنه العضلي.
+            </p>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="layer-info-card p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end cursor-pointer transition-all duration-300 hover:border-blue-500/30" data-layer-idx="5">
+            <div class="flex flex-row-reverse items-center justify-between w-full">
+              <h4 class="text-sm sm:text-base font-bold text-white font-arabic">
+                6. وحدة الذكاء الاصطناعي العصبي المحلي
+              </h4>
+              <span class="font-sans text-[10px] bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-full uppercase">Local Edge AI</span>
+            </div>
+            <p class="text-xs text-muted-text leading-relaxed font-arabic mt-2">
+              رقاقة معالجة عصبية دقيقة تفرز البيانات الحيوية محلياً لتصفية التشويش الحركي قبل نقل البيانات بشكل مشفر لضمان أقصى توفير للطاقة.
+            </p>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="layer-info-card p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end cursor-pointer transition-all duration-300 hover:border-amber-500/30" data-layer-idx="6">
+            <div class="flex flex-row-reverse items-center justify-between w-full">
+              <h4 class="text-sm sm:text-base font-bold text-white font-arabic">
+                7. خلايا حصد الطاقة الكهرومغناطيسية
+              </h4>
+              <span class="font-sans text-[10px] bg-amber-500/10 text-amber-400 font-bold px-2.5 py-1 rounded-full uppercase">Energy Harvesting</span>
+            </div>
+            <p class="text-xs text-muted-text leading-relaxed font-arabic mt-2">
+              مولدات ميكانيكية مدمجة تحول الضغط الحركي لكعب القدم عند المشي إلى طاقة كهربائية متناهية الصغر تشحن البطارية تلقائياً لضمان عمر استخدام ممتد.
+            </p>
+          </div>
+
+          <!-- Card 8 -->
+          <div class="layer-info-card p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end cursor-pointer transition-all duration-300 hover:border-yellow-500/30" data-layer-idx="7">
+            <div class="flex flex-row-reverse items-center justify-between w-full">
+              <h4 class="text-sm sm:text-base font-bold text-white font-arabic">
+                8. شريحة البث اللاسلكي الآمن BLE
+              </h4>
+              <span class="font-sans text-[10px] bg-yellow-500/10 text-yellow-400 font-bold px-2.5 py-1 rounded-full uppercase">Wireless Comms</span>
+            </div>
+            <p class="text-xs text-muted-text leading-relaxed font-arabic mt-2">
+              هوائي اتصال بلوتوث منخفض الاستهلاك (BLE) لبث المؤشرات الطبية المشفرة فورياً إلى منصة الطبيب وتطبيق المريض على مدار الساعة.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CLINICAL INTERACTIVE METRICS SECTION -->
+  <section id="clinical-metrics" class="relative min-h-screen w-full bg-[#030712] py-28 px-6 md:px-12 flex flex-col justify-center items-center overflow-hidden">
+    
+    <!-- Section Header -->
+    <div class="w-full max-w-7xl mx-auto z-10 text-center mb-16 select-none">
+      <span class="text-xs font-semibold tracking-widest text-smart-green uppercase mb-3 font-sans flex items-center gap-2 justify-center">
+        <i data-lucide="stethoscope" class="w-4 h-4"></i>
+        CLINICAL TELEMETRY MONITOR
+      </span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-arabic leading-tight">
+        شاشة المؤشرات الطبية التفاعلية
+      </h2>
+      <h3 class="text-xl sm:text-2xl font-light text-smart-green mt-2 font-sans">
+        Continuous Interactive Telemetry
+      </h3>
+      <p class="text-muted-text text-sm md:text-base mt-4 max-w-2xl mx-auto font-light leading-relaxed font-arabic">
+        اختر المؤشر من لوحة التحكم لمشاهدة تحليل فوري وتغيير توزيع المستشعرات والخرائط الطبية على التخطيط الهيكلي للقدمين.
+      </p>
+    </div>
+
+    <!-- Telemetry Work Grid -->
+    <div class="w-full max-w-7xl mx-auto z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      
+      <!-- Metrics Sidebar (Left column - Elevated 21st.dev Dynamic Border Cards) -->
+      <div class="lg:col-span-4 flex flex-col gap-3 font-arabic relative">
+        
+        <!-- Tab 1: Pressure -->
+        <button id="tab-pressure" onclick="switchTelemetry('pressure')" class="telemetry-tab relative p-5 rounded-2xl bg-card-obsidian/45 flex flex-row-reverse items-center justify-between text-right transition-all duration-300 group">
+          <!-- 21st.dev Neon Trailing SVG Border Overlay -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="16" 
+                  stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" 
+                  pathLength="100" class="tab-border-trail" />
+          </svg>
+
+          <div class="flex flex-row-reverse items-center gap-4 relative z-10">
+            <div class="p-3.5 rounded-xl bg-medical-blue/10 text-medical-blue group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="footprints" class="w-5 h-5"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm font-bold text-white">توزيع خريطة الضغط</span>
+              <span class="text-[10px] text-muted-text mt-0.5">Pressure Mapping</span>
+            </div>
+          </div>
+          <i data-lucide="chevron-left" class="w-4 h-4 text-muted-text group-hover:text-white transition-colors relative z-10"></i>
+        </button>
+
+        <!-- Tab 2: Thermal -->
+        <button id="tab-thermal" onclick="switchTelemetry('thermal')" class="telemetry-tab relative p-5 rounded-2xl bg-card-obsidian/45 flex flex-row-reverse items-center justify-between text-right transition-all duration-300 group">
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="16" 
+                  stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" 
+                  pathLength="100" class="tab-border-trail" />
+          </svg>
+
+          <div class="flex flex-row-reverse items-center gap-4 relative z-10">
+            <div class="p-3.5 rounded-xl bg-alert-red/10 text-alert-red group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="thermometer" class="w-5 h-5"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm font-bold text-white">الاستشعار الحراري الفوري</span>
+              <span class="text-[10px] text-muted-text mt-0.5">Thermal Regulation</span>
+            </div>
+          </div>
+          <i data-lucide="chevron-left" class="w-4 h-4 text-muted-text group-hover:text-white transition-colors relative z-10"></i>
+        </button>
+
+        <!-- Tab 3: Gait -->
+        <button id="tab-gait" onclick="switchTelemetry('gait')" class="telemetry-tab relative p-5 rounded-2xl bg-card-obsidian/45 flex flex-row-reverse items-center justify-between text-right transition-all duration-300 group">
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="16" 
+                  stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" 
+                  pathLength="100" class="tab-border-trail" />
+          </svg>
+
+          <div class="flex flex-row-reverse items-center gap-4 relative z-10">
+            <div class="p-3.5 rounded-xl bg-smart-green/10 text-smart-green group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="activity" class="w-5 h-5"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm font-bold text-white">توازن ونمط المشي</span>
+              <span class="text-[10px] text-muted-text mt-0.5">Gait & Balance</span>
+            </div>
+          </div>
+          <i data-lucide="chevron-left" class="w-4 h-4 text-muted-text group-hover:text-white transition-colors relative z-10"></i>
+        </button>
+
+        <!-- Tab 4: Humidity -->
+        <button id="tab-humidity" onclick="switchTelemetry('humidity')" class="telemetry-tab relative p-5 rounded-2xl bg-card-obsidian/45 flex flex-row-reverse items-center justify-between text-right transition-all duration-300 group">
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="16" 
+                  stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" 
+                  pathLength="100" class="tab-border-trail" />
+          </svg>
+
+          <div class="flex flex-row-reverse items-center gap-4 relative z-10">
+            <div class="p-3.5 rounded-xl bg-teal-500/10 text-teal-400 group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="droplets" class="w-5 h-5"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm font-bold text-white">بيئة تهوية الحذاء</span>
+              <span class="text-[10px] text-muted-text mt-0.5">Microclimate Humidity</span>
+            </div>
+          </div>
+          <i data-lucide="chevron-left" class="w-4 h-4 text-muted-text group-hover:text-white transition-colors relative z-10"></i>
+        </button>
+
+        <!-- Tab 5: AI Engine -->
+        <button id="tab-ai" onclick="switchTelemetry('ai')" class="telemetry-tab relative p-5 rounded-2xl bg-card-obsidian/45 flex flex-row-reverse items-center justify-between text-right transition-all duration-300 group">
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="16" 
+                  stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" 
+                  pathLength="100" class="tab-border-trail" />
+          </svg>
+
+          <div class="flex flex-row-reverse items-center gap-4 relative z-10">
+            <div class="p-3.5 rounded-xl bg-accent-purple/10 text-accent-purple group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="cpu" class="w-5 h-5"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm font-bold text-white">تحليل معالج الذكاء الاصطناعي</span>
+              <span class="text-[10px] text-muted-text mt-0.5">Local Edge AI Engine</span>
+            </div>
+          </div>
+          <i data-lucide="chevron-left" class="w-4 h-4 text-muted-text group-hover:text-white transition-colors relative z-10"></i>
+        </button>
+
+        <!-- Tab 6: Energy -->
+        <button id="tab-energy" onclick="switchTelemetry('energy')" class="telemetry-tab relative p-5 rounded-2xl bg-card-obsidian/45 flex flex-row-reverse items-center justify-between text-right transition-all duration-300 group">
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="16" 
+                  stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" 
+                  pathLength="100" class="tab-border-trail" />
+          </svg>
+
+          <div class="flex flex-row-reverse items-center gap-4 relative z-10">
+            <div class="p-3.5 rounded-xl bg-amber-500/10 text-amber-500 group-hover:scale-105 transition-transform duration-300">
+              <i data-lucide="zap" class="w-5 h-5"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-sm font-bold text-white">معدل شحن الطاقة الذاتي</span>
+              <span class="text-[10px] text-muted-text mt-0.5">Energy Harvesting</span>
+            </div>
+          </div>
+          <i data-lucide="chevron-left" class="w-4 h-4 text-muted-text group-hover:text-white transition-colors relative z-10"></i>
+        </button>
+
+      </div>
+
+      <!-- Foot Blueprint Visualization (Center column) -->
+      <div class="lg:col-span-5 glass-panel border border-white/5 rounded-3xl p-6 sm:p-10 flex flex-col items-center justify-between relative overflow-hidden">
+        
+        <!-- Live status scanning indicator -->
+        <div class="absolute top-6 left-6 z-20 flex items-center gap-2 bg-black/40 border border-white/10 px-3.5 py-2 rounded-full text-xs" dir="ltr">
+          <i data-lucide="eye" class="w-3.5 h-3.5 text-medical-blue"></i>
+          <span id="visualModeLabel" class="font-sans font-bold text-white tracking-widest text-[9px] uppercase">PRESSURE ACTIVE</span>
+        </div>
+
+        <div class="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl opacity-10">
+          <div class="w-full h-1 bg-medical-blue/70 animate-scanner"></div>
+        </div>
+
+        <!-- Foot sole outline wrapper -->
+        <div class="w-full flex justify-center py-6">
+          <svg id="telemetryFootSvg" viewBox="0 0 320 360" class="w-full max-w-[320px]">
+            
+            <!-- Coordinate Grid Background -->
+            <circle cx="160" cy="180" r="170" stroke="rgba(255,255,255,0.02)" fill="none" stroke-dasharray="2,5"/>
+            <circle cx="160" cy="180" r="120" stroke="rgba(255,255,255,0.015)" fill="none" stroke-dasharray="2,5"/>
+            <line x1="160" y1="5" x2="160" y2="355" stroke="rgba(255,255,255,0.02)" stroke-dasharray="1,4"/>
+            <line x1="5" y1="180" x2="315" y2="180" stroke="rgba(255,255,255,0.02)" stroke-dasharray="1,4"/>
+
+            <!-- ================= LEFT FOOT BLUEPRINT ================= -->
+            <g id="foot-left" class="origin-center transition-all duration-500">
+              <!-- Background Anatomical Sole Grid -->
+              <path d="M 85,30 C 55,30 35,45 35,75 C 35,120 30,170 38,230 C 42,270 42,310 50,335 C 55,350 70,355 85,355 C 100,355 115,350 120,335 C 128,310 128,270 120,230 C 108,170 135,120 135,75 C 135,45 115,30 85,30 Z" 
+                    fill="rgba(11, 77, 141, 0.04)" stroke="rgba(30,136,200,0.2)" stroke-width="1.5"/>
+
+              <!-- Heatmap contours (Dynamic show/hide) -->
+              <g id="left-heatmaps" class="transition-opacity duration-300 opacity-100">
+                <!-- Forefoot High Pressure Heat -->
+                <circle cx="65" cy="85" r="30" fill="url(#grad-pressure-intense)" class="heatmap-point" id="lh-p1"/>
+                <circle cx="100" cy="80" r="25" fill="url(#grad-pressure-medium)" class="heatmap-point" id="lh-p2"/>
+                <!-- Heel Load Heat -->
+                <circle cx="85" cy="300" r="35" fill="url(#grad-pressure-medium)" class="heatmap-point" id="lh-p3"/>
+              </g>
+
+              <!-- Telemetry sensor points -->
+              <g id="left-nodes" class="transition-opacity duration-300">
+                <!-- Circle nodes representing micro thermistors/piezo nodes -->
+                <circle cx="65" cy="85" r="5" fill="#39B56A" stroke="#fff" stroke-width="1.25" id="ln-1"/>
+                <circle cx="100" cy="80" r="5" fill="#39B56A" stroke="#fff" stroke-width="1.25" id="ln-2"/>
+                <circle cx="112" cy="130" r="5" fill="#39B56A" stroke="#fff" stroke-width="1.25" id="ln-3"/>
+                <circle cx="60" cy="180" r="5" fill="#39B56A" stroke="#fff" stroke-width="1.25" id="ln-4"/>
+                <circle cx="85" cy="300" r="6" fill="#39B56A" stroke="#fff" stroke-width="1.5" id="ln-5"/>
+              </g>
+
+              <!-- Gait COP Center of Pressure Line vector (Active in Gait Mode) -->
+              <path id="left-gait-vector" d="M 85,315 L 75,220 Q 80,180 95,110 L 80,75" fill="none" stroke="url(#gait-flow)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="0" class="opacity-0 transition-opacity duration-300"/>
+              <!-- Glowing COP point -->
+              <circle id="left-cop" cx="80" cy="75" r="5" fill="#FF5E5E" class="opacity-0 transition-opacity duration-300"/>
+            </g>
+
+            <!-- ================= RIGHT FOOT BLUEPRINT ================= -->
+            <g id="foot-right" class="origin-center transition-all duration-500">
+              <path d="M 235,30 C 205,30 185,45 185,75 C 185,120 192,170 200,230 C 208,270 208,310 215,335 C 220,350 235,355 250,355 C 265,355 280,350 285,335 C 293,310 293,270 285,230 C 278,170 305,120 305,75 C 305,45 285,30 235,30 Z" 
+                    fill="rgba(11, 77, 141, 0.04)" stroke="rgba(30,136,200,0.2)" stroke-width="1.5"/>
+
+              <!-- Heatmap contours -->
+              <g id="right-heatmaps" class="transition-opacity duration-300 opacity-100">
+                <!-- Forefoot Pressure Heat -->
+                <circle cx="255" cy="85" r="32" fill="url(#grad-pressure-intense)" class="heatmap-point" id="rh-p1"/>
+                <circle cx="220" cy="80" r="20" fill="url(#grad-pressure-medium)" class="heatmap-point" id="rh-p2"/>
+                <!-- Heel Load Heat -->
+                <circle cx="235" cy="300" r="32" fill="url(#grad-pressure-medium)" class="heatmap-point" id="rh-p3"/>
+              </g>
+
+              <!-- Telemetry sensor points -->
+              <g id="right-nodes" class="transition-opacity duration-300">
+                <circle cx="255" cy="85" r="5" fill="#39B56A" stroke="#fff" stroke-width="1.25" id="rn-1"/>
+                <circle cx="220" cy="80" r="5" fill="#39B56A" stroke="#fff" stroke-width="1.25" id="rn-2"/>
+                <circle cx="208" cy="130" r="5" fill="#39B56A" stroke="#fff" stroke-width="1.25" id="rn-3"/>
+                <circle cx="260" cy="180" r="5" fill="#39B56A" stroke="#fff" stroke-width="1.25" id="rn-4"/>
+                <circle cx="235" cy="300" r="6" fill="#39B56A" stroke="#fff" stroke-width="1.5" id="rn-5"/>
+              </g>
+
+              <!-- Gait COP Center of Pressure vector -->
+              <path id="right-gait-vector" d="M 235,315 L 245,220 Q 240,180 225,110 L 240,75" fill="none" stroke="url(#gait-flow)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="0" class="opacity-0 transition-opacity duration-300"/>
+              <circle id="right-cop" cx="240" cy="75" r="5" fill="#FF5E5E" class="opacity-0 transition-opacity duration-300"/>
+            </g>
+
+          </svg>
+        </div>
+
+        <!-- Walk Simulator trigger button inside visualization -->
+        <button id="btn-simulate" onclick="toggleSimulation()" class="w-full bg-[#111c3a] hover:bg-[#18264d] border border-white/10 py-3.5 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 hover:border-medical-blue/30 active:scale-95 group font-arabic">
+          <span class="relative flex h-2 w-2">
+            <span id="sim-pulse" class="absolute inline-flex h-full w-full rounded-full bg-medical-blue opacity-0"></span>
+            <span id="sim-dot" class="relative inline-flex rounded-full h-2 w-2 bg-white/40"></span>
+          </span>
+          <span id="sim-text" class="text-sm font-bold text-white select-none">تفعيل محاكاة المشي الفوري</span>
+        </button>
+
+      </div>
+
+      <!-- Real-time telemetry panels (Right column - Custom Streaming Borders) -->
+      <div class="lg:col-span-4 flex flex-col justify-between gap-6 relative">
+        
+        <!-- Live telemetry chart card (Cyan Border Trail) -->
+        <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between flex-1 select-none relative overflow-hidden">
+          
+          <!-- 21st.dev Neon Trailing Border Overlay for Stats -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="24" 
+                  stroke="url(#grad-ble-trail)" stroke-width="1.5" 
+                  pathLength="100" class="neon-border-trail-slow" />
+          </svg>
+
+          <div class="flex flex-row-reverse justify-between items-center w-full relative z-10">
+            <span class="text-xs font-bold text-muted-text font-arabic">إحصائيات الاتزان الفوري</span>
+            <i data-lucide="trending-up" class="w-4 h-4 text-medical-blue"></i>
+          </div>
+
+          <!-- Dynamic Numbers -->
+          <div class="grid grid-cols-2 gap-4 my-6 text-right relative z-10">
+            <div>
+              <span class="text-[10px] text-muted-text block font-arabic">حمل القدم اليسرى</span>
+              <span id="stat-left-load" class="text-2xl font-extrabold font-sans text-white">48%</span>
+            </div>
+            <div>
+              <span class="text-[10px] text-muted-text block font-arabic">حمل القدم اليمنى</span>
+              <span id="stat-right-load" class="text-2xl font-extrabold font-sans text-white">52%</span>
+            </div>
+          </div>
+
+          <!-- Simulated bar chart -->
+          <div class="h-28 flex items-end justify-between gap-1 w-full bg-black/25 rounded-2xl p-4 relative z-10">
+            <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end"><div id="chart-b1" class="w-full bg-medical-blue/70 rounded-t-sm transition-all duration-500" style="height: 35%;"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end"><div id="chart-b2" class="w-full bg-medical-blue/70 rounded-t-sm transition-all duration-500" style="height: 48%;"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end"><div id="chart-b3" class="w-full bg-medical-blue/70 rounded-t-sm transition-all duration-500" style="height: 60%;"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end"><div id="chart-b4" class="w-full bg-medical-blue/70 rounded-t-sm transition-all duration-500" style="height: 42%;"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end"><div id="chart-b5" class="w-full bg-medical-blue/70 rounded-t-sm transition-all duration-500" style="height: 70%;"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end"><div id="chart-b6" class="w-full bg-medical-blue/70 rounded-t-sm transition-all duration-500" style="height: 85%;"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end"><div id="chart-b7" class="w-full bg-medical-blue/70 rounded-t-sm transition-all duration-500" style="height: 92%;"></div></div>
+            <div class="flex-1 flex flex-col items-center gap-1 h-full justify-end"><div id="chart-b8" class="w-full bg-medical-blue/70 rounded-t-sm transition-all duration-500" style="height: 75%;"></div></div>
+          </div>
+
+          <div class="flex flex-row-reverse justify-between items-center text-xs text-muted-text mt-3 relative z-10">
+            <span class="font-arabic">معدل الخطوات</span>
+            <span id="stat-cadence" class="font-sans font-bold text-white">104 SPM</span>
+          </div>
+        </div>
+
+        <!-- Telemetry Log Terminal panel (Green Fast Trailing Packet Laser) -->
+        <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between h-[210px] select-none relative overflow-hidden">
+          
+          <!-- 21st.dev Trailing Laser Border Overlay for telemetry log -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none">
+            <rect x="0.75" y="0.75" width="calc(100% - 1.5px)" height="calc(100% - 1.5px)" rx="24" 
+                  stroke="url(#grad-telemetry-trail)" stroke-width="1.5" 
+                  pathLength="100" class="neon-border-trail-fast" />
+          </svg>
+
+          <div class="flex flex-row-reverse justify-between items-center w-full pb-3 border-b border-white/5 relative z-10">
+            <span class="text-xs font-bold text-muted-text font-arabic">سجل التدفقات الفوري</span>
+            <i data-lucide="terminal" class="w-4 h-4 text-smart-green"></i>
+          </div>
+
+          <!-- Log stream -->
+          <div id="telemetryLogStream" class="flex-1 overflow-y-auto my-3 flex flex-col gap-2.5 text-right font-mono text-[10px] leading-relaxed pr-1 relative z-10" dir="ltr">
+            <div class="text-[#39B56A] font-arabic">[14:15:01] تم تفعيل اتصال الحساسات الطبية.</div>
+            <div class="text-[#9DAABA] font-arabic">[14:15:03] مزامنة البيانات عبر BLE بنجاح.</div>
+            <div class="text-[#1E88C8] font-arabic">[14:15:05] اتزان القدمين مستقر ونشط (98%).</div>
+          </div>
+
+          <div class="text-[9px] text-muted-text/80 text-right font-arabic relative z-10">
+            تشفير عسكري من طرف لطرف AES-256
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DIGITAL TWIN SECTION -->
+  <section id="digital-twin" class="relative min-h-screen w-full bg-[#050814] py-28 px-6 md:px-12 flex flex-col justify-center items-center overflow-hidden">
+    
+    <div class="w-full max-w-7xl mx-auto z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      
+      <!-- Informational Details (Right Column) -->
+      <div class="lg:col-span-5 flex flex-col text-right select-none">
+        <span class="text-xs font-semibold tracking-widest text-accent-purple uppercase mb-3 font-sans flex items-center gap-2 justify-end">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 animate-spin"></i>
+          AI CLINICAL PREDICTION
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-arabic leading-tight">
+          منظومة التوأم الرقمي للمريض
+        </h2>
+        <h3 class="text-xl sm:text-2xl font-light text-accent-purple mt-2 font-sans">
+          Real-time Digital Twin Framework
+        </h3>
+        <p class="text-muted-text text-base mt-4 leading-relaxed font-light font-arabic">
+          تقوم منصة دِثار السحابية بإنشاء نسخة رقمية متطابقة للقدمين بالاعتماد على مخرجات الحساسات المستمرة. تحلل خوارزميات التعلم العميق أنماط مشي المريض وتصدر تقارير سريرية تمنع تقرحات السكري بنسبة تفوق 95%.
+        </p>
+
+        <!-- Dynamic Diagnostics Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
+          
+          <div class="p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end text-right transition-colors duration-300 hover:border-medical-blue/30">
+            <span class="text-xs text-muted-text mb-1 font-arabic">مؤشر التماثل الحركي</span>
+            <span class="text-xl font-bold font-sans text-white">98.4%</span>
+            <span class="text-[10px] text-muted-text/80 mt-1 font-arabic leading-snug">اتساق متكامل في طول الخطوات بين الجانبين.</span>
+          </div>
+
+          <div class="p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end text-right transition-colors duration-300 hover:border-smart-green/30">
+            <span class="text-xs text-muted-text mb-1 font-arabic">مؤشر الالتهاب الموضعي</span>
+            <span class="text-xl font-bold font-sans text-smart-green">مستقر</span>
+            <span class="text-[10px] text-muted-text/80 mt-1 font-arabic leading-snug">لا توجد بؤر حرارية غير طبيعية حالياً.</span>
+          </div>
+
+          <div class="p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end text-right transition-colors duration-300 hover:border-accent-purple/30">
+            <span class="text-xs text-muted-text mb-1 font-arabic">نشاط حصد الطاقة الذاتي</span>
+            <span class="text-xl font-bold font-sans text-white">4.2 mW</span>
+            <span class="text-[10px] text-muted-text/80 mt-1 font-arabic leading-snug">توليد طاقة مستمر من ضربات الكعب.</span>
+          </div>
+
+          <div class="p-5 rounded-2xl glass-panel border border-white/5 flex flex-col items-end text-right transition-colors duration-300 hover:border-alert-red/30">
+            <span class="text-xs text-muted-text mb-1 font-arabic">مستوى خطر تشكل قرحة</span>
+            <span class="text-xl font-bold font-sans text-smart-green">منخفض جداً (0.08%)</span>
+            <span class="text-[10px] text-muted-text/80 mt-1 font-arabic leading-snug">بناءً على التقييم المستمر للأنماط الحركية.</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Human Anatomy Foot Outline Render (Left Column) -->
+      <div class="lg:col-span-7 flex items-center justify-center relative min-h-[500px]">
+        <div class="absolute w-[450px] h-[450px] rounded-full bg-gradient-to-tr from-accent-purple/10 to-medical-blue/5 blur-[120px] pointer-events-none"></div>
+
+        <!-- Foot scanner graphics layout -->
+        <div class="relative w-full max-w-[450px] aspect-square flex items-center justify-center p-8 bg-white/2 rounded-full border border-white/5 shadow-2xl">
+          <div class="absolute inset-0 rounded-full border border-accent-purple/10 animate-pulse-slow"></div>
+
+          <!-- Dynamic HUD ring -->
+          <svg viewBox="0 0 100 100" class="absolute inset-4 text-accent-purple/20 animate-rotate-slow pointer-events-none">
+            <circle cx="50" cy="50" r="48" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1,6" fill="none"/>
+            <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="0.5" fill="none"/>
+          </svg>
+
+          <!-- Twin visual sole SVG graphic -->
+          <svg viewBox="0 0 200 200" class="w-full max-w-[280px] text-accent-purple/40">
+            <defs>
+              <linearGradient id="twin-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#8E54E9" stop-opacity="0.15" />
+                <stop offset="100%" stop-color="#1E88C8" stop-opacity="0.05" />
+              </linearGradient>
+            </defs>
+
+            <!-- LEFT FOOT -->
+            <path
+              d="M 65,140 C 65,160 55,170 45,170 C 35,170 30,160 30,140 C 30,110 40,85 35,60 C 32,45 35,30 45,30 C 55,30 58,45 60,60 C 62,85 65,110 65,140 Z"
+              stroke="#8E54E9"
+              stroke-width="1.25"
+              fill="url(#twin-grad)"
+            />
+            <circle cx="45" cy="55" r="3" fill="#8E54E9"/>
+            <circle cx="45" cy="55" r="7" fill="none" stroke="#8E54E9" stroke-width="0.5" class="animate-pulse"/>
+            <circle cx="47" cy="145" r="3" fill="#8E54E9"/>
+
+            <!-- RIGHT FOOT -->
+            <path
+              d="M 135,140 C 135,160 145,170 155,170 C 165,170 170,160 170,140 C 170,110 160,85 165,60 C 168,45 165,30 155,30 C 145,30 142,45 140,60 C 138,85 135,110 135,140 Z"
+              stroke="#8E54E9"
+              stroke-width="1.25"
+              fill="url(#twin-grad)"
+            />
+            <circle cx="155" cy="55" r="3" fill="#8E54E9"/>
+            <circle cx="155" cy="55" r="7" fill="none" stroke="#8E54E9" stroke-width="0.5" class="animate-pulse"/>
+            <circle cx="153" cy="145" r="3" fill="#8E54E9"/>
+          </svg>
+
+          <!-- HUD overlays -->
+          <div class="absolute bottom-6 right-6 glass-panel border border-white/10 p-4 rounded-2xl flex items-center gap-3 shadow-lg max-w-[200px] text-right">
+            <i data-lucide="shield-check" class="w-5 h-5 text-smart-green flex-shrink-0"></i>
+            <div class="flex flex-col">
+              <span class="text-[9px] text-muted-text font-bold font-sans">SECURITY SHA-512</span>
+              <span class="text-[11px] font-bold font-arabic text-white leading-tight mt-0.5">اتصال مشفر بالكامل وآمن سريرياً</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MODERN AGENCY FOOTER -->
+  <footer class="bg-dark-obsidian border-t border-white/5 py-12 px-6 select-none">
+    <div class="w-full max-w-7xl mx-auto flex flex-col md:flex-row-reverse justify-between items-center gap-8">
+      
+      <!-- Brand & Copyright -->
+      <div class="flex flex-col items-center md:items-end text-center md:text-right">
+        <div class="flex items-center gap-3">
+          <span class="font-arabic font-bold text-xl text-white">دِثار</span>
+          <span class="font-sans text-[11px] bg-white/5 border border-white/10 px-2 py-0.5 rounded text-muted-text">v1.2</span>
+        </div>
+        <p class="text-xs text-muted-text mt-2 font-arabic">
+          جميع الحقوق محفوظة © 2026 منصة دِثار للتقنيات الطبية الحيوية.
+        </p>
+      </div>
+
+      <!-- Footer Quick Info Links -->
+      <div class="flex items-center gap-6 font-arabic text-xs text-muted-text font-medium">
+        <a href="#" class="hover:text-white transition-colors duration-200">الشروط والأحكام</a>
+        <a href="#" class="hover:text-white transition-colors duration-200">سياسة الخصوصية الطبية</a>
+        <a href="#" class="hover:text-white transition-colors duration-200">اتصل بالفريق</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT CONTROLLER LOGIC ================= -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // ----------------------------------------------------
+    // 3D Exploded View Manipulation
+    // ----------------------------------------------------
+    const explodedStack = document.getElementById('explodedStack');
+    const explodeSlider = document.getElementById('explodeSlider');
+    const layersInfoList = document.getElementById('layersInfoList');
+    const infoCards = layersInfoList.querySelectorAll('.layer-info-card');
+    const layers = explodedStack.querySelectorAll('.layer-container');
+    const explodedMagicBorder = document.getElementById('explodedMagicBorder');
+
+    // Update spacing gap between layers in 3D stack
+    function updateExplodeGap(val) {
+      explodedStack.style.setProperty('--gap', `${val}px`);
+      explodeSlider.value = val;
+    }
+
+    // Slider listener
+    explodeSlider.addEventListener('input', (e) => {
+      updateExplodeGap(e.target.value);
+    });
+
+    // Auto explode default state on load
+    setTimeout(() => {
+      updateExplodeGap(35);
+    }, 500);
+
+    // Mouse rotation handler for 3D stack
+    let isDragging = false;
+    let startX, startY;
+    let rotateX = 58;
+    let rotateZ = -28;
+
+    const canvasContainer = explodedStack.parentElement;
+
+    // Hover effect on the 3D smart pad container -> speeds up neon trailing border
+    canvasContainer.parentElement.addEventListener('mouseenter', () => {
+      explodedMagicBorder.style.animationDuration = '3.5s';
+    });
+    canvasContainer.parentElement.addEventListener('mouseleave', () => {
+      explodedMagicBorder.style.animationDuration = '8s';
+    });
+
+    canvasContainer.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      explodedStack.style.transition = 'none'; // remove smooth transitions for instant drag feedback
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      rotateZ += dx * 0.4; // horizontal rotation
+      rotateX = Math.max(25, Math.min(85, rotateX - dy * 0.4)); // vertical tilt limit
+
+      explodedStack.style.transform = `rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)`;
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        explodedStack.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+      }
+    });
+
+    // Mobile touch support for 3D rotation
+    canvasContainer.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      explodedStack.style.transition = 'none';
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const dx = e.touches[0].clientX - startX;
+      const dy = e.touches[0].clientY - startY;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+
+      rotateZ += dx * 0.4;
+      rotateX = Math.max(25, Math.min(85, rotateX - dy * 0.4));
+
+      explodedStack.style.transform = `rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)`;
+    });
+
+    document.addEventListener('touchend', () => {
+      if (isDragging) {
+        isDragging = false;
+        explodedStack.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+      }
+    });
+
+    // Interactive Hover: hover a card in the right sidebar -> highlight matching layer card
+    infoCards.forEach(card => {
+      const idx = card.getAttribute('data-layer-idx');
+      
+      card.addEventListener('mouseenter', () => {
+        // Expand the stack slightly to highlight detail
+        updateExplodeGap(46);
+        
+        // Darken other layers, highlight hovered
+        layers.forEach(l => {
+          const lIdx = l.getAttribute('data-layer-idx');
+          if (lIdx === idx) {
+            l.style.opacity = '1';
+            l.style.filter = 'drop-shadow(0 0 15px rgba(30,136,200,0.8)) saturate(1.5)';
+            l.style.transform = `translateZ(calc(${lIdx} * var(--gap) + 15px)) scale(1.05)`;
+          } else {
+            l.style.opacity = '0.2';
+            l.style.filter = 'blur(1px) opacity(0.5)';
+          }
+        });
+
+        // Add class active on card
+        card.classList.add('border-medical-blue', 'bg-medical-blue/5');
+      });
+
+      card.addEventListener('mouseleave', () => {
+        // Restore standard explode gap
+        updateExplodeGap(35);
+
+        // Reset layers
+        layers.forEach(l => {
+          const lIdx = l.getAttribute('data-layer-idx');
+          l.style.opacity = '1';
+          l.style.filter = 'none';
+          l.style.transform = `translateZ(calc(${lIdx} * var(--gap))) scale(1)`;
+        });
+
+        card.classList.remove('border-medical-blue', 'bg-medical-blue/5');
+      });
+    });
+
+    // ----------------------------------------------------
+    // Clinical Telemetry Interactive Dashboard Logic
+    // ----------------------------------------------------
+    let currentMode = 'pressure';
+
+    // Set initial active state for pressure tab
+    switchTelemetry('pressure');
+
+    // References to SVG foot nodes
+    const leftHeatmap = document.getElementById('left-heatmaps');
+    const rightHeatmap = document.getElementById('right-heatmaps');
+    
+    const leftNodes = document.getElementById('left-nodes').querySelectorAll('circle');
+    const rightNodes = document.getElementById('right-nodes').querySelectorAll('circle');
+
+    const leftGaitVector = document.getElementById('left-gait-vector');
+    const rightGaitVector = document.getElementById('right-gait-vector');
+    const leftCop = document.getElementById('left-cop');
+    const rightCop = document.getElementById('right-cop');
+
+    const modeLabel = document.getElementById('visualModeLabel');
+
+    // Function to transition sole visualization
+    function switchTelemetry(mode) {
+      currentMode = mode;
+      
+      // Update tabs highlights and borders (21st.dev style)
+      document.querySelectorAll('.telemetry-tab').forEach(tab => {
+        // Reset container BG
+        tab.classList.remove('bg-white/5', 'shadow-lg');
+        
+        // Reset SVG borders
+        const rect = tab.querySelector('.tab-border-trail');
+        if (rect) {
+          rect.setAttribute('stroke', 'rgba(255, 255, 255, 0.05)');
+          rect.classList.remove('tab-border-trail-active');
+        }
+      });
+
+      const activeTab = document.getElementById(`tab-${mode}`);
+      activeTab.classList.add('bg-white/5', 'shadow-lg');
+      
+      const activeRect = activeTab.querySelector('.tab-border-trail');
+      if (activeRect) {
+        activeRect.classList.add('tab-border-trail-active');
+        
+        // Match border stroke gradient to current active mode
+        let strokeGrad = 'url(#grad-pressure-border)';
+        if (mode === 'thermal') strokeGrad = 'url(#grad-thermal-border)';
+        if (mode === 'gait') strokeGrad = 'url(#grad-gait-border)';
+        if (mode === 'humidity') strokeGrad = 'url(#grad-humidity-border)';
+        if (mode === 'ai') strokeGrad = 'url(#grad-ai-border)';
+        if (mode === 'energy') strokeGrad = 'url(#grad-energy-border)';
+
+        activeRect.setAttribute('stroke', strokeGrad);
+      }
+      
+      // Update visual indicator mode text
+      if (modeLabel) modeLabel.innerText = `${mode} active`;
+      
+      // Clear visual modes
+      if (leftHeatmap) {
+        leftHeatmap.classList.add('opacity-0');
+        rightHeatmap.classList.add('opacity-0');
+        
+        leftGaitVector.classList.add('opacity-0');
+        rightGaitVector.classList.add('opacity-0');
+        leftCop.classList.add('opacity-0');
+        rightCop.classList.add('opacity-0');
+
+        leftNodes.forEach(node => node.setAttribute('fill', '#39B56A'));
+        rightNodes.forEach(node => node.setAttribute('fill', '#39B56A'));
+      }
+
+      // Apply mode configurations
+      if (mode === 'pressure') {
+        leftHeatmap.classList.remove('opacity-0');
+        rightHeatmap.classList.remove('opacity-0');
+        modeLabel.innerText = "PRESSURE HEATMAP ACTIVE";
+        
+        document.getElementById('lh-p1').setAttribute('fill', 'url(#grad-pressure-intense)');
+        document.getElementById('rh-p1').setAttribute('fill', 'url(#grad-pressure-intense)');
+      } 
+      else if (mode === 'thermal') {
+        leftHeatmap.classList.remove('opacity-0');
+        rightHeatmap.classList.remove('opacity-0');
+        modeLabel.innerText = "THERMAL REGULATION ACTIVE";
+
+        document.getElementById('lh-p1').setAttribute('fill', 'url(#grad-thermal-high)');
+        document.getElementById('rh-p1').setAttribute('fill', 'url(#grad-thermal-high)');
+        document.getElementById('lh-p2').setAttribute('fill', 'url(#grad-pressure-medium)');
+        document.getElementById('rh-p2').setAttribute('fill', 'url(#grad-pressure-medium)');
+
+        leftNodes.forEach(node => node.setAttribute('fill', '#FF5E5E'));
+        rightNodes.forEach(node => node.setAttribute('fill', '#FF5E5E'));
+      } 
+      else if (mode === 'gait') {
+        modeLabel.innerText = "GAIT DYNAMICS MONITOR ACTIVE";
+        leftGaitVector.classList.remove('opacity-0');
+        rightGaitVector.classList.remove('opacity-0');
+        leftCop.classList.remove('opacity-0');
+        rightCop.classList.remove('opacity-0');
+
+        leftNodes.forEach(node => node.setAttribute('fill', '#1E88C8'));
+        rightNodes.forEach(node => node.setAttribute('fill', '#1E88C8'));
+      } 
+      else if (mode === 'humidity') {
+        modeLabel.innerText = "SOLED MICROCLIMATE ACTIVE";
+        leftNodes.forEach(node => node.setAttribute('fill', '#0d9488'));
+        rightNodes.forEach(node => node.setAttribute('fill', '#0d9488'));
+      } 
+      else if (mode === 'ai') {
+        modeLabel.innerText = "EDGE AI DIAGNOSTIC WAVE ACTIVE";
+        leftNodes.forEach(node => node.setAttribute('fill', '#8E54E9'));
+        rightNodes.forEach(node => node.setAttribute('fill', '#8E54E9'));
+      } 
+      else if (mode === 'energy') {
+        modeLabel.innerText = "ENERGY RECOVERY SYSTEM ACTIVE";
+        leftNodes.forEach(node => node.setAttribute('fill', '#d97706'));
+        rightNodes.forEach(node => node.setAttribute('fill', '#d97706'));
+      }
+    }
+
+    // ----------------------------------------------------
+    // Walk Telemetry Simulation Engine
+    // ----------------------------------------------------
+    let isSimulating = false;
+    let simIntervalId = null;
+    let simStepCount = 0;
+    let simTimer = 0;
+
+    const logStream = document.getElementById('telemetryLogStream');
+
+    function addLogMessage(message, type = 'info') {
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0];
+      
+      let colorClass = 'text-[#9DAABA]';
+      if (type === 'success') colorClass = 'text-[#39B56A]';
+      if (type === 'alert') colorClass = 'text-[#FF5E5E]';
+      if (type === 'primary') colorClass = 'text-[#1E88C8]';
+
+      const logDiv = document.createElement('div');
+      logDiv.className = `${colorClass} font-arabic`;
+      logDiv.innerText = `[${timeStr}] ${message}`;
+      
+      logStream.appendChild(logDiv);
+      logStream.scrollTop = logStream.scrollHeight; // Auto scroll to bottom
+    }
+
+    function toggleSimulation() {
+      const btn = document.getElementById('btn-simulate');
+      const pulse = document.getElementById('sim-pulse');
+      const dot = document.getElementById('sim-dot');
+      const text = document.getElementById('sim-text');
+
+      if (!isSimulating) {
+        // Start simulation
+        isSimulating = true;
+        btn.classList.add('border-medical-blue/60', 'bg-[#182a57]');
+        pulse.classList.add('animate-ping', 'opacity-75');
+        dot.className = "relative inline-flex rounded-full h-2 w-2 bg-medical-blue";
+        text.innerText = "إيقاف محاكاة المشي الفوري";
+
+        addLogMessage("بدء جلسة محاكاة الحسابات الحركية والتحليل الحيوي...", "success");
+        
+        // Simulation loop
+        simIntervalId = setInterval(runWalkSimulationStep, 600);
+      } else {
+        // Stop simulation
+        isSimulating = false;
+        btn.classList.remove('border-medical-blue/60', 'bg-[#182a57]');
+        pulse.classList.remove('animate-ping', 'opacity-75');
+        dot.className = "relative inline-flex rounded-full h-2 w-2 bg-white/40";
+        text.innerText = "تفعيل محاكاة المشي الفوري";
+
+        addLogMessage("تم إيقاف محاكاة المشي وجلسة القياس بنجاح.", "primary");
+        clearInterval(simIntervalId);
+      }
+    }
+
+    function runWalkSimulationStep() {
+      simStepCount++;
+      simTimer++;
+
+      const activeSide = simStepCount % 2; 
+      
+      const leftFootNode = document.getElementById('foot-left');
+      const rightFootNode = document.getElementById('foot-right');
+
+      const leftLoadVal = document.getElementById('stat-left-load');
+      const rightLoadVal = document.getElementById('stat-right-load');
+
+      const cadenceVal = Math.round(100 + Math.random() * 8);
+      document.getElementById('stat-cadence').innerText = `${cadenceVal} SPM`;
+
+      // Update mock charts heights
+      for(let i = 1; i <= 8; i++) {
+        const height = Math.round(30 + Math.random() * 65);
+        document.getElementById(`chart-b${i}`).style.height = `${height}%`;
+      }
+
+      if (activeSide === 0) {
+        // Left foot strike
+        leftFootNode.style.transform = "scale(1.03)";
+        rightFootNode.style.transform = "scale(0.97)";
+        
+        leftLoadVal.innerText = `${Math.round(80 + Math.random() * 10)}%`;
+        rightLoadVal.innerText = `${Math.round(10 + Math.random() * 10)}%`;
+
+        document.getElementById('lh-p1').setAttribute('r', '38');
+        document.getElementById('lh-p3').setAttribute('r', '42');
+        document.getElementById('rh-p1').setAttribute('r', '15');
+        document.getElementById('rh-p3').setAttribute('r', '15');
+
+        if (currentMode === 'gait') {
+          leftCop.setAttribute('cx', `${75 + Math.random() * 10}`);
+          leftCop.setAttribute('cy', `${150 + Math.random() * 10}`);
+          leftGaitVector.style.strokeDashoffset = "30";
+        }
+
+        addLogMessage(`[القدم اليسرى] ضربة كعب حركية: قوة ${Math.round(420 + Math.random() * 50)} نيوتن.`, "info");
+      } else {
+        // Right foot strike
+        leftFootNode.style.transform = "scale(0.97)";
+        rightFootNode.style.transform = "scale(1.03)";
+
+        leftLoadVal.innerText = `${Math.round(10 + Math.random() * 10)}%`;
+        rightLoadVal.innerText = `${Math.round(80 + Math.random() * 10)}%`;
+
+        document.getElementById('lh-p1').setAttribute('r', '15');
+        document.getElementById('lh-p3').setAttribute('r', '15');
+        document.getElementById('rh-p1').setAttribute('r', '40');
+        document.getElementById('rh-p3').setAttribute('r', '38');
+
+        if (currentMode === 'gait') {
+          rightCop.setAttribute('cx', `${235 + Math.random() * 10}`);
+          rightCop.setAttribute('cy', `${150 + Math.random() * 10}`);
+          rightGaitVector.style.strokeDashoffset = "30";
+        }
+
+        addLogMessage(`[القدم اليمنى] ضربة كعب حركية: قوة ${Math.round(430 + Math.random() * 45)} نيوتن.`, "info");
+      }
+
+      if (simStepCount % 12 === 0) {
+        addLogMessage("تنبيه AI: تم رصد انحراف طفيف في اتزان الجانب الأيمن (التحميل الزائد على الكعب).", "alert");
+      }
+    }
+  </script>
+</body>
+</html>
