@@ -9,6 +9,14 @@ import { UserRole } from "@/lib/types/portal";
 import { User, Stethoscope, Building2, LogIn } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass";
 
+// Mirrors the default demo accounts in src/lib/auth/users.ts (for display only —
+// an operator who overrides the DEMO_*_PASSWORD env vars should update this too).
+const DEMO_CREDENTIALS: Record<UserRole, { identifier: string; password: string }> = {
+  patient: { identifier: "sara.alotaibi@dithar.sa", password: "Dithar@Patient2026!" },
+  doctor: { identifier: "dr.khalid@dithar.sa", password: "Dithar@Doctor2026!" },
+  hospital_admin: { identifier: "admin@kfshrc.edu.sa", password: "Dithar@Admin2026!" },
+};
+
 export default function LoginPage() {
   const { login } = useAuth();
   const { t, language, toggleLanguage } = useLanguage();
@@ -29,11 +37,7 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          identifier: email || (role === "patient" ? "sara@dithar.sa" : role === "doctor" ? "dr.khalid@dithar.sa" : "admin@kfshrc.edu.sa"),
-          password: password || "123456",
-          role,
-        }),
+        body: JSON.stringify({ identifier: email, password }),
       });
 
       const data = await res.json();
@@ -107,6 +111,9 @@ export default function LoginPage() {
                     <span className="text-[10px] font-bold text-center leading-tight">{r.label}</span>
                   </button>
                 ))}
+              </div>
+              <div className="text-[10px] text-slate-400 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2 font-mono" dir="ltr">
+                demo: {DEMO_CREDENTIALS[role].identifier} / {DEMO_CREDENTIALS[role].password}
               </div>
             </div>
 

@@ -1,5 +1,16 @@
 نشر المشروع إلى Vercel (خطوات سريعة)
 
+0) متغيرات البيئة المطلوبة (انسخ .env.example إلى .env.local محلياً، وأضفها في Vercel → Settings → Environment Variables عند النشر)
+   - SESSION_SECRET (إلزامي): مفتاح توقيع الجلسات، ولّده بالأمر: openssl rand -base64 32
+   - DEMO_DOCTOR_PASSWORD / DEMO_HOSPITAL_ADMIN_PASSWORD / DEMO_PATIENT_PASSWORD (اختياري): كلمات مرور الحسابات التجريبية الثلاثة، غيّرها قبل أي نشر حقيقي
+   - WEB3FORMS_ACCESS_KEY (اختياري): مفتاح استقبال نموذج التواصل (بدون بادئة NEXT_PUBLIC_)
+   - NEXT_PUBLIC_FIREBASE_* (اختياري): إعدادات Firebase للقياس الحي عبر Web Serial/Firebase
+
+   الحسابات التجريبية الافتراضية (اطّلع على src/lib/auth/users.ts):
+   - طبيب: dr.khalid@dithar.sa / Dithar@Doctor2026!
+   - إدارة منشأة: admin@kfshrc.edu.sa / Dithar@Admin2026!
+   - مريض: sara.alotaibi@dithar.sa / Dithar@Patient2026!
+
 1) تأكد أن المشروع جاهز محلياً
    npm install
    npm run build

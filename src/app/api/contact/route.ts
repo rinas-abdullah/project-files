@@ -12,8 +12,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Forward to Web3Forms if key is provided, or record internally
-    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    // Forward to Web3Forms if key is provided, or record internally.
+    // Server-only var (no NEXT_PUBLIC_ prefix) — it must never reach the client bundle.
+    const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
     if (accessKey) {
       try {
         await fetch("https://api.web3forms.com/submit", {

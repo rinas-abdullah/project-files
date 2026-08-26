@@ -1,130 +1,63 @@
 import { NextResponse } from "next/server";
-import { Patient } from "@/lib/types/portal";
-
-// Shared Mock Clinical Data with update support
-const PATIENTS_STORE: Record<string, Patient> = {
-  "pat-1": {
-    id: "pat-1",
-    mrn: "#DH-8812",
-    name: "سارة بنت أحمد العتيبي",
-    age: 62,
-    status: "alert",
-    statusLabel: "تنبيه حرارة موضعية",
-    complianceScore: 96,
-    careType: "الرعاية المنزلية HHC",
-    diagnosis: "متابعة بعد تنويم قدم سكرية",
-    consultant: "د. خالد السليمان",
-    lastUpdated: "الآن",
-    metrics: {
-      healthScore: 78,
-      healthScoreLabel: "يحتاج انتباه",
-      maxTemp: 37.8,
-      steps: 4820,
-      avgPressure: 124,
-      humidity: 45
-    },
-    recommendation: "يُظهر التحليل التراكمي لـ 14 يوماً تحسناً ملحوظاً بنسبة 35% في توزيع الضغط الديناميكي، مع انخفاض الفروقات الحرارية بين القدمين. التوصية: الاستمرار بنفس الخطة مع مراقبة مشط القدم.",
-    alerts: [
-      { 
-        id: "a1", 
-        title: "ارتفاع حرارة موضعي في مشط القدم الأيسر", 
-        description: "ارتفاع في درجة حرارة مشط القدم الأيسر بمقدار 1.2 درجة مقارنة بالخط الأساسي.", 
-        time: "اليوم 10:30 ص", 
-        type: "warning", 
-        recommendation: "تقليل المشي لمدة ساعتين وتخفيف الحمل على القدم اليسرى." 
-      }
-    ],
-    medicalNotes: [
-      { 
-        id: "n1", 
-        author: "د. خالد السليمان", 
-        date: "2025-05-12", 
-        content: "المريضة تظهر استجابة ممتازة لتوزيع الحمل عبر اللباد الطبي الذكي. التأمت التقرحات السابقة بنسبة 85%." 
-      }
-    ]
-  },
-  "pat-2": {
-    id: "pat-2",
-    mrn: "#DH-7741",
-    name: "محمد بن عبد العزيز الغامدي",
-    age: 55,
-    status: "stable",
-    statusLabel: "مستقر",
-    complianceScore: 91,
-    careType: "متابعة دورية",
-    diagnosis: "قدم سكرية مستوى أول",
-    consultant: "د. خلود المطيري",
-    lastUpdated: "منذ 15 دقيقة",
-    metrics: {
-      healthScore: 92,
-      healthScoreLabel: "ممتاز",
-      maxTemp: 36.6,
-      steps: 8100,
-      avgPressure: 110,
-      humidity: 38
-    },
-    alerts: [],
-    medicalNotes: []
-  },
-  "pat-4": {
-    id: "pat-4",
-    mrn: "#DH-94821",
-    name: "أحمد بن عبد الله السلمان",
-    age: 68,
-    status: "needs_followup",
-    statusLabel: "يحتاج متابعة",
-    complianceScore: 82,
-    careType: "متابعة عن بعد",
-    diagnosis: "اعتلال عصبي سكري",
-    consultant: "د. خلود المطيري",
-    lastUpdated: "منذ 5 دقائق",
-    metrics: {
-      healthScore: 85,
-      healthScoreLabel: "مستقر",
-      maxTemp: 37.1,
-      steps: 4281,
-      avgPressure: 118,
-      humidity: 42
-    },
-    alerts: [
-      { 
-        id: "a2", 
-        title: "تنبيه كعب القدم اليمنى", 
-        description: "ارتفاع مؤقت في الضغط إلى 68 kPa. يُنصح بالاستراحة لمدة 15 دقيقة لتجنب الإجهاد الخلوي.", 
-        time: "منذ 10 دقائق", 
-        type: "warning", 
-        recommendation: "الاستراحة لمدة 15 دقيقة." 
-      }
-    ],
-    medicalNotes: []
-  }
-};
+import { cookies } from "next/headers";
+import { verifySessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/session";
+import { getPatientById } from "@/lib/data/patients";
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const patient = PATIENTS_STORE[id] || PATIENTS_STORE["pat-1"];
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  const user = token ? await verifySessionToken(token) : null;
 
-  return NextResponse.json({
-    success: true,
-    patient
-  });
+  if (!user) {
+    return NextResponse.json({ error: "غير مصرح لك بالوصول" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  // Patients may only view their own record; clinicians may view any patient.
+  if (user.role === "patient" && user.id !== id) {
+    return NextResponse.json({ error: "لا تملك صلاحية الوصول لهذا السجل" }, { status: 403 });
+  }
+
+  const patient = getPatientById(id);
+  if (!patient) {
+    return NextResponse.json({ error: "المريض غير موجود" }, { status: 404 });
+  }
+
+  return NextResponse.json({ success: true, patient });
 }
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  const user = token ? await verifySessionToken(token) : null;
+
+  if (!user) {
+    return NextResponse.json({ error: "غير مصرح لك بالوصول" }, { status: 401 });
+  }
+  // Only clinicians may write medical notes or recommendations.
+  if (user.role !== "doctor") {
+    return NextResponse.json({ error: "لا تملك صلاحية تعديل هذا السجل" }, { status: 403 });
+  }
+
   const { id } = await params;
-  const patient = PATIENTS_STORE[id] || PATIENTS_STORE["pat-1"];
+  const patient = getPatientById(id);
+  if (!patient) {
+    return NextResponse.json({ error: "المريض غير موجود" }, { status: 404 });
+  }
+
   const body = await request.json();
 
   if (body.type === "add_note" && body.content) {
     const newNote = {
       id: `n-${Date.now()}`,
-      author: body.author || "الطبيب المعالج",
+      author: user.name,
       date: new Date().toISOString().split("T")[0],
       content: body.content
     };
