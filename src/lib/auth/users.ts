@@ -19,7 +19,7 @@ function toSessionUser(row: typeof usersTable.$inferSelect): SessionUser {
   };
 }
 
-function normalizePhone(phone: string): string {
+export function normalizePhone(phone: string): string {
   // Keep only digits and a leading +, so "05xxxxxxxx" and "+9665xxxxxxxx" style
   // variants of the same number match consistently.
   return phone.trim().replace(/[^\d+]/g, "");
@@ -51,9 +51,18 @@ export interface RegisterDoctorInput {
   hospital?: string;
 }
 
-export async function registerDoctor(input: RegisterDoctorInput): Promise<
-  { success: true; user: SessionUser } | { success: false; error: string }
-> {
+export interface ValidatedRegistration {
+  name: string;
+  email: string | null;
+  phone: string | null;
+  passwordHash: string;
+  department: string | null;
+  hospital: string | null;
+}
+
+export async function validateRegistration(
+  input: RegisterDoctorInput
+): Promise<{ success: true; data: ValidatedRegistration } | { success: false; error: string }> {
   const name = input.name.trim();
   const email = input.email?.trim().toLowerCase() || null;
   const phone = input.phone ? normalizePhone(input.phone) : null;
@@ -77,21 +86,38 @@ export async function registerDoctor(input: RegisterDoctorInput): Promise<
   }
 
   const passwordHash = await bcrypt.hash(input.password, 10);
-  const id = `doc-${crypto.randomUUID()}`;
 
-  const [row] = await db
-    .insert(usersTable)
-    .values({
-      id,
+  return {
+    success: true,
+    data: {
       name,
-      role: "doctor",
       email,
       phone,
       passwordHash,
       department: input.department?.trim() || null,
       hospital: input.hospital?.trim() || null,
+    },
+  };
+}
+
+// Creates the account immediately, with no verification step — used only for
+// phone-only registrations, since there is no free way to send a real SMS
+// code yet. Email registrations go through startEmailVerification instead.
+export async function createDoctorDirectly(data: ValidatedRegistration): Promise<SessionUser> {
+  const id = `doc-${crypto.randomUUID()}`;
+  const [row] = await db
+    .insert(usersTable)
+    .values({
+      id,
+      name: data.name,
+      role: "doctor",
+      email: data.email,
+      phone: data.phone,
+      passwordHash: data.passwordHash,
+      department: data.department,
+      hospital: data.hospital,
     })
     .returning();
 
-  return { success: true, user: toSessionUser(row) };
+  return toSessionUser(row);
 }

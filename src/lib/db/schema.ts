@@ -18,6 +18,17 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const emailVerifications = pgTable("email_verifications", {
+  email: text("email").primaryKey(),
+  otpHash: text("otp_hash").notNull(),
+  attempts: integer("attempts").default(0).notNull(),
+  // JSON-encoded pending registration payload (name, phone, passwordHash,
+  // department, hospital) applied to the users table once the code is verified.
+  payload: text("payload").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const patients = pgTable("patients", {
   id: text("id").primaryKey(),
   mrn: text("mrn").notNull().unique(),
