@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/lib/AuthContext";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -165,6 +166,13 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+          <p className="mt-6 text-center text-xs text-slate-500">
+            طبيب جديد؟{" "}
+            <Link href="/portal/register" className="font-bold text-[#0B4D8D] hover:underline">
+              أنشئ حسابك ببريدك أو رقم جوالك
+            </Link>
+          </p>
         </GlassCard>
 
         <p className="mt-8 text-xs text-slate-400 text-center font-medium">

@@ -6,19 +6,22 @@ import { PortalHeader } from "@/components/portal/PortalHeader";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { LanguageProvider } from "@/lib/LanguageContext";
 
+const PUBLIC_PORTAL_PATHS = ["/portal/login", "/portal/register"];
+
 function PortalContent({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const isPublicPath = PUBLIC_PORTAL_PATHS.includes(pathname);
 
   useEffect(() => {
     if (!loading) {
-      if (!user && pathname !== "/portal/login") {
+      if (!user && !isPublicPath) {
         router.push("/portal/login");
       }
-      
+
       // Simple role based redirects if they try to access wrong portals
-      if (user && pathname !== "/portal/login") {
+      if (user && !isPublicPath) {
         if (user.role === "patient" && !pathname.startsWith("/portal/patient")) {
            router.push("/portal/patient");
         }
@@ -30,19 +33,19 @@ function PortalContent({ children }: { children: React.ReactNode }) {
         }
       }
     }
-  }, [user, loading, pathname, router]);
+  }, [user, loading, pathname, router, isPublicPath]);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">...</div>;
   }
 
-  // If not logged in and not on login page, don't render content yet (prevent flash)
-  if (!user && pathname !== "/portal/login") {
-    return null; 
+  // If not logged in and not on a public page, don't render content yet (prevent flash)
+  if (!user && !isPublicPath) {
+    return null;
   }
 
-  // Hide header on login page
-  const showHeader = pathname !== "/portal/login";
+  // Hide header on login/register pages
+  const showHeader = !isPublicPath;
 
   return (
     <div className="min-h-screen w-full bg-slate-50 text-slate-900 selection:bg-sky-500/30 selection:text-slate-900 relative">
