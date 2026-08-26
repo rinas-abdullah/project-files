@@ -6,7 +6,8 @@ export interface SessionUser {
   id: string;
   name: string;
   role: UserRole;
-  email: string;
+  email?: string;
+  phone?: string;
   mrn?: string;
   department?: string;
   hospital?: string;
