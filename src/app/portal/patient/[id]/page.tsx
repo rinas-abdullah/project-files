@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { MockAPI } from "@/lib/api/mock-api";
 import { Patient } from "@/lib/types/portal";
 import { PageLoader, EmptyState } from "@/components/ui/loading-states";
 import { GlassCard, GlassBadge } from "@/components/ui/glass";

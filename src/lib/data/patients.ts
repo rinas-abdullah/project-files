@@ -1,169 +1,104 @@
+import "server-only";
+import { eq, inArray } from "drizzle-orm";
+import { db } from "@/lib/db/client";
+import { patients as patientsTable, alerts as alertsTable, medicalNotes as medicalNotesTable } from "@/lib/db/schema";
 import { Patient } from "@/lib/types/portal";
 
-// Single source of truth for the mock clinical registry, shared by the
-// patients list/detail API routes and the client-side MockAPI. Every
-// consumer mutates the same objects, so a note added via one entry point
-// (e.g. POST /api/patients/[id]) is visible everywhere else too.
-export const PATIENTS: Patient[] = [
-  {
-    id: "pat-1",
-    mrn: "#DH-8812",
-    name: "سارة بنت أحمد العتيبي",
-    age: 62,
-    status: "alert",
-    statusLabel: "تنبيه حرارة موضعية",
-    complianceScore: 96,
-    careType: "الرعاية المنزلية HHC",
-    diagnosis: "متابعة بعد تنويم قدم سكرية",
-    consultant: "د. خالد السليمان",
-    lastUpdated: "الآن",
+function toPatient(
+  row: typeof patientsTable.$inferSelect,
+  rowAlerts: (typeof alertsTable.$inferSelect)[],
+  rowNotes: (typeof medicalNotesTable.$inferSelect)[]
+): Patient {
+  return {
+    id: row.id,
+    mrn: row.mrn,
+    name: row.name,
+    age: row.age,
+    status: row.status,
+    statusLabel: row.statusLabel,
+    complianceScore: row.complianceScore,
+    careType: row.careType,
+    diagnosis: row.diagnosis,
+    consultant: row.consultant,
+    lastUpdated: row.lastUpdated,
     metrics: {
-      healthScore: 78,
-      healthScoreLabel: "يحتاج انتباه",
-      maxTemp: 37.8,
-      steps: 4820,
-      avgPressure: 124,
-      humidity: 45
+      healthScore: row.healthScore,
+      healthScoreLabel: row.healthScoreLabel,
+      maxTemp: row.maxTemp,
+      steps: row.steps,
+      avgPressure: row.avgPressure,
+      humidity: row.humidity,
     },
-    recommendation: "يُظهر التحليل التراكمي لـ 14 يوماً تحسناً ملحوظاً بنسبة 35% في توزيع الضغط الديناميكي، مع انخفاض الفروقات الحرارية بين القدمين. التوصية: الاستمرار بنفس الخطة مع مراقبة مشط القدم.",
-    alerts: [
-      {
-        id: "a1",
-        title: "ارتفاع حرارة موضعي في مشط القدم الأيسر",
-        description: "ارتفاع في درجة حرارة مشط القدم الأيسر بمقدار 1.2 درجة مقارنة بالخط الأساسي.",
-        time: "اليوم 10:30 ص",
-        type: "warning",
-        recommendation: "تقليل المشي لمدة ساعتين وتخفيف الحمل على القدم اليسرى."
-      }
-    ],
-    medicalNotes: [
-      {
-        id: "n1",
-        author: "د. خالد السليمان",
-        date: "2025-05-12",
-        content: "المريضة تظهر استجابة ممتازة لتوزيع الحمل عبر اللباد الطبي الذكي. التأمت التقرحات السابقة بنسبة 85%."
-      }
-    ]
-  },
-  {
-    id: "pat-2",
-    mrn: "#DH-7741",
-    name: "محمد بن عبد العزيز الغامدي",
-    age: 55,
-    status: "stable",
-    statusLabel: "مستقر",
-    complianceScore: 91,
-    careType: "متابعة دورية",
-    diagnosis: "قدم سكرية مستوى أول",
-    consultant: "د. خلود المطيري",
-    lastUpdated: "منذ 15 دقيقة",
-    metrics: {
-      healthScore: 92,
-      healthScoreLabel: "ممتاز",
-      maxTemp: 36.6,
-      steps: 8100,
-      avgPressure: 110,
-      humidity: 38
-    },
-    alerts: [],
-    medicalNotes: [
-      {
-        id: "n2",
-        author: "د. خلود المطيري",
-        date: "2025-05-10",
-        content: "القراءات الحيوية طبيعية والامتثال لارتداء اللباد الذكي ممتاز."
-      }
-    ]
-  },
-  {
-    id: "pat-3",
-    mrn: "#DH-5529",
-    name: "فهد بن ناصر الشمري",
-    age: 48,
-    status: "stable",
-    statusLabel: "تعافي تام",
-    complianceScore: 98,
-    careType: "علاج طبيعي وإعادة تأهيل",
-    diagnosis: "إعادة تأهيل ما بعد الجراحة",
-    consultant: "د. ياسر عبدالمجيد",
-    lastUpdated: "منذ ساعة",
-    metrics: {
-      healthScore: 98,
-      healthScoreLabel: "ممتاز",
-      maxTemp: 36.4,
-      steps: 12400,
-      avgPressure: 105,
-      humidity: 35
-    },
-    alerts: [],
-    medicalNotes: []
-  },
-  {
-    id: "pat-4",
-    mrn: "#DH-94821",
-    name: "أحمد بن عبد الله السلمان",
-    age: 68,
-    status: "needs_followup",
-    statusLabel: "يحتاج متابعة",
-    complianceScore: 82,
-    careType: "متابعة عن بعد",
-    diagnosis: "اعتلال عصبي سكري",
-    consultant: "د. خلود المطيري",
-    lastUpdated: "منذ 5 دقائق",
-    metrics: {
-      healthScore: 85,
-      healthScoreLabel: "مستقر",
-      maxTemp: 37.1,
-      steps: 4281,
-      avgPressure: 118,
-      humidity: 42
-    },
-    alerts: [
-      {
-        id: "a2",
-        title: "تنبيه كعب القدم اليمنى",
-        description: "ارتفاع مؤقت في الضغط إلى 68 kPa. يُنصح بالاستراحة لمدة 15 دقيقة لتجنب الإجهاد الخلوي.",
-        time: "منذ 10 دقائق",
-        type: "warning",
-        recommendation: "الاستراحة لمدة 15 دقيقة."
-      }
-    ],
-    medicalNotes: []
-  },
-  {
-    id: "pat-5",
-    mrn: "#DH-3301",
-    name: "نورة بنت سعد القحطاني",
-    age: 71,
-    status: "critical",
-    statusLabel: "حرج — اشتباه تقرح",
-    complianceScore: 74,
-    careType: "رعاية مكثفة عن بعد",
-    diagnosis: "تقرحات سكرية نشطة",
-    consultant: "د. خالد السليمان",
-    lastUpdated: "منذ دقيقتين",
-    metrics: {
-      healthScore: 61,
-      healthScoreLabel: "حرج",
-      maxTemp: 38.4,
-      steps: 1850,
-      avgPressure: 148,
-      humidity: 58
-    },
-    alerts: [
-      {
-        id: "a3",
-        title: "إنذار سريري أحمر: ارتفاع حاد في الضغط والحرارة",
-        description: "مستشعرات اللباد الذكي تسجل ضغطاً غير متوازن وحرارة 38.4C على مقدمة القدم.",
-        time: "منذ دقيقتين",
-        type: "critical",
-        recommendation: "يلزم حضور المريضة فوراً للعيادة أو توجيه فريق الرعاية المنزلية."
-      }
-    ],
-    medicalNotes: []
-  }
-];
+    recommendation: row.recommendation ?? undefined,
+    alerts: rowAlerts.map(a => ({
+      id: a.id,
+      title: a.title,
+      description: a.description,
+      time: a.time,
+      type: a.type,
+      recommendation: a.recommendation ?? undefined,
+    })),
+    medicalNotes: rowNotes
+      .map(n => ({ id: n.id, author: n.author, date: n.date, content: n.content }))
+      .reverse(),
+  };
+}
 
-export function getPatientById(id: string): Patient | undefined {
-  return PATIENTS.find(p => p.id === id);
+async function attachRelations(rows: (typeof patientsTable.$inferSelect)[]): Promise<Patient[]> {
+  if (rows.length === 0) return [];
+  const ids = rows.map(r => r.id);
+  const [allAlerts, allNotes] = await Promise.all([
+    db.select().from(alertsTable).where(inArray(alertsTable.patientId, ids)),
+    db.select().from(medicalNotesTable).where(inArray(medicalNotesTable.patientId, ids)),
+  ]);
+  return rows.map(row =>
+    toPatient(
+      row,
+      allAlerts.filter(a => a.patientId === row.id),
+      allNotes.filter(n => n.patientId === row.id)
+    )
+  );
+}
+
+export async function getPatients(filters: { status?: string; search?: string } = {}): Promise<Patient[]> {
+  const rows = await db.select().from(patientsTable);
+  let filtered = rows;
+
+  if (filters.status && filters.status !== "all") {
+    filtered = filtered.filter(p => p.status === filters.status);
+  }
+  if (filters.search) {
+    const q = filters.search.toLowerCase();
+    filtered = filtered.filter(
+      p =>
+        p.name.toLowerCase().includes(q) ||
+        p.mrn.toLowerCase().includes(q) ||
+        p.diagnosis.toLowerCase().includes(q)
+    );
+  }
+
+  return attachRelations(filtered);
+}
+
+export async function getPatientById(id: string): Promise<Patient | undefined> {
+  const [row] = await db.select().from(patientsTable).where(eq(patientsTable.id, id));
+  if (!row) return undefined;
+  const [result] = await attachRelations([row]);
+  return result;
+}
+
+export async function addMedicalNote(patientId: string, author: string, content: string): Promise<Patient | undefined> {
+  await db.insert(medicalNotesTable).values({
+    id: `n-${Date.now()}`,
+    patientId,
+    author,
+    date: new Date().toISOString().split("T")[0],
+    content,
+  });
+  return getPatientById(patientId);
+}
+
+export async function updateRecommendation(patientId: string, recommendation: string): Promise<Patient | undefined> {
+  await db.update(patientsTable).set({ recommendation }).where(eq(patientsTable.id, patientId));
+  return getPatientById(patientId);
 }

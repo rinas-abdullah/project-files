@@ -1,9 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { MockAPI } from "@/lib/api/mock-api";
-type HospitalStats = Awaited<ReturnType<typeof MockAPI.getHospitalStats>>;
 import { Device } from "@/lib/types/portal";
+
+interface HospitalStats {
+  fallReduction: number;
+  ulcerReduction: number;
+  savingsEstimate: number;
+  activeDevices: number;
+  totalDevices: number;
+  stablePatientsPercentage: number;
+}
 import { PageLoader, EmptyState } from "@/components/ui/loading-states";
 import { GlassCard, GlassBadge } from "@/components/ui/glass";
 import { Search, Filter, AlertTriangle, Cpu, Activity, ShieldCheck, TrendingDown, Battery, Wifi, WifiOff, Wrench } from "lucide-react";
@@ -20,12 +27,12 @@ export default function HospitalPortalPage() {
     async function loadData() {
       try {
         setLoading(true);
-        const [devicesData, statsData] = await Promise.all([
-          MockAPI.getDevices(searchQuery, filterLocation),
-          MockAPI.getHospitalStats()
-        ]);
-        setDevices(devicesData);
-        setStats(statsData);
+        const params = new URLSearchParams({ search: searchQuery, location: filterLocation });
+        const res = await fetch(`/api/devices?${params}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "تعذر تحميل بيانات الأجهزة");
+        setDevices(data.devices);
+        setStats(data.stats);
       } catch (err) {
         setError(err instanceof Error ? err.message : "حدث خطأ أثناء تحميل البيانات");
       } finally {

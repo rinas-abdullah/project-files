@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifySessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/session";
-import { getPatients } from "@/lib/data/patients";
+import { getDevices, getHospitalStats } from "@/lib/data/devices";
 
 export async function GET(request: Request) {
   const cookieStore = await cookies();
@@ -11,19 +11,18 @@ export async function GET(request: Request) {
   if (!user) {
     return NextResponse.json({ error: "غير مصرح لك بالوصول" }, { status: 401 });
   }
-  if (user.role !== "doctor" && user.role !== "hospital_admin") {
+  if (user.role !== "hospital_admin") {
     return NextResponse.json({ error: "لا تملك صلاحية الوصول لهذه البيانات" }, { status: 403 });
   }
 
   const { searchParams } = new URL(request.url);
-  const status = searchParams.get("status") ?? undefined;
   const search = searchParams.get("search") ?? undefined;
+  const location = searchParams.get("location") ?? undefined;
 
-  const filtered = await getPatients({ status, search });
+  const [devices, stats] = await Promise.all([
+    getDevices({ search, location }),
+    getHospitalStats(),
+  ]);
 
-  return NextResponse.json({
-    success: true,
-    total: filtered.length,
-    patients: filtered
-  });
+  return NextResponse.json({ success: true, devices, stats });
 }
