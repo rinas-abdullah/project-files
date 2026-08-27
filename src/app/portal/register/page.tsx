@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/lib/AuthContext";
-import { UserPlus, Stethoscope } from "lucide-react";
+import { UserPlus, Stethoscope, MailCheck } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass";
 
 type ContactMethod = "email" | "phone";
@@ -14,6 +14,7 @@ export default function RegisterPage() {
   const { login } = useAuth();
   const router = useRouter();
 
+  const [step, setStep] = useState<"form" | "verify">("form");
   const [contactMethod, setContactMethod] = useState<ContactMethod>("email");
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
@@ -21,6 +22,8 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [department, setDepartment] = useState("");
   const [hospital, setHospital] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [pendingEmail, setPendingEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -49,11 +52,41 @@ export default function RegisterPage() {
 
       const data = await res.json();
 
-      if (res.ok && data.success) {
+      if (res.ok && data.success && data.requiresVerification) {
+        setPendingEmail(data.email);
+        setStep("verify");
+      } else if (res.ok && data.success) {
         login(data.user);
         router.push("/portal/doctor");
       } else {
         setErrorMessage(data.error || "تعذر إنشاء الحساب");
+      }
+    } catch {
+      setErrorMessage("حدث خطأ في الاتصال بالخادم");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/verify-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: pendingEmail, code: otpCode }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        login(data.user);
+        router.push("/portal/doctor");
+      } else {
+        setErrorMessage(data.error || "رمز التحقق غير صحيح");
       }
     } catch {
       setErrorMessage("حدث خطأ في الاتصال بالخادم");
@@ -75,6 +108,59 @@ export default function RegisterPage() {
         </div>
 
         <GlassCard className="w-full p-8 shadow-xl border-white/50 backdrop-blur-xl bg-white/80">
+          {step === "verify" ? (
+            <>
+              <div className="text-center mb-8">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+                  <MailCheck className="w-6 h-6 text-[#0B4D8D]" />
+                </div>
+                <h1 className="text-xl font-bold text-slate-900 mb-2">تحقق من بريدك</h1>
+                <p className="text-sm text-slate-500">
+                  أرسلنا رمز تحقق مكوّن من 6 أرقام إلى<br />
+                  <span className="font-bold text-slate-700" dir="ltr">{pendingEmail}</span>
+                </p>
+              </div>
+
+              <form onSubmit={handleVerify} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700">رمز التحقق</label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={otpCode}
+                    onChange={e => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                    className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white/50 text-center text-2xl font-mono tracking-[0.5em] focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D] transition-all"
+                    dir="ltr"
+                    maxLength={6}
+                    required
+                  />
+                </div>
+
+                {errorMessage && (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-arabic text-center">
+                    {errorMessage}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isLoading || otpCode.length !== 6}
+                  className="w-full py-3 bg-[#0B4D8D] text-white rounded-xl font-bold text-sm shadow-md hover:bg-blue-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
+                >
+                  {isLoading ? <span>جاري التحقق...</span> : <span>تأكيد الرمز</span>}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setStep("form")}
+                  className="w-full text-xs text-slate-500 hover:text-[#0B4D8D] transition-colors cursor-pointer"
+                >
+                  رجوع لتعديل البيانات
+                </button>
+              </form>
+            </>
+          ) : (
+          <>
           <div className="text-center mb-8">
             <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
               <Stethoscope className="w-6 h-6 text-[#0B4D8D]" />
@@ -194,6 +280,8 @@ export default function RegisterPage() {
               )}
             </button>
           </form>
+          </>
+          )}
 
           <p className="mt-6 text-center text-xs text-slate-500">
             لديك حساب بالفعل؟{" "}
