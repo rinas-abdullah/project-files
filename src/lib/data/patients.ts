@@ -102,3 +102,53 @@ export async function updateRecommendation(patientId: string, recommendation: st
   await db.update(patientsTable).set({ recommendation }).where(eq(patientsTable.id, patientId));
   return getPatientById(patientId);
 }
+
+export interface NewPatientInput {
+  name: string;
+  age: number;
+  diagnosis: string;
+  careType: string;
+  consultant: string;
+}
+
+// Creates a real clinical record with a freshly generated MRN — this is what
+// a patient later links their login credentials to via /portal/patient/activate.
+// Metrics start at sensible placeholders since no device has reported yet.
+export async function createPatient(input: NewPatientInput): Promise<Patient> {
+  const id = `pat-${crypto.randomUUID()}`;
+
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const mrn = `#DH-${Math.floor(10000 + Math.random() * 90000)}`;
+    try {
+      const [row] = await db
+        .insert(patientsTable)
+        .values({
+          id,
+          mrn,
+          name: input.name,
+          age: input.age,
+          status: "stable",
+          statusLabel: "بيانات أولية — بانتظار أول قياس",
+          complianceScore: 100,
+          careType: input.careType,
+          diagnosis: input.diagnosis,
+          consultant: input.consultant,
+          lastUpdated: "الآن",
+          healthScore: 100,
+          healthScoreLabel: "لم تُسجل قياسات بعد",
+          maxTemp: 36.5,
+          steps: 0,
+          avgPressure: 0,
+          humidity: 0,
+        })
+        .returning();
+      const [result] = await attachRelations([row]);
+      return result;
+    } catch (err) {
+      // Most likely a unique MRN collision — retry with a freshly rolled one.
+      lastError = err;
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error("Failed to generate a unique MRN");
+}

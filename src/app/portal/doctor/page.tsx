@@ -5,8 +5,115 @@ import Link from "next/link";
 import { Patient, PatientStatus } from "@/lib/types/portal";
 import { PageLoader, EmptyState } from "@/components/ui/loading-states";
 import { GlassCard, GlassBadge } from "@/components/ui/glass";
-import { Search, Filter, AlertTriangle, User, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Filter, AlertTriangle, User, ChevronLeft, ChevronRight, Plus, X } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+
+function AddPatientModal({ onClose, onCreated }: { onClose: () => void; onCreated: (mrn: string) => void }) {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [diagnosis, setDiagnosis] = useState("");
+  const [careType, setCareType] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsSaving(true);
+    try {
+      const res = await fetch("/api/patients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, age, diagnosis, careType }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "تعذر إنشاء السجل");
+      onCreated(data.patient.mrn);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "حدث خطأ غير متوقع");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 left-4 text-slate-400 hover:text-slate-700 cursor-pointer"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <h2 className="text-lg font-bold text-slate-900 mb-1">إضافة سجل مريض جديد</h2>
+        <p className="text-xs text-slate-500 mb-6">ينشئ رقم ملف طبي (MRN) فريد يستخدمه المريض لتفعيل حسابه لاحقاً</p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-slate-700">اسم المريض</label>
+            <input
+              type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+              required
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">العمر</label>
+              <input
+                type="number"
+                min={1}
+                max={130}
+                value={age}
+                onChange={e => setAge(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+                required
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">نوع الرعاية</label>
+              <input
+                type="text"
+                value={careType}
+                onChange={e => setCareType(e.target.value)}
+                placeholder="الرعاية المنزلية HHC"
+                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+                required
+              />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-slate-700">التشخيص</label>
+            <input
+              type="text"
+              value={diagnosis}
+              onChange={e => setDiagnosis(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+              required
+            />
+          </div>
+
+          {error && (
+            <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs text-center">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={isSaving}
+            className="w-full py-3 bg-[#0B4D8D] text-white rounded-xl font-bold text-sm shadow-md hover:bg-blue-800 transition-colors disabled:opacity-70 cursor-pointer"
+          >
+            {isSaving ? "جاري الإنشاء..." : "إنشاء السجل"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
 
 export default function DoctorPortalPage() {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -14,6 +121,9 @@ export default function DoctorPortalPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newMrn, setNewMrn] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { t, language } = useLanguage();
 
   useEffect(() => {
@@ -34,11 +144,11 @@ export default function DoctorPortalPage() {
         setLoading(false);
       }
     }
-    
+
     // Simple debounce
     const timeout = setTimeout(loadData, 300);
     return () => clearTimeout(timeout);
-  }, [searchQuery, filterStatus, t.error]);
+  }, [searchQuery, filterStatus, t.error, refreshKey]);
 
   const getStatusBadgeType = (status: PatientStatus): "critical" | "warning" | "success" | "info" | "neutral" => {
     switch (status) {
@@ -84,8 +194,39 @@ export default function DoctorPortalPage() {
             </select>
             <Filter className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none ${language === 'ar' ? 'right-3' : 'left-3'}`} />
           </div>
+
+          <button
+            type="button"
+            onClick={() => setShowAddModal(true)}
+            className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#0B4D8D] text-white text-sm font-bold hover:bg-blue-800 transition-colors cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>مريض جديد</span>
+          </button>
         </div>
       </div>
+
+      {newMrn && (
+        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between gap-3">
+          <span>
+            تم إنشاء السجل بنجاح — رقم الملف الطبي: <span className="font-mono font-bold" dir="ltr">{newMrn}</span> — شارك هذا الرقم مع المريض لتفعيل حسابه من صفحة الدخول.
+          </span>
+          <button type="button" onClick={() => setNewMrn(null)} className="text-emerald-600 hover:text-emerald-900 cursor-pointer">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      {showAddModal && (
+        <AddPatientModal
+          onClose={() => setShowAddModal(false)}
+          onCreated={(mrn) => {
+            setShowAddModal(false);
+            setNewMrn(mrn);
+            setRefreshKey(k => k + 1);
+          }}
+        />
+      )}
 
       <GlassCard className="flex-1 min-h-[400px] flex flex-col p-0 overflow-hidden w-full max-w-full">
         {loading ? (
