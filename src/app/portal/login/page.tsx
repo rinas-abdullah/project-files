@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useAuth } from "@/lib/AuthContext";
 import { useLanguage } from "@/lib/LanguageContext";
 import { UserRole } from "@/lib/types/portal";
-import { User, Stethoscope, Building2, LogIn } from "lucide-react";
+import { User, Stethoscope, Building2, LogIn, ChevronLeft, ChevronRight } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass";
 
 // Mirrors the default demo accounts in src/lib/auth/users.ts (for display only —
@@ -167,18 +167,39 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-slate-500">
-            طبيب جديد؟{" "}
-            <Link href="/portal/register" className="font-bold text-[#0B4D8D] hover:underline">
-              أنشئ حسابك ببريدك أو رقم جوالك
+          <div className="mt-8 pt-6 border-t border-slate-200/70 space-y-3">
+            <Link
+              href="/portal/register"
+              className="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 bg-white/60 hover:border-[#0B4D8D] hover:bg-blue-50/60 transition-all group"
+            >
+              <span className="flex items-center gap-3">
+                <span className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
+                  <Stethoscope className="w-4 h-4 text-[#0B4D8D]" />
+                </span>
+                <span className="text-start">
+                  <span className="block text-xs font-bold text-slate-800">طبيب جديد؟</span>
+                  <span className="block text-[11px] text-slate-500">أنشئ حسابك ببريدك أو رقم جوالك</span>
+                </span>
+              </span>
+              <span className="text-slate-300 group-hover:text-[#0B4D8D] transition-colors shrink-0">{language === "ar" ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}</span>
             </Link>
-          </p>
-          <p className="mt-2 text-center text-xs text-slate-500">
-            مريض ولسه ما فعّلت حسابك؟{" "}
-            <Link href="/portal/patient/activate" className="font-bold text-[#0B4D8D] hover:underline">
-              فعّله برقم ملفك الطبي
+
+            <Link
+              href="/portal/patient/activate"
+              className="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 bg-white/60 hover:border-[#0B4D8D] hover:bg-blue-50/60 transition-all group"
+            >
+              <span className="flex items-center gap-3">
+                <span className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
+                  <User className="w-4 h-4 text-[#0B4D8D]" />
+                </span>
+                <span className="text-start">
+                  <span className="block text-xs font-bold text-slate-800">مريض ولسه ما فعّلت حسابك؟</span>
+                  <span className="block text-[11px] text-slate-500">فعّله برقم ملفك الطبي (MRN)</span>
+                </span>
+              </span>
+              <span className="text-slate-300 group-hover:text-[#0B4D8D] transition-colors shrink-0">{language === "ar" ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}</span>
             </Link>
-          </p>
+          </div>
         </GlassCard>
 
         <p className="mt-8 text-xs text-slate-400 text-center font-medium">
