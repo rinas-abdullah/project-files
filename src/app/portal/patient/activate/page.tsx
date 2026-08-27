@@ -260,7 +260,7 @@ export default function ActivatePatientPage() {
           <p className="mt-6 text-center text-xs text-slate-500">
             لديك حساب بالفعل؟{" "}
             <Link href="/portal/login" className="font-bold text-[#0B4D8D] hover:underline">
-              سجّل دخولك
+              تسجيل الدخول
             </Link>
           </p>
         </GlassCard>
