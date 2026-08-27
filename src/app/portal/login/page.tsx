@@ -173,6 +173,12 @@ export default function LoginPage() {
               أنشئ حسابك ببريدك أو رقم جوالك
             </Link>
           </p>
+          <p className="mt-2 text-center text-xs text-slate-500">
+            مريض ولسه ما فعّلت حسابك؟{" "}
+            <Link href="/portal/patient/activate" className="font-bold text-[#0B4D8D] hover:underline">
+              فعّله برقم ملفك الطبي
+            </Link>
+          </p>
         </GlassCard>
 
         <p className="mt-8 text-xs text-slate-400 text-center font-medium">

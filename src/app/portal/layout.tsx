@@ -6,7 +6,7 @@ import { PortalHeader } from "@/components/portal/PortalHeader";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { LanguageProvider } from "@/lib/LanguageContext";
 
-const PUBLIC_PORTAL_PATHS = ["/portal/login", "/portal/register"];
+const PUBLIC_PORTAL_PATHS = ["/portal/login", "/portal/register", "/portal/patient/activate"];
 
 function PortalContent({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();

@@ -4,17 +4,22 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { emailVerifications, users as usersTable } from "@/lib/db/schema";
 import { sendOtpEmail } from "@/lib/email/resend";
+import { UserRole } from "@/lib/types/portal";
 import { SessionUser } from "./session";
 
 const OTP_TTL_MINUTES = 10;
 const MAX_ATTEMPTS = 5;
 
 interface PendingPayload {
+  id: string;
+  role: UserRole;
   name: string;
   phone: string | null;
   passwordHash: string;
+  mrn: string | null;
   department: string | null;
   hospital: string | null;
+  deviceId: string | null;
 }
 
 function hashCode(code: string): string {
@@ -91,19 +96,20 @@ export async function confirmEmailVerification(
   }
 
   const payload: PendingPayload = JSON.parse(pending.payload);
-  const id = `doc-${crypto.randomUUID()}`;
 
   const [row] = await db
     .insert(usersTable)
     .values({
-      id,
+      id: payload.id,
       name: payload.name,
-      role: "doctor",
+      role: payload.role,
       email,
       phone: payload.phone,
       passwordHash: payload.passwordHash,
+      mrn: payload.mrn,
       department: payload.department,
       hospital: payload.hospital,
+      deviceId: payload.deviceId,
     })
     .returning();
 

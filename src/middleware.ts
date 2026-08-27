@@ -4,7 +4,8 @@ import { verifySessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/session";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/portal/login" || pathname === "/portal/register") {
+  const PUBLIC_PATHS = ["/portal/login", "/portal/register", "/portal/patient/activate"];
+  if (PUBLIC_PATHS.includes(pathname)) {
     return NextResponse.next();
   }
 
