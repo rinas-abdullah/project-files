@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
-import { validateDoctorRegistration } from "@/lib/auth/users";
+import { validatePatientActivation } from "@/lib/auth/users";
 import { completeSignup } from "@/lib/auth/signup";
 import { SESSION_COOKIE_NAME, SESSION_MAX_AGE } from "@/lib/auth/session";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, password, department, hospital } = body;
+    const { mrn, email, phone, password } = body;
 
-    if (!name || !password) {
-      return NextResponse.json({ error: "الاسم وكلمة المرور مطلوبان" }, { status: 400 });
+    if (!mrn || !password) {
+      return NextResponse.json({ error: "رقم الملف الطبي وكلمة المرور مطلوبان" }, { status: 400 });
     }
 
-    const validated = await validateDoctorRegistration({ name, email, phone, password, department, hospital });
+    const validated = await validatePatientActivation({ mrn, email, phone, password });
     if (!validated.success) {
       return NextResponse.json({ error: validated.error }, { status: 400 });
     }
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     const response = NextResponse.json({
       success: true,
       requiresVerification: false,
-      message: "تم إنشاء الحساب بنجاح",
+      message: "تم تفعيل حسابك بنجاح",
       user: result.user,
     });
 
@@ -48,6 +48,6 @@ export async function POST(request: Request) {
 
     return response;
   } catch {
-    return NextResponse.json({ error: "حدث خطأ غير متوقع أثناء إنشاء الحساب" }, { status: 500 });
+    return NextResponse.json({ error: "حدث خطأ غير متوقع أثناء تفعيل الحساب" }, { status: 500 });
   }
 }
