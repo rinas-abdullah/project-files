@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: #070b14;
+  color: #e6ecf6;
+  font-family: "IBM Plex Sans Arabic", Tahoma, sans-serif;
+  background-image: radial-gradient(circle at 15% 0%, rgba(0, 217, 192, 0.08), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(91, 140, 255, 0.08), transparent 40%);
+  background-attachment: fixed;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0e1524;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e2a42;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00d9c0;
+}
+
+.card {
+  @apply bg-risaq-panel border border-risaq-border rounded-2xl;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-risaq-primary text-risaq-bg font-bold px-5 py-2.5 transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl border border-risaq-border bg-risaq-panel2 text-risaq-text font-semibold px-5 py-2.5 transition hover:border-risaq-primary/50;
+}
+
+.input {
+  @apply w-full rounded-xl border border-risaq-border bg-risaq-bg/60 px-4 py-2.5 text-sm text-risaq-text placeholder:text-risaq-muted focus:outline-none focus:ring-2 focus:ring-risaq-primary/40 focus:border-risaq-primary transition;
+}
