@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { createMemoryModel, isMemoryMode } from "../db/memoryModel.js";
+import { Lab } from "./Lab.js";
 
 const itemResultSchema = new mongoose.Schema(
   {
@@ -27,4 +29,6 @@ const attemptSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Attempt = mongoose.model("Attempt", attemptSchema);
+export const Attempt = isMemoryMode
+  ? createMemoryModel("Attempt", { defaults: { badgesAwarded: [] }, refs: { lab: () => Lab._store } })
+  : mongoose.model("Attempt", attemptSchema);

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { createMemoryModel, isMemoryMode } from "../db/memoryModel.js";
 
 // A lab is entirely data-driven: a set of scenario "items" the trainee must
 // classify and annotate with the indicators of compromise they noticed. The
@@ -53,4 +54,6 @@ const labSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Lab = mongoose.model("Lab", labSchema);
+export const Lab = isMemoryMode
+  ? createMemoryModel("Lab", { defaults: { difficulty: 2, timeLimitSeconds: 300, items: [], order: 0 } })
+  : mongoose.model("Lab", labSchema);

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { createMemoryModel, isMemoryMode } from "../db/memoryModel.js";
 
 const badgeAwardSchema = new mongoose.Schema(
   {
@@ -19,4 +20,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const User = mongoose.model("User", userSchema);
+export const User = isMemoryMode
+  ? createMemoryModel("User", { defaults: { points: 0, badges: [] } })
+  : mongoose.model("User", userSchema);

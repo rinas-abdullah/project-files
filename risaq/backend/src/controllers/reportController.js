@@ -39,8 +39,11 @@ export async function getMyReport(req, res) {
     ? Math.round(attemptedScores.reduce((a, b) => a + b, 0) / attemptedScores.length)
     : 0;
 
+  // Only recommend dimensions that genuinely need work — a dimension the
+  // trainee has already mastered (>=80%) shouldn't show up as a priority
+  // just for being the lowest of an all-high set.
   const weakest = [...breakdown]
-    .filter((d) => d.attempted)
+    .filter((d) => d.attempted && d.score < 80)
     .sort((a, b) => a.score - b.score)
     .slice(0, 2);
 
