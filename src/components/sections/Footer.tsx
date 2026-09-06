@@ -40,7 +40,6 @@ const COMPANY_LINKS = [
   { label: "نموذج العمل",   href: "#business-model"  },
   { label: "فرصة السوق",    href: "#market"          },
   { label: "خارطة الطريق", href: "#roadmap"         },
-  { label: "الفريق",        href: "#team"            },
 ];
 
 const SOCIALS = [

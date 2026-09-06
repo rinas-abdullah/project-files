@@ -12,7 +12,6 @@ const navItems = [
   { name: "المنتج", href: "#introducing" },
   { name: "كيف يعمل", href: "#workflow" },
   { name: "الذكاء الاصطناعي", href: "#ai-engine" },
-  { name: "الفريق", href: "#team" },
   { name: "تواصل معنا", href: "#contact" },
 ];
 
