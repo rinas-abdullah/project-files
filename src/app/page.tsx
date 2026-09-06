@@ -10,7 +10,6 @@ import {
   BusinessModel,
   MarketOpportunity,
   Roadmap,
-  Team,
   Contact,
   Footer,
 } from "@/components/sections";
@@ -70,11 +69,9 @@ export default function Home() {
         <MarketOpportunity />
         {/* 14. Roadmap */}
         <Roadmap />
-        {/* 15. Team */}
-        <Team />
-        {/* 16. Contact & CTA */}
+        {/* 15. Contact & CTA */}
         <Contact />
-        {/* 17. Footer */}
+        {/* 16. Footer */}
         <Footer />
       </main>
     </>

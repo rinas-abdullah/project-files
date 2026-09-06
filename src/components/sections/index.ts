@@ -12,6 +12,5 @@ export { default as WhyDithar } from "./WhyDithar";
 export { default as BusinessModel } from "./BusinessModel";
 export { default as MarketOpportunity } from "./MarketOpportunity";
 export { default as Roadmap } from "./Roadmap";
-export { default as Team } from "./Team";
 export { default as Contact } from "./Contact";
 export { default as Footer } from "./Footer";
