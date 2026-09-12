@@ -185,160 +185,48 @@ export default function Hero() {
 
             <div className="relative w-full h-full flex items-center justify-center max-w-2xl mx-auto select-none">
 
-              {/* DESKTOP BLUEPRINT OVERLAYS */}
+              {/* Instructional hint for desktop interaction */}
               {!isMobile && (
-                <>
-                  {/* Instructional hint for user interaction */}
-                  <div className="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-sans text-slate-500 dark:text-slate-400 z-20">
-                    اضغط على الكلمات لتظهر المعلومات
-                  </div>
-                  {/* SVG Connecting Lines */}
-                  <svg
-                    className="absolute inset-0 w-full h-full pointer-events-none z-10"
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="none"
+                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-sans text-slate-500 dark:text-slate-400 z-20">
+                  اضغط على النقاط لاستكشاف المكونات
+                </div>
+              )}
+
+              {/* Numbered hotspot badges directly on the insole */}
+              {hotspots.map((item, index) => {
+                const isActive = activeHotspot === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    className="absolute z-20 flex items-center justify-center cursor-pointer focus:outline-none"
+                    style={{
+                      left: `${item.dotX}%`,
+                      top: `${item.dotY}%`,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                    onMouseEnter={() => setActiveHotspot(item.id)}
+                    onMouseLeave={() => !isMobile && setActiveHotspot(null)}
+                    onClick={() => setActiveHotspot(isMobile && isActive ? null : item.id)}
                   >
-                    {hotspots.map((item) => (
-                      <g
-                        key={item.id}
-                        className="transition-all duration-300"
-                        style={{
-                          opacity: activeHotspot === null ? 0.35 : activeHotspot === item.id ? 1 : 0.1
-                        }}
-                      >
-                        {/* Connecting Line */}
-                        <line
-                          x1={item.dotX}
-                          y1={item.dotY}
-                          x2={item.side === "left" ? 18 : 82}
-                          y2={item.labelY}
-                          stroke={activeHotspot === item.id ? "#39B56A" : "#0B4D8D"}
-                          strokeWidth={activeHotspot === item.id ? "0.6" : "0.4"}
-                        />
-                        {/* Dot on Insole */}
-                        <circle
-                          cx={item.dotX}
-                          cy={item.dotY}
-                          r={activeHotspot === item.id ? "1.8" : "1"}
-                          fill={activeHotspot === item.id ? "#39B56A" : "#0B4D8D"}
-                        />
-                        {/* Dot on Label side */}
-                        <circle
-                          cx={item.side === "left" ? 18 : 82}
-                          cy={item.labelY}
-                          r="0.8"
-                          fill={activeHotspot === item.id ? "#39B56A" : "#0B4D8D"}
-                        />
-                      </g>
-                    ))}
-                  </svg>
-
-                  {/* Hotspots clickable triggers on the insole */}
-                  {hotspots.map((item) => (
-                    <button
-                      key={item.id}
-                      className="absolute z-20 w-8 h-8 flex items-center justify-center cursor-pointer transition-transform focus:outline-none"
-                      style={{
-                        left: `${item.dotX}%`,
-                        top: `${item.dotY}%`,
-                        transform: "translate(-50%, -50%)",
-                      }}
-                      onMouseEnter={() => setActiveHotspot(item.id)}
-                      onMouseLeave={() => setActiveHotspot(null)}
-                      onClick={() => setActiveHotspot(item.id)}
+                    {isActive && (
+                      <span className="absolute w-9 h-9 rounded-full animate-ping opacity-50 bg-smart-green/30" />
+                    )}
+                    <span
+                      className={`relative flex items-center justify-center w-7 h-7 rounded-full border font-sans text-xs font-bold backdrop-blur-md shadow-sm transition-all duration-300 select-none ${
+                        isActive
+                          ? "border-smart-green bg-white/95 text-smart-green dark:bg-zinc-950/95 shadow-[0_0_15px_rgba(57,181,106,0.4)] scale-110"
+                          : "border-slate-200 bg-white/70 text-primary-blue dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-medical-blue hover:scale-105 hover:border-primary-blue/50"
+                      }`}
                     >
-                      <span className="relative flex h-3 w-3 items-center justify-center">
-                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-60 transition-colors duration-300 ${activeHotspot === item.id ? "bg-smart-green/40" : "bg-primary-blue/15"}`} />
-                        <span className={`relative inline-flex rounded-full h-1.5 w-1.5 transition-colors duration-300 ${activeHotspot === item.id ? "bg-smart-green scale-125" : "bg-primary-blue"}`} />
-                      </span>
-                    </button>
-                  ))}
-
-                  {/* Sidebar Annotation Labels */}
-                  {hotspots.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = activeHotspot === item.id;
-                    return (
-                      <div
-                        key={item.id}
-                        onMouseEnter={() => setActiveHotspot(item.id)}
-                        onMouseLeave={() => setActiveHotspot(null)}
-                        onClick={() => setActiveHotspot(item.id)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            setActiveHotspot(item.id);
-                          }
-                        }}
-                        className={`absolute z-20 flex flex-col focus:outline-none transition-all duration-300 cursor-pointer ${item.side === "left" ? "right-[82%] text-right items-end" : "left-[82%] text-left items-start"
-                          } ${isActive ? "opacity-100 scale-102" : "opacity-45 hover:opacity-85"}`}
-                        style={{
-                          top: `${item.labelY}%`,
-                          transform: "translateY(-50%)",
-                        }}
-                      >
-                        <div className="flex items-center gap-1.5">
-                          <Icon className={`w-3.5 h-3.5 transition-colors duration-300 ${isActive ? "text-smart-green" : "text-slate-500"}`} />
-                          <span className="font-sans text-[9px] font-bold tracking-[0.14em] text-primary-blue uppercase">
-                            {item.nameEn}
-                          </span>
-                        </div>
-                        <span className="font-arabic text-xs font-semibold text-slate-800 mt-1">
-                          {item.nameAr}
-                        </span>
-
-                        <AnimatePresence>
-                          {isActive && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0, y: -4 }}
-                              animate={{ opacity: 1, height: "auto", y: 0 }}
-                              exit={{ opacity: 0, height: 0, y: -4 }}
-                              transition={{ duration: 0.2 }}
-                              className={`mt-1.5 flex flex-col gap-1 max-w-50 overflow-hidden ${item.side === "left" ? "items-end text-right" : "items-start text-left"
-                                }`}
-                            >
-                              <p className="font-arabic text-[10px] font-light leading-relaxed text-slate-500 dark:text-slate-400">
-                                {item.descAr}
-                              </p>
-                              <p className="font-sans text-[8px] text-slate-400 dark:text-slate-500 leading-normal">
-                                {item.descEn}
-                              </p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    );
-                  })}
-                </>
-              )}
-
-              {/* MOBILE TRIGGERS */}
-              {isMobile && (
-                <>
-                  {hotspots.map((item) => (
-                    <button
-                      key={item.id}
-                      className="absolute z-20 w-8 h-8 flex items-center justify-center focus:outline-none"
-                      style={{
-                        left: `${item.dotX}%`,
-                        top: `${item.dotY}%`,
-                        transform: "translate(-50%, -50%)",
-                      }}
-                      onClick={() => setActiveHotspot(activeHotspot === item.id ? null : item.id)}
-                    >
-                      <span className="relative flex h-3.5 w-3.5 items-center justify-center">
-                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-60 ${activeHotspot === item.id ? "bg-smart-green" : "bg-primary-blue"}`} />
-                        <span className={`relative inline-flex rounded-full h-2 w-2 ${activeHotspot === item.id ? "bg-smart-green" : "bg-primary-blue"}`} />
-                      </span>
-                    </button>
-                  ))}
-                </>
-              )}
+                      {index + 1}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Embedded Clinical Detail Widget inside the scanner card (bottom overlay) */}
-            <div className="absolute bottom-4 left-6 right-6 z-30 lg:hidden">
+            {/* Embedded Clinical Detail Widget (single info panel for all breakpoints) */}
+            <div className="absolute bottom-4 left-6 right-6 z-30">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeHotspot || "default"}
