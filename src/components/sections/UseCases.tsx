@@ -6,9 +6,9 @@ import { ShieldAlert, Accessibility, Shield, Award, Clipboard, Users, Building, 
 export default function UseCases() {
   const patientCases = [
     {
-      icon: <ShieldAlert className="w-8 h-8 text-red-400" />,
-      title: "وقاية القدم السكري • Diabetic Foot",
-      desc: "حماية استباقية لمرضى السكري من خلال الرصد المستمر لنقاط الضغط والحرارة المرتفعة لمنع تشكل التقرحات الصامتة.",
+      icon: <Activity className="w-8 h-8 text-red-400" />,
+      title: "تأهيل الجلطات الدماغية • Stroke Rehab",
+      desc: "متابعة تطور التماثل الحركي بين الطرفين المصاب والسليم أثناء جلسات إعادة التأهيل المنزلي بعد السكتات الدماغية وحالات الشلل النصفي.",
       gradient: "from-red-500/10 to-transparent",
       border: "hover:border-red-500/30",
     },
@@ -20,9 +20,9 @@ export default function UseCases() {
       border: "hover:border-medical-blue/30",
     },
     {
-      icon: <Activity className="w-8 h-8 text-smart-green" />,
-      title: "تأهيل الجلطات • Stroke Rehab",
-      desc: "متابعة تطور التماثل الحركي بين الطرفين المصاب والسليم أثناء جلسات إعادة التأهيل المنزلي بعد السكتات الدماغية.",
+      icon: <ShieldAlert className="w-8 h-8 text-smart-green" />,
+      title: "الشلل النصفي • Hemiplegia",
+      desc: "رصد استباقي للاعتماد غير المتماثل على الطرف السليم لدى مرضى الشلل النصفي، لمنع تفاقم اختلال التوازن ومخاطر السقوط.",
       gradient: "from-smart-green/10 to-transparent",
       border: "hover:border-smart-green/30",
     },

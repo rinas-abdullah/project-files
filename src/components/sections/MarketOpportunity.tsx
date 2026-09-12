@@ -46,7 +46,7 @@ export default function MarketOpportunity() {
       metric: 530,
       metricPrefix: "",
       metricSuffix: "M+ Patients",
-      desc: "عدد مرضى السكري عالمياً المعرضين لخطر تقرحات القدم السريرية وخلل الاتزان الحركي.",
+      desc: "عدد مرضى الجلطات الدماغية وباركنسون والتصلب اللويحي عالمياً المعرضين لخطر فقدان التوازن والسقوط.",
       progress: 60,
       barColor: "bg-purple-400",
       gradColor: "from-purple-400/8",

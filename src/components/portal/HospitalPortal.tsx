@@ -55,9 +55,9 @@ export function HospitalPortal() {
             </div>
             <GlassBadge status="success">معدل تحسن</GlassBadge>
           </div>
-          <p className="text-[11px] text-slate-500 font-semibold mb-1">مضاعفات القدم السكرية</p>
+          <p className="text-[11px] text-slate-500 font-semibold mb-1">مضاعفات التوازن والحركة</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-3xl font-bold text-slate-900 font-mono">-{data.stats.ulcerReduction}%</h3>
+            <h3 className="text-3xl font-bold text-slate-900 font-mono">-{data.stats.mobilityComplicationReduction}%</h3>
           </div>
         </GlassCard>
 

@@ -80,7 +80,7 @@ export function DoctorPortal() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 font-arabic">المتابعة السريرية — منظومة اللباد الطبي الذكي</h1>
-          <p className="text-sm text-slate-500 mt-1 font-arabic">الوصول السريع لبيانات حركة المريض، ومؤشرات خطر التقرحات، والتوصيات الطبية الاستباقية.</p>
+          <p className="text-sm text-slate-500 mt-1 font-arabic">الوصول السريع لبيانات حركة المريض، ومؤشرات خطر السقوط وفقدان التوازن، والتوصيات الطبية الاستباقية.</p>
         </div>
         
         <div className="w-full sm:w-72 relative">

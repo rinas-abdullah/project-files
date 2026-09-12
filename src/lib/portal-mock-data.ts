@@ -45,7 +45,7 @@ export const portalMockData = {
         statusType: "critical",
         compliance: 96,
         type: "الرعاية المنزلية HHC",
-        diagnosis: "متابعة بعد تنويم قدم سكرية",
+        diagnosis: "متابعة بعد سكتة دماغية - شلل نصفي جزئي",
         consultant: "د. خالد السليمان",
         metrics: {
           aiScore: 8,
@@ -78,7 +78,7 @@ export const portalMockData = {
   hospitalPortal: {
     stats: {
       fallReduction: 42,
-      ulcerReduction: 58,
+      mobilityComplicationReduction: 58,
       savingsEstimate: 1.45,
     },
     fleet: [

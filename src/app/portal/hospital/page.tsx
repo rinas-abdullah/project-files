@@ -5,7 +5,7 @@ import { Device } from "@/lib/types/portal";
 
 interface HospitalStats {
   fallReduction: number;
-  ulcerReduction: number;
+  mobilityComplicationReduction: number;
   savingsEstimate: number;
   activeDevices: number;
   totalDevices: number;
@@ -73,9 +73,9 @@ export default function HospitalPortalPage() {
             </div>
             <GlassBadge status="success" className="text-[10px]">معدل تحسن</GlassBadge>
           </div>
-          <p className="text-xs text-slate-500 font-bold mb-1">حالات التقرح التي تم منعها</p>
+          <p className="text-xs text-slate-500 font-bold mb-1">حالات السقوط التي تم تفاديها</p>
           <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-bold text-slate-900 font-mono">{stats?.ulcerReduction}%</span>
+            <span className="text-3xl font-bold text-slate-900 font-mono">{stats?.fallReduction}%</span>
             <span className="text-sm text-emerald-600 font-bold">-</span>
           </div>
         </GlassCard>
@@ -87,9 +87,9 @@ export default function HospitalPortalPage() {
             </div>
             <GlassBadge status="info" className="text-[10px]">معدل تحسن</GlassBadge>
           </div>
-          <p className="text-xs text-slate-500 font-bold mb-1">مضاعفات القدم السكرية</p>
+          <p className="text-xs text-slate-500 font-bold mb-1">مضاعفات التوازن والحركة</p>
           <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-bold text-slate-900 font-mono">{stats?.fallReduction}%</span>
+            <span className="text-3xl font-bold text-slate-900 font-mono">{stats?.mobilityComplicationReduction}%</span>
             <span className="text-sm text-blue-600 font-bold">-</span>
           </div>
         </GlassCard>

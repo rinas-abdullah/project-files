@@ -285,7 +285,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
                 <div className="bg-emerald-50 border border-emerald-100 p-2.5 rounded-xl flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-[10px] font-bold text-emerald-900">{language === 'ar' ? "مخاطر تقرح باطن القدم" : "Foot Ulcer Risk"}</p>
+                    <p className="text-[10px] font-bold text-emerald-900">{language === 'ar' ? "مخاطر فقدان التوازن" : "Balance Loss Risk"}</p>
                     <p className="text-[9px] text-emerald-700 font-medium">{language === 'ar' ? "منخفض جداً" : "Very Low"}</p>
                   </div>
                 </div>
