@@ -25,7 +25,7 @@ export const translations = {
 
     // Patient Portal
     good_morning: "صباح الخير،",
-    patient_overview: "نظرة عامة على صحة قدمك السكرية اليوم.",
+    patient_overview: "نظرة عامة على توازنك وحركتك اليوم.",
     overall_health: "الصحة العامة",
     last_update: "آخر تحديث",
     stable: "مستقر",
@@ -48,7 +48,7 @@ export const translations = {
 
     // Doctor Portal
     clinical_followup: "المتابعة السريرية",
-    doctor_desc: "الوصول السريع لبيانات حركة المريض، ومؤشرات خطر القدم السكرية.",
+    doctor_desc: "الوصول السريع لبيانات حركة المريض، ومؤشرات خطر فقدان التوازن والسقوط.",
     search_mrn: "بحث برقم الملف (MRN)...",
     all_cases: "كل الحالات",
     alerts: "تنبيهات",
@@ -63,8 +63,8 @@ export const translations = {
     // Hospital Portal
     facility_management: "إدارة المنشأة",
     hospital_desc: "نظرة عامة على أسطول الأجهزة الذكية والأداء السريري.",
-    prevented_ulcers: "حالات التقرح التي تم منعها",
-    diabetic_complications: "مضاعفات القدم السكرية",
+    prevented_ulcers: "حالات السقوط التي تم تفاديها",
+    diabetic_complications: "مضاعفات التوازن والحركة",
     financial_savings: "الوفر المالي التشغيلي",
     smart_fleet: "أسطول الأجهزة الذكية",
     fleet_desc: "إدارة ومتابعة البادات المخصصة للمرضى والمستودع",
@@ -103,7 +103,7 @@ export const translations = {
 
     // Patient Portal
     good_morning: "Good morning,",
-    patient_overview: "An overview of your diabetic foot health today.",
+    patient_overview: "An overview of your balance and mobility today.",
     overall_health: "Overall Health",
     last_update: "Last updated",
     stable: "Stable",
@@ -126,7 +126,7 @@ export const translations = {
 
     // Doctor Portal
     clinical_followup: "Clinical Follow-up",
-    doctor_desc: "Quick access to patient mobility data and diabetic foot risk indicators.",
+    doctor_desc: "Quick access to patient mobility data and fall/balance risk indicators.",
     search_mrn: "Search by MRN...",
     all_cases: "All Cases",
     alerts: "Alerts",
@@ -141,8 +141,8 @@ export const translations = {
     // Hospital Portal
     facility_management: "Facility Management",
     hospital_desc: "Overview of smart device fleet and clinical performance.",
-    prevented_ulcers: "Prevented Ulcers",
-    diabetic_complications: "Diabetic Foot Complications",
+    prevented_ulcers: "Prevented Falls",
+    diabetic_complications: "Balance & Mobility Complications",
     financial_savings: "Operational Financial Savings",
     smart_fleet: "Smart Device Fleet",
     fleet_desc: "Manage and monitor allocated and storage PADs",

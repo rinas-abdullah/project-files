@@ -51,7 +51,7 @@ export async function getHospitalStats() {
 
   return {
     fallReduction: 42,
-    ulcerReduction: 58,
+    mobilityComplicationReduction: 58,
     savingsEstimate: 1.45, // In Millions
     activeDevices: allDevices.filter(d => d.isActive).length,
     totalDevices: allDevices.length,
