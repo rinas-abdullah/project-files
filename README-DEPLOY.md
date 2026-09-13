@@ -8,9 +8,9 @@
    - NEXT_PUBLIC_FIREBASE_* (اختياري): إعدادات Firebase للقياس الحي عبر Web Serial/Firebase
 
    الحسابات التجريبية الافتراضية (مخزّنة بقاعدة البيانات عبر seed، راجع src/lib/db/seed.ts):
-   - طبيب: dr.khalid@dithar.sa / Dithar@Doctor2026!
+   - طبيب: dr.khalid@ditharhealth.sa / Dithar@Doctor2026!
    - إدارة منشأة: admin@kfshrc.edu.sa / Dithar@Admin2026!
-   - مريض: sara.alotaibi@dithar.sa / Dithar@Patient2026!
+   - مريض: sara.alotaibi@ditharhealth.sa / Dithar@Patient2026!
 
 0.5) إعداد قاعدة البيانات (مرة واحدة، بعد ربط Vercel Postgres وتحديث .env.local بقيمة POSTGRES_URL)
    npm run db:generate   # يولّد ملفات الهجرة من src/lib/db/schema.ts
