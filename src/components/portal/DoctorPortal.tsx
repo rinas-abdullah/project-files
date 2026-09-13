@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, User, Activity, AlertCircle, CheckCircle2, ActivitySquare, Plus, Send, FileText } from "lucide-react";
+import { Search, User, Activity, AlertCircle, CheckCircle2, ActivitySquare, Send, FileText } from "lucide-react";
 import { Patient } from "@/lib/types/portal";
-import { GlassCard, GlassBadge, GlassButton } from "@/components/ui/glass";
+import { GlassCard, GlassBadge } from "@/components/ui/glass";
 
 export function DoctorPortal() {
   const [searchMrn, setSearchMrn] = useState("");

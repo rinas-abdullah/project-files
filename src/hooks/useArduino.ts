@@ -36,7 +36,7 @@ export function useArduino() {
 
       // Start reading
       const textDecoder = new TextDecoderStream();
-      const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+      port.readable.pipeTo(textDecoder.writable);
       const reader = textDecoder.readable.getReader();
       readerRef.current = reader;
 
@@ -60,7 +60,7 @@ export function useArduino() {
               // Expected format from Arduino: {"temp": 37.1, "pressure": 110, "steps": 5}
               const parsed = JSON.parse(cleanLine) as ArduinoData;
               setData(parsed);
-            } catch (err) {
+            } catch {
               console.log("Could not parse Arduino data:", cleanLine);
             }
           }

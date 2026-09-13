@@ -1,6 +1,5 @@
 import React from "react";
 import { Loader2 } from "lucide-react";
-import { GlassCard } from "./glass";
 
 export function Spinner({ className }: { className?: string }) {
   return <Loader2 className={`w-6 h-6 animate-spin text-[#0B4D8D] ${className}`} />;

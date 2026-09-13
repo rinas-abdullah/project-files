@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       message: "تم استلام طلب الشراكة بنجاح، سيتواصل معك فريق دِثار الطبي خلال 24 ساعة.",
       receivedAt: new Date().toISOString()
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "حدث خطأ أثناء معالجة الطلب، يرجى المحاولة مرة أخرى أو مراسلتنا عبر البريد المباشر." },
       { status: 500 }

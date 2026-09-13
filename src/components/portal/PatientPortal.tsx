@@ -1,10 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import { 
-  Wifi, Activity, 
-  Clock, Battery, Bluetooth, Cpu, 
-  Droplets, Thermometer, Footprints, 
-  ActivitySquare, CheckCircle2, AlertTriangle, AlertCircle
+import {
+  Wifi,
+  Clock, Battery, Bluetooth, Cpu,
+  ActivitySquare, CheckCircle2, AlertTriangle
 } from "lucide-react";
 import { portalMockData } from "@/lib/portal-mock-data";
 import { GlassCard, GlassBadge } from "@/components/ui/glass";
@@ -15,8 +14,6 @@ import { Patient } from "@/lib/types/portal";
 import { useLanguage } from "@/lib/LanguageContext";
 
 // Static data for sparklines to prevent re-renders and freezing
-const SPARKLINE_DATA_STEPS = [{value: 30}, {value: 40}, {value: 35}, {value: 50}, {value: 49}, {value: 60}, {value: 70}, {value: 91}, {value: 125}];
-const SPARKLINE_DATA_PRESSURE = [{value: 110}, {value: 112}, {value: 115}, {value: 118}, {value: 118}, {value: 119}, {value: 117}, {value: 118}];
 const SPARKLINE_DATA_TEMP = [{value: 36.5}, {value: 36.6}, {value: 36.8}, {value: 37.0}, {value: 37.1}, {value: 37.1}, {value: 37.0}, {value: 37.1}];
 const SPARKLINE_DATA_HUMIDITY = [{value: 45}, {value: 44}, {value: 43}, {value: 42}, {value: 42}, {value: 42}, {value: 41}, {value: 42}];
 
@@ -45,7 +42,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
   const { isConnected: isFirebaseConnected, data: firebaseData } = useArduinoFirebase();
   const { isConnected: isSerialConnected, data: serialData, connect: connectSerial, disconnect: disconnectSerial } = useArduino();
   const [liveApiData, setLiveApiData] = React.useState<LiveTelemetry | null>(null);
-  const [isLiveStreaming, setIsLiveStreaming] = React.useState(true);
+  const isLiveStreaming = true;
 
   const data = portalMockData.patientPortal;
   const { t, language } = useLanguage();
@@ -71,7 +68,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
             setLiveApiData(json.telemetry);
           }
         }
-      } catch (err) {
+      } catch {
         // ignore
       }
     };
@@ -89,22 +86,6 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
     : liveApiData 
     ? liveApiData.liveVitals.temperature.toFixed(1)
     : patientData?.metrics?.maxTemp || "37.1";
-
-  const currentPressure = isSerialConnected && serialData
-    ? serialData.pressure.toString()
-    : isFirebaseConnected && firebaseData
-    ? firebaseData.pressure.toString()
-    : liveApiData
-    ? liveApiData.liveVitals.pressure.toString()
-    : patientData?.metrics?.avgPressure || "118";
-
-  const currentSteps = isSerialConnected && serialData
-    ? serialData.steps.toLocaleString()
-    : isFirebaseConnected && firebaseData
-    ? firebaseData.steps.toLocaleString()
-    : liveApiData
-    ? liveApiData.liveVitals.steps.toLocaleString()
-    : patientData?.metrics?.steps.toLocaleString() || "4,281";
 
   return (
     <div className="flex flex-col lg:flex-row gap-6">

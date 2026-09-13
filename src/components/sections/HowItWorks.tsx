@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { User, Activity, ShieldCheck, Cpu, AlertTriangle, MonitorCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -63,9 +64,11 @@ export default function HowItWorks() {
     return (
       <div className="relative flex items-center justify-center select-none" dir="ltr">
         {/* Large Smart PAD Photo directly on background */}
-        <img 
-          src="/smart-insole-closed.png" 
-          alt="Dithar Smart PAD" 
+        <Image
+          src="/smart-insole-closed.png"
+          alt="Dithar Smart PAD"
+          width={300}
+          height={800}
           className={cn(
             "h-95 sm:h-112.5 md:h-125 lg:h-135 xl:h-145 w-auto object-contain transform -rotate-12 filter transition-all duration-500 drop-shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:drop-shadow-[0_20px_50px_rgba(0,0,0,0.4)]",
             activeStep === 4 ? "brightness-95 contrast-105" : "brightness-100"

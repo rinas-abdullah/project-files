@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Patient } from "@/lib/types/portal";
 import { PageLoader, EmptyState } from "@/components/ui/loading-states";
-import { GlassCard, GlassBadge } from "@/components/ui/glass";
+import { GlassCard } from "@/components/ui/glass";
 import { useToast } from "@/components/ui/use-toast";
 import { ChevronRight, User, AlertTriangle, FileText, ActivitySquare, ShieldCheck, Thermometer, Footprints, Send } from "lucide-react";
 
@@ -66,7 +66,7 @@ export default function PatientDetailsPage() {
           type: "success"
         });
       }
-    } catch (err) {
+    } catch {
       toast({
         title: "خطأ",
         description: "تعذر حفظ الملاحظة السريرية.",
