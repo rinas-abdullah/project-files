@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://ditharhealth.sa/sitemap.xml",
+    sitemap: "https://project-files-biliilez7200-9710s-projects.vercel.app/sitemap.xml",
   };
 }
