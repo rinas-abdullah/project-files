@@ -13,8 +13,8 @@ import { GlassCard } from "@/components/ui/glass";
 // Mirrors the default demo accounts in src/lib/auth/users.ts (for display only —
 // an operator who overrides the DEMO_*_PASSWORD env vars should update this too).
 const DEMO_CREDENTIALS: Record<UserRole, { identifier: string; password: string }> = {
-  patient: { identifier: "sara.alotaibi@dithar.sa", password: "Dithar@Patient2026!" },
-  doctor: { identifier: "dr.khalid@dithar.sa", password: "Dithar@Doctor2026!" },
+  patient: { identifier: "sara.alotaibi@ditharhealth.sa", password: "Dithar@Patient2026!" },
+  doctor: { identifier: "dr.khalid@ditharhealth.sa", password: "Dithar@Doctor2026!" },
   hospital_admin: { identifier: "admin@kfshrc.edu.sa", password: "Dithar@Admin2026!" },
 };
 

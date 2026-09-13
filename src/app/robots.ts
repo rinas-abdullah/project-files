@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://dithar.sa/sitemap.xml",
+    sitemap: "https://ditharhealth.sa/sitemap.xml",
   };
 }
