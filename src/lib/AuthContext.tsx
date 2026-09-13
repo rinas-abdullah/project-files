@@ -51,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const parsed = JSON.parse(session);
         setUser(parsed);
-      } catch (e) {
+      } catch {
         console.error("Invalid session data");
       }
     }

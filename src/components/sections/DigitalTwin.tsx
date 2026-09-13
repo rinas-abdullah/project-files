@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Activity, Thermometer, ShieldCheck, 
-  Droplets, Footprints, Gauge, Sparkles,
-  Layers, CheckCircle2, ArrowUpRight
+import { motion } from "framer-motion";
+import Image from "next/image";
+import {
+  Activity, Thermometer,
+  Droplets, Gauge,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -126,10 +126,11 @@ export default function DigitalTwin() {
               
               {/* Dual Anatomical Foot Outline */}
               <div className="relative w-72 h-80 flex items-center justify-center select-none">
-                <img 
-                  src="/images/foot-heatmap.png" 
-                  alt="Plantar Anatomy" 
-                  className="w-full h-full object-contain filter contrast-125 opacity-70"
+                <Image
+                  src="/images/foot-heatmap.png"
+                  alt="Plantar Anatomy"
+                  fill
+                  className="object-contain filter contrast-125 opacity-70"
                 />
 
                 {/* Accurately positioned anatomical sensor hotspots */}

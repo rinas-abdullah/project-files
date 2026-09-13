@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { motion } from "framer-motion";
-import { ShieldAlert, Accessibility, Shield, Award, Clipboard, Users, Building, Activity, HeartPulse } from "lucide-react";
+import { ShieldAlert, Accessibility, Shield, Clipboard, Users, Building, Activity, HeartPulse } from "lucide-react";
 
 export default function UseCases() {
   const patientCases = [

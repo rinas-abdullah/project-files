@@ -8,7 +8,6 @@ import { ArrowRight, User, Stethoscope, Building2, Bell, Menu, X, LogOut, Globe 
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/AuthContext";
 import { useLanguage } from "@/lib/LanguageContext";
-import { GlassCard } from "@/components/ui/glass";
 
 export function PortalHeader() {
   const pathname = usePathname();

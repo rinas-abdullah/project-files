@@ -1,21 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import Image from "next/image";
-import {
-  AreaChart, Area, LineChart, Line,
-  XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, ReferenceLine,
-} from "recharts";
 import Link from "next/link";
 import {
-  Activity, Bell, ChevronRight, Users,
-  AlertTriangle, ShieldCheck, HeartPulse,
-  Settings, TrendingUp, TrendingDown, Zap, X, Check,
-  Download, Send, Calendar, BarChart2, Wifi, Battery,
-  Clock, FileText, RefreshCw, ArrowLeft,
+  Activity, Bell, AlertTriangle, X, Check, ArrowLeft,
 } from "lucide-react";
 
 /* ═══════════════════════════════
@@ -24,18 +15,6 @@ import {
 
 type Risk = "high" | "medium" | "stable";
 type AlertLevel = "danger" | "warning" | "info";
-
-const RISK_CONFIG = {
-  high:   { label: "خطر",    color: "#ef4444", bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.3)", bar: "#ef4444", dot: "#ef4444" },
-  medium: { label: "متوسط",  color: "#f59e0b", bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.3)", bar: "#f59e0b", dot: "#f59e0b" },
-  stable: { label: "مستقر", color: "#10b981", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.3)", bar: "#10b981", dot: "#10b981" },
-};
-
-const ALERT_COLORS = {
-  danger:  { bg: "rgba(239,68,68,0.1)",   border: "rgba(239,68,68,0.2)",   text: "#b91c1c", icon: "🔴" },
-  warning: { bg: "rgba(245,158,11,0.1)",  border: "rgba(245,158,11,0.2)",  text: "#b45309", icon: "🟡" },
-  info:    { bg: "rgba(11,77,141,0.08)",  border: "rgba(11,77,141,0.2)",  text: "#0B4D8D", icon: "🔵" },
-};
 
 /* ═══════════════════════════════
    PATIENT DATA
@@ -124,145 +103,6 @@ const PATIENTS = [
    PRESSURE COLOR SCALE
 ═══════════════════════════════ */
 
-function pressureToColor(v: number, alpha = 1): string {
-  if (v >= 0.90) return `rgba(220,38,38,${alpha})`;
-  if (v >= 0.75) return `rgba(234,88,12,${alpha})`;
-  if (v >= 0.60) return `rgba(234,179,8,${alpha})`;
-  if (v >= 0.45) return `rgba(34,197,94,${alpha})`;
-  if (v >= 0.30) return `rgba(11,77,141,${alpha})`;
-  return `rgba(99,102,241,${alpha * 0.7})`;
-}
-
-/* ═══════════════════════════════
-   FOOT HEATMAP COMPONENT
-═══════════════════════════════ */
-
-type Zones = typeof PATIENTS[0]["pressure"];
-
-const ZONE_COORDS: Record<keyof Zones, { cx: string; cy: string; rw: string; rh: string }> = {
-  bigToe: { cx: "42%", cy: "8%",  rw: "18%", rh: "10%" },
-  toe2:   { cx: "31%", cy: "6%",  rw: "13%", rh: "8%"  },
-  toe3:   { cx: "21%", cy: "8%",  rw: "11%", rh: "7%"  },
-  toe4:   { cx: "12%", cy: "12%", rw: "9%",  rh: "6%"  },
-  toe5:   { cx: "5%",  cy: "17%", rw: "8%",  rh: "6%"  },
-  ball:   { cx: "35%", cy: "28%", rw: "24%", rh: "14%" },
-  arch:   { cx: "17%", cy: "53%", rw: "17%", rh: "20%" },
-  heel:   { cx: "27%", cy: "82%", rw: "24%", rh: "14%" },
-};
-
-function FootOverlay({ zones, flip = false }: { zones: Zones; flip?: boolean }) {
-  return (
-    <div className="absolute inset-0" style={{ transform: flip ? "scaleX(-1)" : undefined }}>
-      {(Object.entries(ZONE_COORDS) as [keyof Zones, { cx: string; cy: string; rw: string; rh: string }][]).map(([key, pos]) => {
-        const val = zones[key];
-        return (
-          <div
-            key={key}
-            className="absolute rounded-full"
-            style={{
-              left: pos.cx, top: pos.cy,
-              width: pos.rw, height: pos.rh,
-              transform: "translate(-50%, -50%)",
-              background: `radial-gradient(ellipse, ${pressureToColor(val, 0.85)} 0%, ${pressureToColor(val, 0.4)} 45%, transparent 80%)`,
-              filter: "blur(4px)",
-              mixBlendMode: "multiply", // Better for light backgrounds
-              transition: "background 0.8s ease",
-            }}
-          />
-        );
-      })}
-    </div>
-  );
-}
-
-function DualFootHeatmap({ patient }: { patient: typeof PATIENTS[0] }) {
-  const maxL = Math.max(...Object.values(patient.pressure));
-  const maxR = Math.max(...Object.values(patient.pressureR));
-
-  return (
-    <div className="flex gap-2 w-full h-full p-2 bg-slate-50/50">
-      {/* Left */}
-      <div className="flex-1 flex flex-col gap-1">
-        <div className="flex items-center justify-between px-1">
-          <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500">
-            يسار
-          </span>
-          <span className="text-[9px] font-mono font-bold" style={{ color: pressureToColor(maxL) }}>
-            {Math.round(maxL * 100)}%
-          </span>
-        </div>
-        <div className="relative flex-1 overflow-hidden">
-          <Image
-            src="/images/foot-heatmap.png"
-            alt="left foot"
-            fill
-            className="object-contain"
-            style={{
-              filter: "brightness(0.9) grayscale(0.5) opacity(0.8)",
-              transform: "scaleX(2)",
-              transformOrigin: "left center",
-            }}
-          />
-          <FootOverlay zones={patient.pressure} />
-        </div>
-      </div>
-
-      {/* divider */}
-      <div className="w-px bg-slate-200 self-stretch" />
-
-      {/* Right */}
-      <div className="flex-1 flex flex-col gap-1">
-        <div className="flex items-center justify-between px-1">
-          <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500">
-            يمين
-          </span>
-          <span className="text-[9px] font-mono font-bold" style={{ color: pressureToColor(maxR) }}>
-            {Math.round(maxR * 100)}%
-          </span>
-        </div>
-        <div className="relative flex-1 overflow-hidden">
-          <Image
-            src="/images/foot-heatmap.png"
-            alt="right foot"
-            fill
-            className="object-contain"
-            style={{
-              filter: "brightness(0.9) grayscale(0.5) opacity(0.8)",
-              transform: "scaleX(2)",
-              transformOrigin: "right center",
-            }}
-          />
-          <FootOverlay zones={patient.pressureR} flip />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════
-   CUSTOM CHART TOOLTIP
-═══════════════════════════════ */
-
-function ChartTooltip({ active, payload, label, unit }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  active?: boolean; payload?: any[];
-  label?: string; unit?: string;
-}) {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white/95 px-3 py-2 shadow-xl backdrop-blur-md">
-      <p className="text-[10px] text-slate-500 mb-1">{label}</p>
-      {payload.map((p: { color: string; name: string; value: number }, i: number) => (
-        <div key={i} className="flex items-center gap-2 text-[11px]">
-          <span className="h-2 w-2 rounded-full" style={{ background: p.color }} />
-          <span className="text-slate-600 font-arabic">{p.name}:</span>
-          <span className="font-mono font-bold text-slate-900">{p.value}{unit}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 /* ═══════════════════════════════
    TOAST
 ═══════════════════════════════ */
@@ -284,81 +124,15 @@ function Toast({ msg, onClose }: { msg: string; onClose: () => void }) {
 }
 
 /* ═══════════════════════════════
-   STAT CARD
-═══════════════════════════════ */
-
-function StatCard({ label, value, sub, color, pulse = false }: {
-  label: string; value: string | number; sub: string;
-  color: string; icon?: React.ElementType; pulse?: boolean;
-}) {
-  return (
-    <motion.div
-      whileHover={{ y: -2, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 400 }}
-      className="rounded-2xl border border-slate-100 bg-white px-3 py-3 shadow-sm cursor-default"
-    >
-      <p className="text-[9px] uppercase text-slate-500 font-arabic mb-2">{label}</p>
-      <p className="text-2xl font-bold font-mono" style={{ color }}>
-        {value}
-        {pulse && <span className="inline-block w-1.5 h-4 ml-0.5 mb-0.5 rounded-sm bg-current animate-pulse" />}
-      </p>
-      <p className="text-[9px] text-slate-500 mt-0.5 font-arabic">{sub}</p>
-    </motion.div>
-  );
-}
-
-/* ═══════════════════════════════
    MAIN COMPONENT
 ═══════════════════════════════ */
 
 export default function PlatformDashboard() {
-  const [selectedIdx, setSelectedIdx] = useState(0);
-  const [time, setTime] = useState("");
+  const selectedIdx = 0;
   const [toast, setToast] = useState<string | null>(null);
-  const [activeNav, setActiveNav] = useState("dashboard");
-  const [liveTemp, setLiveTemp] = useState<number>(0);
   const [showFallAlert, setShowFallAlert] = useState(false);
-  const liveRef = useRef(0);
 
   const patient = PATIENTS[selectedIdx];
-  const risk = RISK_CONFIG[patient.risk];
-
-  /* real-time clock */
-  useEffect(() => {
-    const update = () =>
-      setTime(new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }));
-    update();
-    const i = setInterval(update, 1000);
-    return () => clearInterval(i);
-  }, []);
-
-  /* live temperature drift (reset baseline when patient changes) */
-  useEffect(() => {
-    liveRef.current = patient.vitals.tempC;
-  }, [patient.vitals.tempC]);
-
-  useEffect(() => {
-    const i = setInterval(() => {
-      liveRef.current = parseFloat((liveRef.current + (Math.random() - 0.5) * 0.05).toFixed(2));
-      setLiveTemp(parseFloat(liveRef.current.toFixed(1)));
-    }, 1500);
-    return () => clearInterval(i);
-  }, []);
-
-  const notify = useCallback((msg: string) => setToast(msg), []);
-
-  const totAlerts = PATIENTS.reduce((s, p) => s + p.alerts, 0);
-  const highCount = PATIENTS.filter((p) => p.risk === "high").length;
-  const stableCount = PATIENTS.filter((p) => p.risk === "stable").length;
-
-  const navItems = [
-    { id: "dashboard", icon: Activity,      label: "لوحة التحكم" },
-    { id: "patients",  icon: Users,         label: "المرضى" },
-    { id: "live",      icon: HeartPulse,    label: "مراقبة حية" },
-    { id: "analytics", icon: BarChart2,     label: "التحليلات" },
-    { id: "alerts",    icon: AlertTriangle, label: "التنبيهات", badge: totAlerts },
-    { id: "reports",   icon: FileText,      label: "التقارير" },
-  ];
 
   return (
     <section id="dashboard" className="relative w-full bg-transparent overflow-hidden">

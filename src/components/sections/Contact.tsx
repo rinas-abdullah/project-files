@@ -106,7 +106,7 @@ export default function Contact() {
       } else {
         setError(result.error || "عذراً، حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة لاحقاً.");
       }
-    } catch (err) {
+    } catch {
       setError("فشل الاتصال بالخادم. يرجى مراسلتنا مباشرة عبر البريد الإلكتروني.");
     } finally {
       setIsSubmitting(false);
