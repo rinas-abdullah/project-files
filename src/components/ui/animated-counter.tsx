@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface AnimatedCounterProps {
   end: number;
@@ -23,15 +23,42 @@ export function AnimatedCounter({
   className = "",
 }: AnimatedCounterProps) {
   const [count, setCount] = useState(0);
+  const [isInView, setIsInView] = useState(false);
 
   const ref = useRef<HTMLSpanElement>(null);
-
-  const isInView = useInView(ref, {
-    once: true,
-    margin: "-100px",
-  });
-
   const hasAnimated = useRef(false);
+
+  // Dedicated native IntersectionObserver instead of relying solely on
+  // framer-motion's useInView, which can miss the initial callback in
+  // Safari for elements that are already visible on mount (negative
+  // margins + overflow-hidden ancestors behave inconsistently across
+  // browsers). A direct bounding-rect check covers that case as a fallback.
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || hasAnimated.current) return;
+
+    const rect = node.getBoundingClientRect();
+    const alreadyVisible =
+      rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.bottom > 0;
+
+    if (alreadyVisible) {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0, rootMargin: "100px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!isInView || hasAnimated.current) return;

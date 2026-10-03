@@ -36,11 +36,12 @@ function generateTemp(base: number, trend: number, len = 48) {
   }));
 }
 
+// Illustrative-only sample used for the public homepage preview — not a real patient record.
 const PATIENTS = [
   {
-    id: "P-2401", name: "عبدالرحمن السعود", age: 58, gender: "ذكر",
-    condition: "Post-Stroke Hemiplegia", ward: "جناح ج-4", physician: "د. العمري",
-    risk: "high" as Risk, admitted: "2026-05-28",
+    id: "DEMO-01", name: "عرض توضيحي", age: 58, gender: "ذكر",
+    condition: "Post-Stroke Hemiplegia (نموذج توضيحي)", ward: "—", physician: "—",
+    risk: "high" as Risk, admitted: "—",
     vitals: { steps: 1420, balance: 78, tempC: 37.2, heartRate: 82, bmi: 29.4, fallRiskIndex: 8.7, humidity: 81 },
     recovery: 52, compliance: 68, alerts: 4,
     cadence: generateCadence(48, 22),
@@ -52,49 +53,6 @@ const PATIENTS = [
       { level: "danger"  as AlertLevel, text: "تراجع تماثل المشية 1.2° عن خط الأساس — تدهور حركي" },
       { level: "warning" as AlertLevel, text: "رطوبة داخلية 81% — خطر تهيج الجلد" },
       { level: "info"    as AlertLevel, text: "موعد مراجعة طارئة خلال 6 ساعات" },
-    ],
-  },
-  {
-    id: "P-2389", name: "نورة الزهراني", age: 44, gender: "أنثى",
-    condition: "Parkinson's Disease", ward: "جناح أ-2", physician: "د. الغامدي",
-    risk: "stable" as Risk, admitted: "2026-06-01",
-    vitals: { steps: 3210, balance: 91, tempC: 35.9, heartRate: 74, bmi: 26.1, fallRiskIndex: 7.1, humidity: 49 },
-    recovery: 83, compliance: 94, alerts: 1,
-    cadence: generateCadence(72, 8),
-    temperature: generateTemp(35.9, 0.03),
-    pressure: { bigToe: 0.54, toe2: 0.49, toe3: 0.43, toe4: 0.37, toe5: 0.32, ball: 0.57, arch: 0.33, heel: 0.59 },
-    pressureR: { bigToe: 0.51, toe2: 0.46, toe3: 0.41, toe4: 0.35, toe5: 0.30, ball: 0.54, arch: 0.31, heel: 0.56 },
-    aiAlerts: [
-      { level: "info" as AlertLevel, text: "معدل الخطوات طبيعي — الأداء الحركي جيد" },
-    ],
-  },
-  {
-    id: "P-2412", name: "هيفاء المطيري", age: 61, gender: "أنثى",
-    condition: "Post-Stroke Rehab — Left Hemiplegia", ward: "جناح ب-1", physician: "د. الحارثي",
-    risk: "medium" as Risk, admitted: "2026-05-31",
-    vitals: { steps: 1890, balance: 67, tempC: 36.5, heartRate: 81, bmi: 27.3, fallRiskIndex: 6.8, humidity: 55 },
-    recovery: 58, compliance: 74, alerts: 2,
-    cadence: generateCadence(52, 18),
-    temperature: generateTemp(36.4, 0.08),
-    pressure: { bigToe: 0.74, toe2: 0.41, toe3: 0.31, toe4: 0.25, toe5: 0.19, ball: 0.68, arch: 0.22, heel: 0.71 },
-    pressureR: { bigToe: 0.38, toe2: 0.33, toe3: 0.28, toe4: 0.23, toe5: 0.18, ball: 0.36, arch: 0.27, heel: 0.40 },
-    aiAlerts: [
-      { level: "warning" as AlertLevel, text: "عدم تماثل حركي 42% بين الطرفين — الطرف المصاب أضعف" },
-      { level: "info"    as AlertLevel, text: "تحسن 8% في كفاءة مشية الطرف الأيسر خلال 7 أيام" },
-    ],
-  },
-  {
-    id: "P-2398", name: "سعد الشمري", age: 76, gender: "ذكر",
-    condition: "Elderly Fall Prevention", ward: "جناح د-3", physician: "د. القرشي",
-    risk: "medium" as Risk, admitted: "2026-06-03",
-    vitals: { steps: 2240, balance: 72, tempC: 36.2, heartRate: 74, bmi: 26.5, fallRiskIndex: 6.2, humidity: 52 },
-    recovery: 76, compliance: 85, alerts: 1,
-    cadence: generateCadence(58, 16),
-    temperature: generateTemp(36.1, 0.02),
-    pressure: { bigToe: 0.58, toe2: 0.51, toe3: 0.44, toe4: 0.38, toe5: 0.28, ball: 0.55, arch: 0.42, heel: 0.61 },
-    pressureR: { bigToe: 0.55, toe2: 0.48, toe3: 0.42, toe4: 0.36, toe5: 0.26, ball: 0.52, arch: 0.40, heel: 0.58 },
-    aiAlerts: [
-      { level: "warning" as AlertLevel, text: "تراجع ثبات مركز الجاذبية 15% — خطر سقوط مرتفع" },
     ],
   },
 ];
@@ -178,9 +136,12 @@ export default function PlatformDashboard() {
                   <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm">
                     <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                       <div>
-                        <p className="text-xs font-semibold text-slate-500">مرحبا بك في منصة المريض</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs font-semibold text-slate-500">معاينة منصة المريض</p>
+                          <span className="rounded-full bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.1em]">بيانات توضيحية</span>
+                        </div>
                         <h3 className="mt-1 text-2xl font-bold text-slate-900">{patient.name}</h3>
-                        <p className="mt-2 text-sm text-slate-500 leading-relaxed">نظرة عامة على حالة قدمك الذكية الآن.</p>
+                        <p className="mt-2 text-sm text-slate-500 leading-relaxed">مثال توضيحي لشكل المتابعة الحركية على المنصة.</p>
                       </div>
                       <div className="inline-flex items-center gap-3 rounded-full bg-white px-4 py-2 border border-slate-200 shadow-sm">
                         <div className="h-10 w-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-700 font-bold">92</div>
@@ -249,7 +210,7 @@ export default function PlatformDashboard() {
                           ))}
                         </div>
                         <div className="flex flex-col items-center justify-center gap-4">
-                          <Image src="/images/smart-insole-closed.png" alt="Dithar Smart PAD" width={130} height={130} className="object-contain" />
+                          <Image src="/smart-insole-closed.png" alt="Dithar Smart PAD" width={130} height={130} className="object-contain" />
                           <button className="w-full rounded-3xl bg-[#0B4D8D] text-white py-3 text-sm font-bold hover:bg-blue-800 transition-colors">
                             خارطة الصحة الشاملة
                           </button>
@@ -302,7 +263,7 @@ export default function PlatformDashboard() {
 
       {/* caption */}
       <p className="text-center text-xs text-slate-500 -mt-10 pb-8 font-arabic font-medium">
-        اختر أي مريض من القائمة الجانبية • اضغط لفتح المنصة الكاملة • البيانات تتحدث عبر BLE 5.2
+        معاينة توضيحية للمنصة • اضغط لفتح المنصة الكاملة • البيانات تتحدث عبر BLE 5.2
       </p>
 
       {/* Toast */}
