@@ -88,16 +88,20 @@ export const Card = ({
   return (
     <motion.div
       style={isMobile ? {
-        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+        boxShadow: "0 8px 24px rgba(15,23,42,0.08)",
       } : {
         rotateX: rotate,
         scale,
         boxShadow:
           "0 0 #00000030, 0 10px 30px rgba(0,0,0,0.1), 0 35px 50px rgba(0,0,0,0.15), 0 70px 70px rgba(0,0,0,0.12)",
       }}
-      className="max-w-5xl -mt-12 mx-auto h-120 md:h-160 w-full border-4 border-[#2D2D30] p-2 md:p-4 bg-[#121212] rounded-[30px] shadow-2xl transition-colors duration-300"
+      className={`max-w-5xl -mt-12 mx-auto h-120 md:h-160 w-full shadow-2xl transition-colors duration-300 ${
+        isMobile
+          ? "border border-slate-200 p-1.5 bg-white rounded-2xl"
+          : "border-4 border-[#2D2D30] p-2 md:p-4 bg-[#121212] rounded-[30px]"
+      }`}
     >
-      <div className="h-full w-full overflow-hidden rounded-2xl bg-[#FAFCFE] dark:bg-slate-950 md:rounded-2xl md:p-4">
+      <div className="h-full w-full overflow-hidden rounded-xl md:rounded-2xl bg-[#FAFCFE] dark:bg-slate-950 md:p-4">
         {children}
       </div>
     </motion.div>
