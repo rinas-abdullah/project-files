@@ -2,16 +2,16 @@
 import { Marquee } from "@/components/ui/marquee";
 
 const techItems = [
-  { label: "Pressure Sensing", sublabel: "14-Zone Array" },
+  { label: "Pressure Sensing", sublabel: "9-Zone Array" },
   { label: "Thermal Mapping", sublabel: "Infrared Grid" },
   { label: "IMU Motion", sublabel: "6-DOF Tracking" },
-  { label: "BLE 5.0", sublabel: "Encrypted Sync" },
+  { label: "BLE 5.2", sublabel: "Encrypted Sync" },
   { label: "Edge AI", sublabel: "On-Device Inference" },
   { label: "Energy Harvesting", sublabel: "Piezoelectric" },
   { label: "Cloud Analytics", sublabel: "Real-time Pipeline" },
   { label: "Digital Twin", sublabel: "Patient Model" },
-  { label: "FDA-Class II", sublabel: "Medical Grade" },
-  { label: "ISO 13485", sublabel: "Quality System" },
+  { label: "Regulatory Pathway", sublabel: "Pre-Certification" },
+  { label: "Clinical Validation", sublabel: "In Progress" },
 ];
 
 export function TechMarquee() {

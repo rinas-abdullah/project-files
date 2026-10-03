@@ -185,13 +185,13 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
 
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-3 mt-4 md:mt-0">
                 <Image 
-                  src="/images/smart-insole-closed.png" 
-                  alt="Dithar Smart PAD" 
-                  width={110} 
-                  height={110} 
+                  src="/smart-insole-closed.png"
+                  alt="Dithar Smart PAD"
+                  width={110}
+                  height={110}
                   className="object-contain -rotate-[15deg] drop-shadow-xl"
                   unoptimized
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/images/insole-clinical-premium.png'; }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/insole-clinical-premium.png'; }}
                 />
                 
                 {/* Hardware Web Serial Button */}

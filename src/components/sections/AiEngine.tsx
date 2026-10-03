@@ -151,15 +151,15 @@ export default function AiEngine() {
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400 font-semibold font-sans">
-                        أداء النموذج
+                        أهداف الأداء المستهدفة
                       </p>
                       <p className="mt-2 text-lg font-bold text-dark-text dark:text-zinc-100 font-arabic">
-                        97.8% دقة تشخيص الميزات الحركية
+                        97.8% دقة رصد التغيرات الحركية
                       </p>
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary-blue dark:text-medical-blue">
-                      <span className="h-2 w-2 rounded-full bg-primary-blue dark:bg-medical-blue" />
-                      Clinical grade
+                    <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-600 dark:text-amber-400">
+                      <span className="h-2 w-2 rounded-full bg-amber-500" />
+                      Target · Pre-Validation
                     </div>
                   </div>
 
@@ -177,6 +177,9 @@ export default function AiEngine() {
                       <span className="font-semibold text-slate-900 dark:text-slate-100">1.2s</span>
                     </div>
                   </div>
+                  <p className="mt-4 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 font-arabic border-t border-slate-200 dark:border-zinc-800 pt-3">
+                    أهداف أداء أولية من بيئة التطوير، قيد التحقق السريري، وليست نتائج دراسة سريرية منشورة.
+                  </p>
                 </div>
               </div>
             </div>

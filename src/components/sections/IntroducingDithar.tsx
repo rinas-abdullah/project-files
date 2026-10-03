@@ -82,9 +82,9 @@ export default function IntroducingDithar() {
     {
       id: "energy",
       icon: <Zap className="w-5 h-5" />,
-      title: "حصد الطاقة ذاتياً",
+      title: "حصد الطاقة من الحركة",
       titleEn: "Energy Harvesting",
-      desc: "تقنية كهرضغطية مدمجة تحوّل ضغط الخطوات إلى طاقة كهربائية لشحن وحدة التخزين الداخلية بشكل ذاتي ومستمر دون الحاجة لمصدر شحن خارجي.",
+      desc: "تقنية كهرضغطية مدمجة تحوّل جزءاً من ضغط الخطوات إلى طاقة كهربائية تدعم شحن وحدة التخزين الداخلية وتُطيل عمر البطارية بين الشحنات الخارجية.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#fbbf24",
       x: "36%",
