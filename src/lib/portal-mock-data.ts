@@ -1,10 +1,5 @@
 export const portalMockData = {
   patientPortal: {
-    nafathUser: {
-      name: "أحمد بن عبد الله السلمان",
-      idPrefix: "10849****",
-      mrn: "#DH-94821",
-    },
     treatmentPlan: {
       stepsTarget: 8000,
       stepsCurrent: 6240,

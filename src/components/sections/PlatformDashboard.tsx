@@ -111,7 +111,7 @@ export default function PlatformDashboard() {
                 href="/portal"
                 className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-blue hover:bg-blue-700 text-white font-bold text-xs shadow-lg shadow-blue-900/20 hover:scale-105 transition-all group"
               >
-                <span>🌐 اضغط هنا لفتح منصة دِثار التفاعلية (Portal) | دخول نفاذ 🇸🇦 • الطبيب • المستشفيات</span>
+                <span>🌐 اضغط هنا لفتح منصة دِثار التفاعلية (Portal) | المريض • الطبيب • المستشفيات</span>
                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               </Link>
             </div>
