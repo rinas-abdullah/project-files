@@ -6,7 +6,7 @@ import { Milestone, Settings, Award, Building2, Globe, Sparkles } from "lucide-r
 export default function Roadmap() {
   const milestones = [
     {
-      year: "2024",
+      year: "2026",
       icon: <Settings className="w-5 h-5 text-primary-blue" />,
       title: "تطوير النموذج الأولي • Prototype Development",
       desc: "إنتاج اللباد الطبي الذكي دِثار في نسخته المختبرية الأولى وإجراء الفحوصات الفنية والتأكد من موثوقية المستشعرات في بيئات محاكاة.",
