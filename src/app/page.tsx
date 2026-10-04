@@ -1,14 +1,15 @@
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import {
   Hero,
   HealthcareGap,
   IntroducingDithar,
+  DeviceSpecs,
   AiEngine,
   PatientJourney,
   UseCases,
   WhyDithar,
-  BusinessModel,
-  MarketOpportunity,
   Roadmap,
   Contact,
   Footer,
@@ -47,6 +48,8 @@ export default function Home() {
         <HealthcareGap />
         {/* 3. Introducing Dithar Smart PAD */}
         <IntroducingDithar />
+        {/* 3b. Device Technical Specifications */}
+        <DeviceSpecs />
         {/* 4. Exploded Product Experience */}
         <SmartInsoleExplodedView />
         {/* 5. How Dithar Works */}
@@ -63,15 +66,21 @@ export default function Home() {
         <UseCases />
         {/* 11. Why Dithar */}
         <WhyDithar />
-        {/* 12. Business Model */}
-        <BusinessModel />
-        {/* 13. Market Opportunity */}
-        <MarketOpportunity />
-        {/* 14. Roadmap */}
+        {/* 12. Investors CTA (full business model & market sizing moved to /investors) */}
+        <div className="w-full flex flex-col items-center py-16 px-6">
+          <Link
+            href="/investors"
+            className="group inline-flex items-center gap-3 px-7 py-4 rounded-full bg-primary-blue hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-900/20 hover:scale-105 transition-all"
+          >
+            <span>نموذج العمل وحجم السوق والفرصة الاستثمارية بالتفصيل</span>
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          </Link>
+        </div>
+        {/* 13. Roadmap */}
         <Roadmap />
-        {/* 15. Contact & CTA */}
+        {/* 14. Contact & CTA */}
         <Contact />
-        {/* 16. Footer */}
+        {/* 15. Footer */}
         <Footer />
       </main>
     </>

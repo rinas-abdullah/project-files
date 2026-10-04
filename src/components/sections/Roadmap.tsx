@@ -3,6 +3,14 @@
 import { motion } from "framer-motion";
 import { Milestone, Settings, Award, Building2, Globe, Sparkles } from "lucide-react";
 
+const CURRENT_YEAR = 2026;
+
+function getStatus(year: number) {
+  if (year < CURRENT_YEAR) return { label: "منجز", labelEn: "Done", dot: "bg-smart-green", text: "text-smart-green" };
+  if (year === CURRENT_YEAR) return { label: "قيد التنفيذ", labelEn: "In Progress", dot: "bg-amber-500", text: "text-amber-600" };
+  return { label: "قادم", labelEn: "Upcoming", dot: "bg-slate-300", text: "text-slate-400" };
+}
+
 export default function Roadmap() {
   const milestones = [
     {
@@ -81,6 +89,17 @@ export default function Roadmap() {
 
               {/* Card info */}
               <div className="flex-1 flex flex-col text-right pt-2">
+                <div className="flex items-center justify-end gap-2 mb-2">
+                  {(() => {
+                    const status = getStatus(parseInt(m.year, 10));
+                    return (
+                      <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider font-sans ${status.text}`}>
+                        <span className={`h-1.5 w-1.5 rounded-full ${status.dot}`} />
+                        {status.label}
+                      </span>
+                    );
+                  })()}
+                </div>
                 <h4 className="text-lg font-bold text-slate-800 font-arabic mb-2 leading-none">
                   {m.title.includes(" • ") ? (
                     <>

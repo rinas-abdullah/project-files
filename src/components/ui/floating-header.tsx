@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 
 const navItems = [
@@ -13,6 +14,10 @@ const navItems = [
   { name: "كيف يعمل", href: "#workflow" },
   { name: "الذكاء الاصطناعي", href: "#ai-engine" },
   { name: "تواصل معنا", href: "#contact" },
+];
+
+const externalNavItems = [
+  { name: "للمستثمرين", href: "/investors" },
 ];
 
 export function FloatingHeader() {
@@ -120,6 +125,20 @@ export function FloatingHeader() {
               </button>
 
             ))}
+            {externalNavItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={cn(
+                  "relative px-4 py-2 rounded-full text-[13px] font-medium transition-colors duration-200 cursor-pointer font-arabic",
+                  pathname === item.href
+                    ? "text-primary-blue bg-primary-blue/8 dark:text-medical-blue dark:bg-medical-blue/10 font-bold"
+                    : "text-dark-text/70 dark:text-slate-300/70 hover:text-dark-text dark:hover:text-white hover:bg-black/4 dark:hover:bg-white/5"
+                )}
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
 
           {/* Right: (language toggle removed) */}
@@ -192,6 +211,16 @@ export function FloatingHeader() {
                   {item.name}
 
                 </button>
+              ))}
+              {externalNavItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="px-4 py-3 text-right text-[15px] font-medium text-dark-text/80 dark:text-slate-300/80 hover:text-primary-blue dark:hover:text-medical-blue hover:bg-primary-blue/5 dark:hover:bg-white/5 rounded-xl transition-all duration-200 font-arabic"
+                >
+                  {item.name}
+                </Link>
               ))}
               <div className="mt-2 pt-2 border-t border-black/5 dark:border-white/10">
                 <button
