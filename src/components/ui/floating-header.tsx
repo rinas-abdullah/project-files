@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -141,8 +141,16 @@ export function FloatingHeader() {
             ))}
           </div>
 
-          {/* Right: (language toggle removed) */}
-          <div className="flex items-center gap-2" />
+          {/* Right: Login */}
+          <div className="flex items-center gap-2">
+            <Link
+              href="/portal/login"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary-blue hover:bg-blue-700 text-white text-[13px] font-bold transition-colors font-arabic"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              تسجيل الدخول
+            </Link>
+          </div>
 
         </motion.div>
       </motion.header>
@@ -177,7 +185,14 @@ export function FloatingHeader() {
           <span>دِثار</span>
         </button>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
+          <Link
+            href="/portal/login"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary-blue text-white text-[12px] font-bold font-arabic"
+          >
+            <LogIn className="w-3.5 h-3.5" />
+            دخول
+          </Link>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
