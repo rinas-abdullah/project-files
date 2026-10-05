@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,9 +33,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [autoLoginPending, setAutoLoginPending] = useState(Boolean(roleParam));
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const performLogin = async (identifier: string, loginPassword: string) => {
     setIsLoading(true);
     setErrorMessage(null);
 
@@ -43,7 +43,7 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier: email, password }),
+        body: JSON.stringify({ identifier, password: loginPassword }),
       });
 
       const data = await res.json();
@@ -53,19 +53,49 @@ export default function LoginPage() {
         if (data.user.role === "patient") router.push("/portal/patient");
         else if (data.user.role === "doctor") router.push("/portal/doctor");
         else if (data.user.role === "hospital_admin") router.push("/portal/hospital");
-      } else {
-        setErrorMessage(data.error || "تعذر تسجيل الدخول");
+        return true;
       }
+      setErrorMessage(data.error || "تعذر تسجيل الدخول");
+      return false;
     } catch {
       setErrorMessage("حدث خطأ في الاتصال بالخادم");
+      return false;
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Arriving via a role-specific link (e.g. the QR codes) skips the manual
+  // form entirely and signs straight into that role's demo account.
+  useEffect(() => {
+    if (!roleParam) return;
+    (async () => {
+      const ok = await performLogin(DEMO_CREDENTIALS[initialRole].identifier, DEMO_CREDENTIALS[initialRole].password);
+      if (!ok) setAutoLoginPending(false);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await performLogin(email, password);
+  };
+
+  if (autoLoginPending) {
+    return (
+      <div className="min-h-screen w-full bg-slate-50 flex flex-col items-center justify-center p-4 gap-6">
+        <Image src="/logo.png" alt="Dithar Logo" width={140} height={42} className="object-contain" priority />
+        <div className="flex items-center gap-2.5 text-sm font-bold text-[#0B4D8D]">
+          <span className="w-4 h-4 border-2 border-[#0B4D8D] border-t-transparent rounded-full animate-spin" />
+          <span>جاري تسجيل الدخول...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 relative overflow-hidden">
-      
+
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
          <div className="absolute top-[-10%] right-[-5%] w-[40vw] h-[40vw] rounded-full bg-[#0B4D8D]/10 blur-[100px]" />
