@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -93,37 +92,35 @@ export default function PlatformDashboard() {
   const patient = PATIENTS[selectedIdx];
 
   return (
-    <section id="dashboard" className="relative w-full bg-transparent overflow-hidden">
-      <ContainerScroll
-        titleComponent={
-          <div className="mb-6 text-center select-none px-4">
-            <span className="text-xs font-semibold tracking-[0.35em] uppercase font-sans unified-english text-primary-blue">
-              CLINICAL MONITORING PLATFORM
-            </span>
-            <h2 className="mt-3 text-[36px] sm:text-[48px] lg:text-[54px] font-bold font-arabic leading-[1.2] text-[#0F172A] tracking-tight unified-typography">
-              رعاية مستمرة في متناول يديك
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm sm:text-base text-slate-500 leading-relaxed font-arabic font-light unified-typography">
-              منصة دِثار السريرية — مراقبة مستمرة عبر 9 مناطق ضغط، درجة الحرارة، الرطوبة الداخلية، وتحليل المشية بالذكاء الاصطناعي في وقت فعلي.
-            </p>
-            <div className="mt-6">
-              <Link
-                href="/portal"
-                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-blue hover:bg-blue-700 text-white font-bold text-xs shadow-lg shadow-blue-900/20 hover:scale-105 transition-all group"
-              >
-                <span>🌐 اضغط هنا لفتح منصة دِثار التفاعلية (Portal) | المريض • الطبيب • المستشفيات</span>
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              </Link>
-            </div>
-          </div>
-        }
-      >
-        {/* ── Dashboard inner (Clickable iPad Screen to /portal) ── */}
+    <section id="dashboard" className="relative w-full bg-transparent overflow-hidden py-20 px-4">
+      <div className="mb-10 text-center select-none px-4">
+        <span className="text-xs font-semibold tracking-[0.35em] uppercase font-sans unified-english text-primary-blue">
+          CLINICAL MONITORING PLATFORM
+        </span>
+        <h2 className="mt-3 text-[36px] sm:text-[48px] lg:text-[54px] font-bold font-arabic leading-[1.2] text-[#0F172A] tracking-tight unified-typography">
+          رعاية مستمرة في متناول يديك
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-sm sm:text-base text-slate-500 leading-relaxed font-arabic font-light unified-typography">
+          منصة دِثار السريرية — مراقبة مستمرة عبر 9 مناطق ضغط، درجة الحرارة، الرطوبة الداخلية، وتحليل المشية بالذكاء الاصطناعي في وقت فعلي.
+        </p>
+        <div className="mt-6">
+          <Link
+            href="/portal"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-primary-blue hover:bg-blue-700 text-white font-bold text-xs shadow-lg shadow-blue-900/20 hover:scale-105 transition-all group"
+          >
+            <span>🌐 اضغط هنا لفتح منصة دِثار التفاعلية (Portal) | المريض • الطبيب • المستشفيات</span>
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          </Link>
+        </div>
+      </div>
+
+      {/* ── Dashboard preview card (clickable, links to /portal) ── */}
+      <div className="max-w-6xl mx-auto">
         <Link
           href="/portal"
-          className="block w-full h-full overflow-auto relative group cursor-pointer rounded-[1.8rem] bg-white text-[#0F172A] shadow-2xl shadow-slate-200/50 border border-slate-100"
+          className="block w-full overflow-hidden relative group cursor-pointer rounded-[1.8rem] bg-white text-[#0F172A] shadow-2xl shadow-slate-200/50 border border-slate-200"
         >
-          {/* Floating Hover Badge on iPad Screen */}
+          {/* Floating Hover Badge */}
           <div className="absolute top-3 right-1/2 translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity bg-primary-blue text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-xl flex items-center gap-2 pointer-events-none">
             <span>انقر لفتح المنصة الكاملة (Portal) ➔</span>
           </div>
@@ -259,7 +256,7 @@ export default function PlatformDashboard() {
             </div>
           </div>
         </Link>
-      </ContainerScroll>
+      </div>
 
       {/* caption */}
       <p className="text-center text-xs text-slate-500 -mt-10 pb-8 font-arabic font-medium">
