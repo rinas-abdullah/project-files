@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/lib/AuthContext";
@@ -22,8 +22,13 @@ export default function LoginPage() {
   const { login } = useAuth();
   const { t, language, toggleLanguage } = useLanguage();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [role, setRole] = useState<UserRole>("patient");
+  const roleParam = searchParams.get("role");
+  const initialRole: UserRole =
+    roleParam === "doctor" || roleParam === "hospital_admin" ? roleParam : "patient";
+
+  const [role, setRole] = useState<UserRole>(initialRole);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
