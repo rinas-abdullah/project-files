@@ -1,4 +1,5 @@
 import "server-only";
+import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { devices as devicesTable, patients as patientsTable } from "@/lib/db/schema";
 import { Device } from "@/lib/types/portal";
@@ -50,6 +51,8 @@ export async function getHospitalStats() {
   const stablePatients = allPatients.filter(p => p.status === "stable").length;
 
   return {
+    // Target figures from the clinical use-case model, not yet measured from
+    // live deployments — the UI must label these as estimates, same as savingsEstimate.
     fallReduction: 42,
     mobilityComplicationReduction: 58,
     savingsEstimate: 1.45, // In Millions
@@ -59,4 +62,37 @@ export async function getHospitalStats() {
       ? Math.round((stablePatients / allPatients.length) * 100)
       : 0,
   };
+}
+
+export async function retireDevice(id: string): Promise<Device | undefined> {
+  await db
+    .update(devicesTable)
+    .set({
+      isStorage: true,
+      isActive: false,
+      status: "disconnected",
+      patientId: null,
+      patientName: "غير مرتبط",
+      assignedDoctor: null,
+      location: "المستودع الرئيسي",
+    })
+    .where(eq(devicesTable.id, id));
+
+  const [row] = await db.select().from(devicesTable).where(eq(devicesTable.id, id));
+  return row ? toDevice(row) : undefined;
+}
+
+export async function reactivateDevice(id: string): Promise<Device | undefined> {
+  await db
+    .update(devicesTable)
+    .set({
+      isStorage: false,
+      isActive: true,
+      status: "disconnected",
+      location: "جاهز للتخصيص",
+    })
+    .where(eq(devicesTable.id, id));
+
+  const [row] = await db.select().from(devicesTable).where(eq(devicesTable.id, id));
+  return row ? toDevice(row) : undefined;
 }

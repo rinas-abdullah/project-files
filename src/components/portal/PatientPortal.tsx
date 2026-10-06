@@ -42,7 +42,6 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
   const { isConnected: isFirebaseConnected, data: firebaseData } = useArduinoFirebase();
   const { isConnected: isSerialConnected, data: serialData, connect: connectSerial, disconnect: disconnectSerial } = useArduino();
   const [liveApiData, setLiveApiData] = React.useState<LiveTelemetry | null>(null);
-  const isLiveStreaming = true;
 
   const data = portalMockData.patientPortal;
   const { t, language } = useLanguage();
@@ -58,7 +57,6 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
 
   // Poll live telemetry API periodically
   React.useEffect(() => {
-    if (!isLiveStreaming) return;
     const fetchTelemetry = async () => {
       try {
         const res = await fetch("/api/telemetry/live?patientId=pat-1");
@@ -76,7 +74,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
     fetchTelemetry();
     const interval = setInterval(fetchTelemetry, 3000);
     return () => clearInterval(interval);
-  }, [isLiveStreaming]);
+  }, []);
 
   const isConnected = isSerialConnected || isFirebaseConnected || !!liveApiData;
   const currentTemp = isSerialConnected && serialData 
@@ -224,8 +222,13 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
               </button>
             </div>
             
-            <p className="text-xs font-bold text-slate-700 mb-4 text-center">{t.pressure_trends}</p>
-            
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <p className="text-xs font-bold text-slate-700 text-center">{t.pressure_trends}</p>
+              <span className="text-[9px] font-bold text-slate-400 bg-slate-50 border border-slate-100 rounded-md px-1.5 py-0.5">
+                {language === 'ar' ? "نموذج توضيحي" : "Illustrative"}
+              </span>
+            </div>
+
             <div className="h-48 w-full mb-4">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={TREND_DATA} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
@@ -243,10 +246,13 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
 
           {/* PREDICTIVE INDICATORS */}
           <GlassCard className="p-4 md:p-6 flex flex-col w-full overflow-hidden">
-            <div className="mb-4">
+            <div className="mb-4 flex items-center justify-between">
               <h3 className="font-bold text-slate-900 text-sm">{t.predictive_indicators}</h3>
+              <span className="text-[9px] font-bold text-slate-400 bg-slate-50 border border-slate-100 rounded-md px-1.5 py-0.5">
+                {language === 'ar' ? "نموذج توضيحي — قيد التحقق السريري" : "Illustrative model — pending clinical validation"}
+              </span>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
               {/* Radar Chart */}
               <div className="w-full sm:w-1/2 flex flex-col items-center">
@@ -260,27 +266,43 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
                   </ResponsiveContainer>
                 </div>
               </div>
-              
-              {/* Alerts */}
+
+              {/* Alerts (real, from the patient's record) */}
               <div className="w-full sm:w-1/2 space-y-2 flex flex-col justify-center">
-                <div className="bg-emerald-50 border border-emerald-100 p-2.5 rounded-xl flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-[10px] font-bold text-emerald-900">{language === 'ar' ? "مخاطر فقدان التوازن" : "Balance Loss Risk"}</p>
-                    <p className="text-[9px] text-emerald-700 font-medium">{language === 'ar' ? "منخفض جداً" : "Very Low"}</p>
+                {patientData?.alerts && patientData.alerts.length > 0 ? (
+                  patientData.alerts.slice(0, 2).map((alert) => (
+                    <div
+                      key={alert.id}
+                      className={`p-2.5 rounded-xl flex items-start gap-2 border ${
+                        alert.type === 'warning' || alert.type === 'critical'
+                          ? "bg-orange-50 border-orange-100"
+                          : "bg-emerald-50 border-emerald-100"
+                      }`}
+                    >
+                      {alert.type === 'warning' || alert.type === 'critical' ? (
+                        <AlertTriangle className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                      ) : (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      )}
+                      <div>
+                        <p className={`text-[10px] font-bold ${alert.type === 'warning' || alert.type === 'critical' ? "text-orange-900" : "text-emerald-900"}`}>{alert.title}</p>
+                        <p className={`text-[9px] font-medium ${alert.type === 'warning' || alert.type === 'critical' ? "text-orange-800" : "text-emerald-700"}`}>{alert.description}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="bg-emerald-50 border border-emerald-100 p-2.5 rounded-xl flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-[10px] font-bold text-emerald-900">{language === 'ar' ? "لا توجد تنبيهات نشطة" : "No active alerts"}</p>
+                      <p className="text-[9px] text-emerald-700 font-medium">{language === 'ar' ? "جميع القراءات ضمن النطاق الطبيعي" : "All readings within normal range"}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="bg-orange-50 border border-orange-100 p-2.5 rounded-xl flex items-start gap-2">
-                  <AlertTriangle className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-[10px] font-bold text-orange-900">{language === 'ar' ? "تنبيه حركة المفاصل" : "Joint Mobility Alert"}</p>
-                    <p className="text-[9px] text-orange-800 font-medium">{language === 'ar' ? "استخدام القدم اليسرى أقل من المعتاد" : "Left foot usage is lower than usual"}</p>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </GlassCard>
-          
+
         </div>
 
         {/* COLUMN 2: LEFT IN RTL */}
@@ -296,11 +318,15 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
             </div>
             <div className="space-y-3 flex-1 flex flex-col justify-center">
               <div className="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                <p className="text-xs text-slate-800 leading-relaxed font-medium">توزيع ضغط ممتاز، لا توجد أي مؤشرات حرارية مقلقة في باطن القدم.</p>
+                <p className="text-xs text-slate-800 leading-relaxed font-medium">
+                  {patientData?.diagnosis || "توزيع ضغط ممتاز، لا توجد أي مؤشرات حرارية مقلقة في باطن القدم."}
+                </p>
               </div>
               <div className="bg-[#ECFDF5] border border-[#059669]/20 rounded-xl p-3">
                 <span className="text-[10px] font-semibold text-[#059669] block mb-1">{t.clinical_recommendations}</span>
-                <p className="text-xs text-[#065F46] leading-relaxed font-medium">الاستمرار على خطة المشي اليومية المعتمدة من الطبيب المعالج.</p>
+                <p className="text-xs text-[#065F46] leading-relaxed font-medium">
+                  {patientData?.recommendation || "الاستمرار على خطة المشي اليومية المعتمدة من الطبيب المعالج."}
+                </p>
               </div>
             </div>
           </GlassCard>

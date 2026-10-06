@@ -52,7 +52,6 @@ export default function PatientDetailsPage() {
         body: JSON.stringify({
           type: "add_note",
           content: note,
-          author: "د. خالد السليمان"
         })
       });
 
