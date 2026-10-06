@@ -7,11 +7,21 @@ import {
 } from "lucide-react";
 import { portalMockData } from "@/lib/portal-mock-data";
 import { GlassCard, GlassBadge } from "@/components/ui/glass";
-import { LineChart, Line, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
+import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 import { useArduinoFirebase } from "@/hooks/useArduinoFirebase";
 import { useArduino } from "@/hooks/useArduino";
-import { Patient } from "@/lib/types/portal";
+import { Patient, PatientStatus } from "@/lib/types/portal";
 import { useLanguage } from "@/lib/LanguageContext";
+
+function getStatusBadgeType(status?: PatientStatus): "success" | "warning" | "critical" | "info" | "neutral" {
+  switch (status) {
+    case "critical": return "critical";
+    case "alert": return "warning";
+    case "stable": return "success";
+    case "needs_followup": return "info";
+    default: return "neutral";
+  }
+}
 
 // Static data for sparklines to prevent re-renders and freezing
 const SPARKLINE_DATA_TEMP = [{value: 36.5}, {value: 36.6}, {value: 36.8}, {value: 37.0}, {value: 37.1}, {value: 37.1}, {value: 37.0}, {value: 37.1}];
@@ -110,34 +120,51 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
         {/* COLUMN 1: RIGHT IN RTL */}
         <div className="space-y-6 flex flex-col w-full">
           
-          {/* WELCOME */}
+          {/* PATIENT IDENTITY BANNER */}
           <GlassCard className="p-6 flex flex-col justify-between min-h-[200px]">
-            <div className="flex justify-between items-start">
+            <div className="flex items-start justify-between gap-3">
               <div>
-                <h2 className="text-xs font-semibold text-slate-500 mb-1">{t.good_morning}</h2>
-                <h1 className="text-xl font-bold text-slate-900">{patientData?.name || "أحمد حمد"}</h1>
-                <p className="text-xs text-slate-500 mt-1">{t.patient_overview}</p>
+                <h1 className="text-xl font-bold text-slate-900">{patientData?.name || "—"}</h1>
+                <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                  <span className="text-xs font-bold text-slate-500">
+                    {patientData?.age ?? "—"} {language === 'ar' ? "سنة" : "yrs"}
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-slate-300" />
+                  <span className="text-xs font-bold text-slate-500">{patientData?.careType || "—"}</span>
+                </div>
+              </div>
+              {patientData?.mrn && (
+                <span className="font-mono text-[11px] font-bold text-slate-500 bg-slate-50 border border-slate-200 rounded-md px-2 py-1 whitespace-nowrap" dir="ltr">
+                  {patientData.mrn}
+                </span>
+              )}
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p className="text-[10px] font-bold text-slate-400 mb-1">
+                  {language === 'ar' ? "الطبيب المعالج" : "Attending physician"}
+                </p>
+                <p className="text-xs font-bold text-slate-900 truncate">{patientData?.consultant || "—"}</p>
+              </div>
+              <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
+                <p className="text-[10px] font-bold text-slate-400 mb-1">
+                  {language === 'ar' ? "الحالة" : "Status"}
+                </p>
+                <GlassBadge status={getStatusBadgeType(patientData?.status)} className="text-[10px] px-1.5 py-0.5">
+                  {patientData?.statusLabel || t.stable}
+                </GlassBadge>
               </div>
             </div>
-            
-            <div className="mt-8 flex items-end justify-between">
-              <div className="relative w-14 h-14 shrink-0 order-last">
-                <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                  <path className="text-slate-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" />
-                  <path className="text-[#059669]" strokeDasharray="92, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
-                </svg>
-              </div>
-              <div className="order-first">
-                <p className="text-xs font-semibold text-slate-700 mb-1">{t.overall_health}</p>
-                <div className="flex items-baseline gap-1 mb-1">
-                  <span className="text-2xl font-bold text-[#059669] font-mono">{patientData?.metrics?.healthScore || 92}</span>
-                  <span className="text-xs text-slate-500 font-mono">/100</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <GlassBadge status="success" className="text-[9px] px-1.5 py-0">{patientData?.metrics?.healthScoreLabel || t.stable}</GlassBadge>
-                  <span className="text-[9px] text-slate-400">{t.last_update}</span>
-                </div>
-              </div>
+
+            <div className="mt-3 flex items-center justify-between">
+              <span className="text-[9px] text-slate-400">
+                {t.last_update}{patientData?.lastUpdated ? `: ${patientData.lastUpdated}` : ""}
+              </span>
+              <span className="text-[10px] font-bold text-slate-600">
+                {t.overall_health}:{" "}
+                <span className="font-mono text-slate-900">{patientData?.metrics?.healthScore ?? "—"}/100</span>
+              </span>
             </div>
           </GlassCard>
 
@@ -187,7 +214,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
                   alt="Dithar Smart PAD"
                   width={110}
                   height={110}
-                  className="object-contain -rotate-[15deg] drop-shadow-xl"
+                  className="object-contain drop-shadow-xl"
                   unoptimized
                   onError={(e) => { (e.target as HTMLImageElement).src = '/insole-clinical-premium.png'; }}
                 />
@@ -254,17 +281,17 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
-              {/* Radar Chart */}
-              <div className="w-full sm:w-1/2 flex flex-col items-center">
-                <div className="h-40 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="60%" data={RADAR_DATA}>
-                      <PolarGrid stroke="#e2e8f0" />
-                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 8, fontWeight: 'bold' }} />
-                      <Radar name="Patient" dataKey="A" stroke="#10b981" fill="#10b981" fillOpacity={0.2} />
-                    </RadarChart>
-                  </ResponsiveContainer>
-                </div>
+              {/* Indicator scores */}
+              <div className="w-full sm:w-1/2 space-y-2 justify-center flex flex-col">
+                {RADAR_DATA.map((item) => (
+                  <div key={item.subject} className="flex items-center gap-2">
+                    <span className="text-[9px] font-bold text-slate-500 w-[72px] shrink-0 truncate">{item.subject}</span>
+                    <div className="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                      <div className="h-full rounded-full bg-emerald-500" style={{ width: `${item.A}%` }} />
+                    </div>
+                    <span className="text-[9px] font-mono font-bold text-slate-600 w-5 text-end">{item.A}</span>
+                  </div>
+                ))}
               </div>
 
               {/* Alerts (real, from the patient's record) */}
