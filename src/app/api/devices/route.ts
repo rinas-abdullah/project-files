@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifySessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/session";
-import { getDevices, getHospitalStats } from "@/lib/data/devices";
+import { getDevices, getHospitalStats, retireDevice, reactivateDevice } from "@/lib/data/devices";
 
 export async function GET(request: Request) {
   const cookieStore = await cookies();
@@ -25,4 +25,31 @@ export async function GET(request: Request) {
   ]);
 
   return NextResponse.json({ success: true, devices, stats });
+}
+
+export async function POST(request: Request) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  const user = token ? await verifySessionToken(token) : null;
+
+  if (!user) {
+    return NextResponse.json({ error: "غير مصرح لك بالوصول" }, { status: 401 });
+  }
+  if (user.role !== "hospital_admin") {
+    return NextResponse.json({ error: "لا تملك صلاحية تعديل هذه البيانات" }, { status: 403 });
+  }
+
+  const body = await request.json();
+  const { id, action } = body as { id?: string; action?: string };
+
+  if (!id || (action !== "retire" && action !== "reactivate")) {
+    return NextResponse.json({ error: "طلب غير صالح" }, { status: 400 });
+  }
+
+  const device = action === "retire" ? await retireDevice(id) : await reactivateDevice(id);
+  if (!device) {
+    return NextResponse.json({ error: "الجهاز غير موجود" }, { status: 404 });
+  }
+
+  return NextResponse.json({ success: true, device });
 }

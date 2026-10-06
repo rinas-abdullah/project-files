@@ -13,7 +13,7 @@ interface HospitalStats {
 }
 import { PageLoader, EmptyState } from "@/components/ui/loading-states";
 import { GlassCard, GlassBadge } from "@/components/ui/glass";
-import { Search, Filter, AlertTriangle, Cpu, Activity, ShieldCheck, TrendingDown, Battery, Wifi, WifiOff, Wrench } from "lucide-react";
+import { Search, Filter, AlertTriangle, Cpu, Activity, ShieldCheck, TrendingDown, Battery, Wifi, WifiOff, Wrench, ArchiveRestore, PackageMinus } from "lucide-react";
 
 export default function HospitalPortalPage() {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -22,27 +22,46 @@ export default function HospitalPortalPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterLocation, setFilterLocation] = useState<string>("all");
+  const [actioningId, setActioningId] = useState<string | null>(null);
+
+  const loadData = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams({ search: searchQuery, location: filterLocation });
+      const res = await fetch(`/api/devices?${params}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "تعذر تحميل بيانات الأجهزة");
+      setDevices(data.devices);
+      setStats(data.stats);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "حدث خطأ أثناء تحميل البيانات");
+    } finally {
+      setLoading(false);
+    }
+  }, [searchQuery, filterLocation]);
 
   useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        const params = new URLSearchParams({ search: searchQuery, location: filterLocation });
-        const res = await fetch(`/api/devices?${params}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "تعذر تحميل بيانات الأجهزة");
-        setDevices(data.devices);
-        setStats(data.stats);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "حدث خطأ أثناء تحميل البيانات");
-      } finally {
-        setLoading(false);
-      }
-    }
-    
     const timeout = setTimeout(loadData, 300);
     return () => clearTimeout(timeout);
-  }, [searchQuery, filterLocation]);
+  }, [loadData]);
+
+  const handleDeviceAction = async (id: string, action: "retire" | "reactivate") => {
+    try {
+      setActioningId(id);
+      const res = await fetch("/api/devices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, action }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "تعذر تنفيذ العملية");
+      await loadData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "حدث خطأ أثناء تنفيذ العملية");
+    } finally {
+      setActioningId(null);
+    }
+  };
 
   const getDeviceStatusInfo = (status: string) => {
     switch (status) {
@@ -71,9 +90,9 @@ export default function HospitalPortalPage() {
             <div className="p-2 bg-emerald-50 rounded-lg">
               <Activity className="w-5 h-5 text-emerald-600" />
             </div>
-            <GlassBadge status="success" className="text-[10px]">معدل تحسن</GlassBadge>
+            <GlassBadge status="warning" className="text-[10px]">تقديري</GlassBadge>
           </div>
-          <p className="text-xs text-slate-500 font-bold mb-1">حالات السقوط التي تم تفاديها</p>
+          <p className="text-xs text-slate-500 font-bold mb-1">حالات السقوط التي تم تفاديها (مستهدف)</p>
           <div className="flex items-baseline gap-1">
             <span className="text-3xl font-bold text-slate-900 font-mono">{stats?.fallReduction}%</span>
             <span className="text-sm text-emerald-600 font-bold">-</span>
@@ -85,9 +104,9 @@ export default function HospitalPortalPage() {
             <div className="p-2 bg-blue-50 rounded-lg">
               <ShieldCheck className="w-5 h-5 text-blue-600" />
             </div>
-            <GlassBadge status="info" className="text-[10px]">معدل تحسن</GlassBadge>
+            <GlassBadge status="warning" className="text-[10px]">تقديري</GlassBadge>
           </div>
-          <p className="text-xs text-slate-500 font-bold mb-1">مضاعفات التوازن والحركة</p>
+          <p className="text-xs text-slate-500 font-bold mb-1">مضاعفات التوازن والحركة (مستهدف)</p>
           <div className="flex items-baseline gap-1">
             <span className="text-3xl font-bold text-slate-900 font-mono">{stats?.mobilityComplicationReduction}%</span>
             <span className="text-sm text-blue-600 font-bold">-</span>
@@ -108,6 +127,9 @@ export default function HospitalPortalPage() {
           </div>
         </GlassCard>
       </div>
+      <p className="text-[11px] text-slate-400 -mt-2">
+        الأرقام المعلّمة بـ «تقديري» مستهدفة من نموذج الحالة السريرية، ولم تُقاس بعد من بيانات تشغيل فعلية.
+      </p>
 
       {/* DEVICES TABLE */}
       <GlassCard className="flex-1 min-h-[400px] flex flex-col p-0 overflow-hidden">
@@ -161,6 +183,7 @@ export default function HospitalPortalPage() {
                   <th className="px-6 py-4">المريض</th>
                   <th className="px-6 py-4">الطبيب المعالج</th>
                   <th className="px-6 py-4">الاتصال / البطارية</th>
+                  <th className="px-6 py-4">إجراء</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -189,6 +212,27 @@ export default function HospitalPortalPage() {
                           <span className="text-xs font-bold text-slate-600">{statusInfo.text}</span>
                           <span className="text-xs text-slate-400 font-mono">({device.batteryLevel}%)</span>
                         </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        {device.isStorage ? (
+                          <button
+                            onClick={() => handleDeviceAction(device.id, "reactivate")}
+                            disabled={actioningId === device.id}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-[#0B4D8D] border border-blue-200 text-[10px] font-bold hover:bg-blue-100 transition-colors disabled:opacity-50 cursor-pointer"
+                          >
+                            <ArchiveRestore className="w-3.5 h-3.5" />
+                            {actioningId === device.id ? "جاري..." : "إعادة للخدمة"}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleDeviceAction(device.id, "retire")}
+                            disabled={actioningId === device.id}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 text-slate-600 border border-slate-200 text-[10px] font-bold hover:bg-slate-100 transition-colors disabled:opacity-50 cursor-pointer"
+                          >
+                            <PackageMinus className="w-3.5 h-3.5" />
+                            {actioningId === device.id ? "جاري..." : "نقل للمستودع"}
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );
