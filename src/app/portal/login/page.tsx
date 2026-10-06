@@ -148,9 +148,6 @@ export default function LoginPage() {
                   </button>
                 ))}
               </div>
-              <div className="text-[10px] text-slate-400 bg-slate-50 border border-slate-100 rounded-lg px-3 py-2 font-mono" dir="ltr">
-                demo: {DEMO_CREDENTIALS[role].identifier} / {DEMO_CREDENTIALS[role].password}
-              </div>
             </div>
 
             {/* Inputs */}
