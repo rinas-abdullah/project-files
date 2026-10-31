@@ -1,0 +1,899 @@
+// VitaLink — data model
+// Ambulance ↔ VitaLink Platform ↔ Emergency Department
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────────── Enums ─────────────────────────────
+
+enum RoleKey {
+  SUPER_ADMIN
+  EMS_ADMIN
+  EMS_DISPATCH
+  PARAMEDIC
+  ED_ADMIN
+  ED_NURSE
+  ED_DOCTOR
+  HOSPITAL_COORDINATOR
+  OPERATIONS_ANALYST
+  AUDITOR
+}
+
+enum OrgType {
+  PLATFORM
+  EMS
+  HOSPITAL
+}
+
+enum AmbulanceStatus {
+  AVAILABLE
+  DISPATCHED
+  ON_SCENE
+  TRANSPORTING
+  AT_HOSPITAL
+  OUT_OF_SERVICE
+}
+
+enum ConnectionState {
+  ONLINE
+  DEGRADED
+  OFFLINE
+}
+
+enum IncidentType {
+  TRAFFIC_ACCIDENT
+  MEDICAL_EMERGENCY
+  CARDIAC
+  STROKE
+  TRAUMA
+  FIRE
+  MASS_CASUALTY
+  OTHER
+}
+
+enum IncidentStatus {
+  OPEN
+  CLOSED
+}
+
+enum MissionStatus {
+  DISPATCHED
+  ON_SCENE
+  TRANSPORTING
+  ARRIVED
+  HANDOVER
+  COMPLETED
+  CANCELLED
+}
+
+enum EncounterStatus {
+  CREATED
+  ACTIVE
+  PRE_ALERT_SENT
+  ACKNOWLEDGED
+  PREPARING
+  APPROACHING
+  ARRIVED
+  HANDOVER
+  COMPLETED
+  CANCELLED
+  DIVERTED
+}
+
+enum Priority {
+  P1
+  P2
+  P3
+  P4
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  UNKNOWN
+}
+
+enum ConditionTrend {
+  STABLE
+  IMPROVING
+  DETERIORATING
+  CRITICAL
+}
+
+enum IdentityStatus {
+  UNIDENTIFIED
+  PENDING
+  VERIFIED
+  FAILED
+  MANUAL
+}
+
+enum VitalType {
+  HEART_RATE
+  BLOOD_PRESSURE
+  SPO2
+  RESPIRATORY_RATE
+  TEMPERATURE
+  GCS
+  BLOOD_GLUCOSE
+}
+
+enum VitalSource {
+  MANUAL
+  MONITOR
+  SIMULATED
+}
+
+enum VitalStatus {
+  NORMAL
+  ABNORMAL
+  CRITICAL
+}
+
+enum ClinicalEventType {
+  CASE_CREATED
+  IDENTITY_DETECTED
+  IDENTITY_MATCHED
+  HEALTH_RECORD_RETRIEVED
+  VITALS_RECORDED
+  MEDICATION_GIVEN
+  INTERVENTION_PERFORMED
+  PHOTO_UPLOADED
+  CLINICAL_NOTE
+  CONDITION_CHANGED
+  PRIORITY_CHANGED
+  TRIAGE_ASSESSED
+  TRIAGE_DECIDED
+  DESTINATION_SELECTED
+  DESTINATION_RECOMMENDED
+  HOSPITAL_NOTIFIED
+  HOSPITAL_ACKNOWLEDGED
+  PREPARATION_UPDATED
+  READINESS_CHANGED
+  DESTINATION_CHANGED
+  APPROACHING
+  GEOFENCE_ENTERED
+  ARRIVED
+  REGISTRATION_UPDATED
+  HANDOVER_STARTED
+  HANDOVER_ACCEPTED
+  HANDOVER_COMPLETED
+  AMBULANCE_RELEASED
+  CASE_CANCELLED
+}
+
+enum InterventionType {
+  OXYGEN
+  IV_ACCESS
+  AIRWAY
+  ECG
+  CPR
+  IMMOBILIZATION
+  BLEEDING_CONTROL
+  DEFIBRILLATION
+  OTHER
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+}
+
+enum MediaCategory {
+  INJURY
+  WOUND
+  BURN
+  SCENE
+  MEDICAL_DOCUMENT
+  OTHER
+}
+
+enum ReadinessStatus {
+  NOT_STARTED
+  REVIEWING
+  PREPARING
+  READY
+  LIMITED
+  RESOURCE_CONSTRAINT
+}
+
+enum PrepItem {
+  TEAM_NOTIFIED
+  BED_PREPARING
+  TRAUMA_TEAM_ACTIVATED
+  STROKE_TEAM_ACTIVATED
+  CATH_LAB_ALERTED
+  ISOLATION_REQUIRED
+  SPECIALIST_REQUESTED
+  BLOOD_BANK_ALERTED
+  CT_PREPARATION
+  OR_PREPARATION
+}
+
+enum CapabilityType {
+  TRAUMA_CENTER
+  STROKE
+  CATH_LAB
+  ICU
+  PEDIATRIC
+  BURN_UNIT
+  CT
+  MRI
+  OPERATING_ROOM
+  BLOOD_BANK
+  ISOLATION
+  CARDIOLOGY
+  NEUROLOGY
+}
+
+enum ResourceType {
+  ED_CAPACITY
+  AVAILABLE_BEDS
+  ICU_BEDS
+  TRAUMA_BAY
+  CT_STATUS
+  CATH_LAB
+  OR_STATUS
+  SPECIALISTS
+}
+
+enum ResourceStatus {
+  AVAILABLE
+  LIMITED
+  UNAVAILABLE
+  UNKNOWN
+}
+
+enum ArrivalPhase {
+  EN_ROUTE
+  APPROACHING
+  ARRIVING
+  ARRIVED
+}
+
+enum RegistrationStatus {
+  NOT_STARTED
+  PRE_REGISTRATION_READY
+  REGISTRATION_SENT
+  REGISTRATION_CONFIRMED
+  REGISTRATION_FAILED
+}
+
+enum DeliveryStatus {
+  PENDING
+  RETRYING
+  FAILED
+  DELIVERED
+}
+
+enum TriageDecision {
+  PENDING
+  CONFIRMED
+  OVERRIDDEN
+}
+
+enum RecommendationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUPERSEDED
+}
+
+enum HandoverStatus {
+  STARTED
+  ACCEPTED
+  COMPLETED
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+}
+
+enum AlertType {
+  CRITICAL_DETERIORATION
+  LOW_SPO2
+  FALLING_BP
+  ABNORMAL_HEART_RATE
+  NO_HOSPITAL_ACK
+  ETA_UNDER_5
+  DESTINATION_CHANGE
+  RESOURCE_UNAVAILABLE
+  TRIAGE_PRIORITY_CHANGED
+  GEOFENCE_ENTERED
+  LONG_HANDOVER
+}
+
+enum NotificationType {
+  NEW_CASE
+  CRITICAL_UPDATE
+  HOSPITAL_ACK
+  RESOURCE_STATUS_CHANGE
+  DESTINATION_RECOMMENDATION
+  DESTINATION_CHANGED
+  ARRIVAL
+  HANDOVER_COMPLETE
+}
+
+enum IntegrationStatus {
+  CONNECTED
+  SANDBOX
+  SIMULATED
+  NOT_CONNECTED
+  NOT_CONFIGURED
+  ERROR
+}
+
+enum DestinationSource {
+  MANUAL
+  RECOMMENDATION
+  DIVERSION
+}
+
+// ───────────────────────────── Identity & Tenancy ─────────────────────────────
+
+model Role {
+  key         RoleKey  @id
+  name        String
+  nameAr      String
+  description String
+  permissions String[]
+  users       User[]
+}
+
+model Organization {
+  id         String      @id @default(cuid())
+  code       String      @unique
+  name       String
+  nameAr     String
+  type       OrgType
+  createdAt  DateTime    @default(now())
+  users      User[]
+  hospital   Hospital?
+  ambulances Ambulance[]
+  incidents  Incident[]
+}
+
+model User {
+  id             String       @id @default(cuid())
+  email          String       @unique
+  passwordHash   String
+  name           String
+  role           RoleKey
+  roleRef        Role         @relation(fields: [role], references: [key])
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  hospitalId     String?
+  hospital       Hospital?    @relation(fields: [hospitalId], references: [id])
+  ambulanceId    String?
+  ambulance      Ambulance?   @relation(fields: [ambulanceId], references: [id])
+  active         Boolean      @default(true)
+  locale         String       @default("en")
+  lastLoginAt    DateTime?
+  createdAt      DateTime     @default(now())
+
+  notifications Notification[]
+  auditEvents   AuditEvent[]
+
+  @@index([organizationId])
+}
+
+// ───────────────────────────── Hospitals ─────────────────────────────
+
+model Hospital {
+  id              String       @id @default(cuid())
+  organizationId  String       @unique
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  code            String       @unique
+  name            String
+  nameAr          String
+  lat             Float
+  lng             Float
+  address         String
+  phone           String
+  edCapacity      Int          @default(30)
+  geofenceRadiusM Int          @default(600)
+  approachRadiusM Int          @default(3000)
+  arrivalRadiusM  Int          @default(80)
+  active          Boolean      @default(true)
+
+  capabilities   HospitalCapability[]
+  resources      HospitalResource[]
+  users          User[]
+  destinations   Destination[]
+  encounters     PatientEncounter[]      @relation("CurrentDestination")
+  preparations   HospitalPreparation[]
+  acknowledgments Acknowledgment[]
+  handovers      Handover[]
+  recommendations DestinationRecommendation[]
+  historyFrom    DestinationHistory[]    @relation("HistoryFrom")
+  historyTo      DestinationHistory[]    @relation("HistoryTo")
+  alerts         Alert[]
+}
+
+model HospitalCapability {
+  id         String         @id @default(cuid())
+  hospitalId String
+  hospital   Hospital       @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  capability CapabilityType
+  available  Boolean        @default(true)
+
+  @@unique([hospitalId, capability])
+}
+
+model HospitalResource {
+  id          String         @id @default(cuid())
+  hospitalId  String
+  hospital    Hospital       @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  type        ResourceType
+  status      ResourceStatus @default(UNKNOWN)
+  total       Int?
+  available   Int?
+  note        String?
+  updatedById String?
+  updatedAt   DateTime       @updatedAt
+
+  @@unique([hospitalId, type])
+}
+
+// ───────────────────────────── EMS ─────────────────────────────
+
+model Ambulance {
+  id             String          @id @default(cuid())
+  organizationId String
+  organization   Organization    @relation(fields: [organizationId], references: [id])
+  callSign       String          @unique
+  plate          String
+  unitType       String          @default("ALS")
+  status         AmbulanceStatus @default(AVAILABLE)
+  connection     ConnectionState @default(ONLINE)
+  lat            Float
+  lng            Float
+  baseLat        Float
+  baseLng        Float
+  baseName       String
+  heading        Float           @default(0)
+  speedKmh       Float           @default(0)
+  lastPositionAt DateTime        @default(now())
+  missions       AmbulanceMission[]
+  crew           User[]
+  alerts         Alert[]
+}
+
+model Incident {
+  id             String         @id @default(cuid())
+  code           String         @unique
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  type           IncidentType
+  status         IncidentStatus @default(OPEN)
+  lat            Float
+  lng            Float
+  address        String
+  description    String?
+  isMassCasualty Boolean        @default(false)
+  reportedAt     DateTime       @default(now())
+  closedAt       DateTime?
+  createdById    String?
+  missions       AmbulanceMission[]
+  encounters     PatientEncounter[]
+
+  @@index([reportedAt])
+}
+
+model AmbulanceMission {
+  id             String        @id @default(cuid())
+  code           String        @unique
+  incidentId     String
+  incident       Incident      @relation(fields: [incidentId], references: [id])
+  ambulanceId    String
+  ambulance      Ambulance     @relation(fields: [ambulanceId], references: [id])
+  status         MissionStatus @default(DISPATCHED)
+  dispatchedAt   DateTime      @default(now())
+  onSceneAt      DateTime?
+  departedAt     DateTime?
+  arrivedAt      DateTime?
+  handoverAt     DateTime?
+  releasedAt     DateTime?
+  availableAt    DateTime?
+  arrivalPhase   ArrivalPhase  @default(EN_ROUTE)
+  routeJson      Json?
+  routeIndex     Int           @default(0)
+  routeProvider  String?
+  etaSeconds     Int?
+  distanceMeters Int?
+  etaUpdatedAt   DateTime?
+  leadUserId     String?
+  encounters     PatientEncounter[]
+
+  @@index([ambulanceId, status])
+}
+
+// ───────────────────────────── Patients ─────────────────────────────
+
+model Patient {
+  id               String    @id @default(cuid())
+  temporaryId      String?   @unique
+  isUnknown        Boolean   @default(false)
+  fullName         String?
+  sex              Sex       @default(UNKNOWN)
+  age              Int?
+  ageEstimated     Boolean   @default(false)
+  nationalIdEnc    String?
+  nationalIdHash   String?   @unique
+  nationalIdLast4  String?
+  phoneEnc         String?
+  phoneLast4       String?
+  createdAt        DateTime  @default(now())
+  mergedIntoId     String?
+
+  identities     PatientIdentity[]
+  encounters     PatientEncounter[]
+  healthProfile  HealthProfile?
+}
+
+model PatientIdentity {
+  id            String         @id @default(cuid())
+  patientId     String
+  patient       Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  provider      String
+  method        String
+  status        IdentityStatus
+  confidence    Float?
+  externalRef   String?
+  message       String?
+  performedById String?
+  createdAt     DateTime       @default(now())
+}
+
+model HealthProfile {
+  id                String   @id @default(cuid())
+  patientId         String   @unique
+  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  source            String
+  bloodType         String?
+  allergies         Json
+  chronicConditions Json
+  medicalAlerts     Json
+  medicationHistory Json
+  criticalDiagnoses Json
+  fetchedAt         DateTime @default(now())
+}
+
+model PatientEncounter {
+  id                    String             @id @default(cuid())
+  code                  String             @unique
+  patientId             String
+  patient               Patient            @relation(fields: [patientId], references: [id])
+  missionId             String
+  mission               AmbulanceMission   @relation(fields: [missionId], references: [id])
+  incidentId            String
+  incident              Incident           @relation(fields: [incidentId], references: [id])
+  status                EncounterStatus    @default(CREATED)
+  priority              Priority           @default(P3)
+  conditionTrend        ConditionTrend     @default(STABLE)
+  chiefComplaint        String
+  mechanism             String?
+  notes                 String?
+  destinationHospitalId String?
+  destinationHospital   Hospital?          @relation("CurrentDestination", fields: [destinationHospitalId], references: [id])
+  readinessStatus       ReadinessStatus    @default(NOT_STARTED)
+  preAlertSentAt        DateTime?
+  preAlertDelivery      DeliveryStatus?
+  acknowledgedAt        DateTime?
+  approachingAt         DateTime?
+  geofenceEnteredAt     DateTime?
+  arrivedAt             DateTime?
+  handoverStartedAt     DateTime?
+  handoverCompletedAt   DateTime?
+  registrationStatus    RegistrationStatus @default(NOT_STARTED)
+  registrationRef       String?
+  completeness          Int                @default(0)
+  createdById           String?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  closedAt              DateTime?
+
+  vitals          VitalSign[]
+  events          ClinicalEvent[]
+  interventions   Intervention[]
+  medications     Medication[]
+  media           MediaAttachment[]
+  destinations    Destination[]
+  destinationHistory DestinationHistory[]
+  preparations    HospitalPreparation[]
+  acknowledgments Acknowledgment[]
+  triage          TriageAssessment[]
+  recommendations DestinationRecommendation[]
+  handover        Handover?
+  alerts          Alert[]
+  notifications   Notification[]
+
+  @@index([status])
+  @@index([destinationHospitalId, status])
+  @@index([createdAt])
+}
+
+// ───────────────────────────── Clinical data ─────────────────────────────
+
+model VitalSign {
+  id           String      @id @default(cuid())
+  clientId     String?     @unique
+  encounterId  String
+  encounter    PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  type         VitalType
+  value        Float
+  value2       Float?
+  unit         String
+  recordedAt   DateTime    @default(now())
+  source       VitalSource @default(MANUAL)
+  status       VitalStatus @default(NORMAL)
+  recordedById String?
+
+  @@index([encounterId, type, recordedAt])
+}
+
+model ClinicalEvent {
+  id          String            @id @default(cuid())
+  clientId    String?           @unique
+  encounterId String
+  encounter   PatientEncounter  @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  type        ClinicalEventType
+  detail      Json?
+  occurredAt  DateTime          @default(now())
+  actorId     String?
+  actorName   String?
+  actorRole   RoleKey?
+
+  @@index([encounterId, occurredAt])
+}
+
+model Intervention {
+  id            String           @id @default(cuid())
+  clientId      String?          @unique
+  encounterId   String
+  encounter     PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  type          InterventionType
+  performedAt   DateTime         @default(now())
+  performedById String?
+  performedBy   String?
+  notes         String?
+}
+
+model Medication {
+  id               String           @id @default(cuid())
+  clientId         String?          @unique
+  encounterId      String
+  encounter        PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  name             String
+  dose             String
+  route            String
+  administeredAt   DateTime         @default(now())
+  administeredById String?
+  administeredBy   String?
+  notes            String?
+}
+
+model MediaAttachment {
+  id           String           @id @default(cuid())
+  encounterId  String
+  encounter    PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  kind         MediaKind
+  category     MediaCategory
+  mimeType     String
+  sizeBytes    Int
+  storageKey   String
+  originalName String?
+  caption      String?
+  uploadedById String?
+  uploadedBy   String?
+  createdAt    DateTime         @default(now())
+}
+
+// ───────────────────────────── Destination ─────────────────────────────
+
+model Destination {
+  id           String            @id @default(cuid())
+  encounterId  String
+  encounter    PatientEncounter  @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  hospitalId   String
+  hospital     Hospital          @relation(fields: [hospitalId], references: [id])
+  source       DestinationSource @default(MANUAL)
+  active       Boolean           @default(true)
+  selectedById String?
+  selectedAt   DateTime          @default(now())
+  endedAt      DateTime?
+
+  @@index([encounterId, active])
+}
+
+model DestinationHistory {
+  id             String           @id @default(cuid())
+  encounterId    String
+  encounter      PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  fromHospitalId String?
+  fromHospital   Hospital?        @relation("HistoryFrom", fields: [fromHospitalId], references: [id])
+  toHospitalId   String
+  toHospital     Hospital         @relation("HistoryTo", fields: [toHospitalId], references: [id])
+  reason         String
+  changedById    String?
+  changedByName  String?
+  changedByRole  RoleKey?
+  changedAt      DateTime         @default(now())
+}
+
+model DestinationRecommendation {
+  id                    String               @id @default(cuid())
+  encounterId           String
+  encounter             PatientEncounter     @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  recommendedHospitalId String
+  recommendedHospital   Hospital             @relation(fields: [recommendedHospitalId], references: [id])
+  score                 Float
+  requiredCapabilities  Json
+  ranking               Json
+  engineVersion         String
+  status                RecommendationStatus @default(PENDING)
+  requestedById         String?
+  requestedByName       String?
+  decidedById           String?
+  decidedByName         String?
+  decidedAt             DateTime?
+  decisionNote          String?
+  createdAt             DateTime             @default(now())
+}
+
+// ───────────────────────────── Hospital readiness ─────────────────────────────
+
+model HospitalPreparation {
+  id          String           @id @default(cuid())
+  encounterId String
+  encounter   PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  hospitalId  String
+  hospital    Hospital         @relation(fields: [hospitalId], references: [id])
+  item        PrepItem
+  done        Boolean          @default(false)
+  updatedById String?
+  updatedByName String?
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([encounterId, hospitalId, item])
+}
+
+model Acknowledgment {
+  id             String           @id @default(cuid())
+  encounterId    String
+  encounter      PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  hospitalId     String
+  hospital       Hospital         @relation(fields: [hospitalId], references: [id])
+  userId         String
+  userName       String
+  role           RoleKey
+  note           String?
+  acknowledgedAt DateTime         @default(now())
+}
+
+model TriageAssessment {
+  id                String           @id @default(cuid())
+  encounterId       String
+  encounter         PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  suggestedPriority Priority
+  riskScore         Int
+  confidence        Int
+  factors           Json
+  missingData       Json
+  inputs            Json
+  engineVersion     String
+  decision          TriageDecision   @default(PENDING)
+  finalPriority     Priority?
+  overrideReason    String?
+  decidedById       String?
+  decidedByName     String?
+  decidedAt         DateTime?
+  createdAt         DateTime         @default(now())
+}
+
+model Handover {
+  id             String         @id @default(cuid())
+  encounterId    String         @unique
+  encounter      PatientEncounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  hospitalId     String
+  hospital       Hospital       @relation(fields: [hospitalId], references: [id])
+  status         HandoverStatus @default(STARTED)
+  summary        Json
+  startedAt      DateTime       @default(now())
+  startedById    String?
+  startedByName  String?
+  acceptedAt     DateTime?
+  acceptedById   String?
+  acceptedByName String?
+  completedAt    DateTime?
+  completedById  String?
+  completedByName String?
+  receivingNotes String?
+}
+
+// ───────────────────────────── Ops ─────────────────────────────
+
+model Notification {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        NotificationType
+  title       String
+  body        String
+  link        String?
+  encounterId String?
+  encounter   PatientEncounter? @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  readAt      DateTime?
+  createdAt   DateTime         @default(now())
+
+  @@index([userId, readAt])
+}
+
+model Alert {
+  id               String        @id @default(cuid())
+  type             AlertType
+  severity         AlertSeverity
+  status           AlertStatus   @default(OPEN)
+  message          String
+  data             Json?
+  dedupeKey        String?       @unique
+  encounterId      String?
+  encounter        PatientEncounter? @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  hospitalId       String?
+  hospital         Hospital?     @relation(fields: [hospitalId], references: [id])
+  ambulanceId      String?
+  ambulance        Ambulance?    @relation(fields: [ambulanceId], references: [id])
+  createdAt        DateTime      @default(now())
+  acknowledgedAt   DateTime?
+  acknowledgedById String?
+  resolvedAt       DateTime?
+
+  @@index([status, createdAt])
+}
+
+model AuditEvent {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userEmail  String?
+  role       RoleKey?
+  orgId      String?
+  action     String
+  entityType String
+  entityId   String?
+  before     Json?
+  after      Json?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([entityType, entityId])
+}
+
+model Integration {
+  id            String            @id @default(cuid())
+  key           String            @unique
+  name          String
+  category      String
+  status        IntegrationStatus
+  description   String
+  endpoint      String?
+  lastCheckedAt DateTime?
+  lastError     String?
+  updatedAt     DateTime          @updatedAt
+}

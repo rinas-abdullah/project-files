@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #f4f6f9;
+  --foreground: #0b1a33;
+  --card: #ffffff;
+  --card-foreground: #0b1a33;
+  --muted: #eef1f6;
+  --muted-foreground: #5b6b82;
+  --border: #e1e6ee;
+  --input: #d6dde8;
+  --ring: #2563eb;
+  --primary: #0b1a33;
+  --primary-foreground: #ffffff;
+  --accent: #e9eef7;
+  --accent-foreground: #0b1a33;
+
+  --navy-950: #071226;
+  --navy-900: #0b1a33;
+  --navy-800: #12264a;
+  --navy-700: #1b3461;
+
+  --critical: #dc2626;
+  --critical-soft: #fef2f2;
+  --warning: #d97706;
+  --warning-soft: #fffbeb;
+  --stable: #0d9488;
+  --stable-soft: #f0fdfa;
+  --info: #2563eb;
+  --info-soft: #eff6ff;
+  --ai: #7c3aed;
+  --ai-soft: #f5f3ff;
+
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-navy-950: var(--navy-950);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-navy-700: var(--navy-700);
+  --color-critical: var(--critical);
+  --color-critical-soft: var(--critical-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-stable: var(--stable);
+  --color-stable-soft: var(--stable-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-ai: var(--ai);
+  --color-ai-soft: var(--ai-soft);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-inter), var(--font-arabic), ui-sans-serif, system-ui, "Segoe UI", Tahoma, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+html[dir="rtl"] body {
+  font-family: var(--font-arabic), var(--font-inter), ui-sans-serif, system-ui, Tahoma, sans-serif;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Numbers, codes and vitals stay LTR inside RTL layouts */
+.ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+@keyframes vl-pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.45); }
+  70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+.pulse-critical {
+  animation: vl-pulse-ring 1.8s infinite;
+}
+
+@keyframes vl-flash {
+  0% { background-color: rgba(37, 99, 235, 0.14); }
+  100% { background-color: transparent; }
+}
+.flash-update {
+  animation: vl-flash 1.6s ease-out;
+}
+
+.leaflet-container {
+  font-family: inherit;
+  border-radius: inherit;
+  z-index: 0;
+}
+.vl-marker {
+  background: transparent;
+  border: none;
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+}
