@@ -32,8 +32,8 @@ export default function IntroducingDithar() {
       desc: "حساسات ضغط رقيقة داخل اللبادة التي تبقى في الحذاء تستجيب لوزن القدم — جُرّب هذا بأحمال 5 إلى 25 كغم في حذاء وشبشب. القياس الدقيق بالكيلوغرام لم يتحقق بعد؛ الحساس يتشبّع عند الأحمال الأعلى.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#1e88c8",
-      x: "65%",
-      y: "43%",
+      x: "45%",
+      y: "45%",
     },
     {
       id: "nfc",
@@ -43,8 +43,8 @@ export default function IntroducingDithar() {
       desc: "تعرّف نوع الحذاء عند تركيب الكبسولة، فتستخدم المعايرة الخاصة بهذا الحذاء تلقائياً دون إدخال يدوي من المريض.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#06b6d4",
-      x: "38%",
-      y: "52%",
+      x: "86%",
+      y: "76%",
     },
     {
       id: "eva",
@@ -54,8 +54,8 @@ export default function IntroducingDithar() {
       desc: "طبقة EVA مريحة وطبقة علوية قابلة للغسل — لا بطارية ولا إلكترونيات تحت وزن الجسم، فقط الحساسات الرقيقة والرقاقة.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#fbbf24",
-      x: "50%",
-      y: "16%",
+      x: "15%",
+      y: "20%",
     },
   ];
 
@@ -70,12 +70,11 @@ export default function IntroducingDithar() {
         <div className="lg:col-span-6 flex justify-center items-center relative order-last lg:order-first">
 
 
-          {/* Container scaled up to 600px max width */}
-          <div className="relative w-full max-w-120 sm:max-w-137.5 lg:max-w-150 select-none transition-all duration-300">
-            {/* The Smart PAD Photo */}
+          {/* Container — large, background removed */}
+          <div className="relative w-full max-w-137.5 sm:max-w-162.5 lg:max-w-175 select-none transition-all duration-300">
             <motion.img
-              src="/pad-exploded-layers.png"
-              alt="Dithar pad — exploded layers"
+              src="/pad-closed-transparent.png"
+              alt="Dithar pad — assembled, real photo"
               className="w-full h-auto object-contain filter drop-shadow-2xl"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
