@@ -18,9 +18,8 @@ import {
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 // Dynamically import heavy interactive sections for performance
-const SmartInsoleExplodedView = dynamic(() => import("@/components/sections/SmartInsoleExplodedView"), {
+const PadDiagram = dynamic(() => import("@/components/sections/PadDiagram"), {
   ssr: true,
-  loading: () => <div className="w-full min-h-[400px] flex items-center justify-center text-slate-400 font-arabic text-sm">جاري تحميل العرض التفكيكي...</div>
 });
 
 const CapsuleExplodedView = dynamic(() => import("@/components/sections/CapsuleExplodedView"), {
@@ -58,8 +57,8 @@ export default function Home() {
         <IntroducingDithar />
         {/* 3b. Device Technical Specifications */}
         <DeviceSpecs />
-        {/* 4. Exploded Product Experience */}
-        <SmartInsoleExplodedView />
+        {/* 4. Pad Components Diagram */}
+        <PadDiagram />
         {/* 4b. Capsule Exploded Experience */}
         <CapsuleExplodedView />
         {/* 5. How Dithar Works */}
