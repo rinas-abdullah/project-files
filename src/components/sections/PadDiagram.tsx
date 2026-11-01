@@ -61,21 +61,26 @@ export default function PadDiagram() {
               ))}
             </div>
 
-            {/* Photo */}
-            <div className="relative w-full aspect-[1408/768]">
-              <Image
-                src="/pad-exploded-layers.png"
-                alt="Dithar pad — exploded layers"
-                fill
-                className="object-contain drop-shadow-xl rounded-2xl"
-              />
-              {CALLOUTS.map((c) => (
-                <span
-                  key={c.id}
-                  className="absolute w-2 h-2 rounded-full bg-teal-600 ring-4 ring-teal-600/20 -translate-x-1/2 -translate-y-1/2"
-                  style={{ left: `${c.x}%`, top: `${c.y}%` }}
+            {/* Photo — kept small: the pad itself is thin (2.8mm), the gaps here are only to separate the layers visually */}
+            <div className="flex flex-col items-center">
+              <div className="relative w-full max-w-62 aspect-[1408/768]">
+                <Image
+                  src="/pad-exploded-layers.png"
+                  alt="Dithar pad — exploded layers"
+                  fill
+                  className="object-contain drop-shadow-lg rounded-2xl"
                 />
-              ))}
+                {CALLOUTS.map((c) => (
+                  <span
+                    key={c.id}
+                    className="absolute w-1.5 h-1.5 rounded-full bg-teal-600 ring-3 ring-teal-600/20 -translate-x-1/2 -translate-y-1/2"
+                    style={{ left: `${c.x}%`, top: `${c.y}%` }}
+                  />
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] text-slate-400 font-arabic text-center max-w-55">
+                الطبقات مفصولة هنا للتوضيح فقط — سماكة اللبادة الفعلية 2.8 مم، أرق من بطاقة ائتمان.
+              </p>
             </div>
 
             {/* Right labels */}
@@ -99,16 +104,19 @@ export default function PadDiagram() {
           </div>
 
           {/* Mobile: photo + stacked list */}
-          <div className="lg:hidden mt-6">
-            <div className="relative w-full aspect-[1408/768]">
+          <div className="lg:hidden mt-6 flex flex-col items-center">
+            <div className="relative w-full max-w-62 aspect-[1408/768]">
               <Image
                 src="/pad-exploded-layers.png"
                 alt="Dithar pad — exploded layers"
                 fill
-                className="object-contain drop-shadow-xl rounded-2xl"
+                className="object-contain drop-shadow-lg rounded-2xl"
               />
             </div>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3" dir="rtl">
+            <p className="mt-3 text-[11px] text-slate-400 font-arabic text-center max-w-55">
+              الطبقات مفصولة هنا للتوضيح فقط — سماكة اللبادة الفعلية 2.8 مم، أرق من بطاقة ائتمان.
+            </p>
+            <div className="mt-6 w-full grid grid-cols-1 sm:grid-cols-2 gap-3" dir="rtl">
               {CALLOUTS.map((c) => (
                 <div key={c.id} className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-2.5 text-right">
                   <span className="w-2 h-2 rounded-full bg-teal-500 mt-1.5 shrink-0" />
