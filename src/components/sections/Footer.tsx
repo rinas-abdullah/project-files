@@ -37,8 +37,8 @@ const PLATFORM_LINKS = [
 
 const COMPANY_LINKS = [
   { label: "لماذا دِثار",   href: "#why-dithar"      },
-  { label: "نموذج العمل",   href: "#business-model"  },
-  { label: "فرصة السوق",    href: "#market"          },
+  { label: "نموذج العمل",   href: "/investors#business-model"  },
+  { label: "فرصة السوق",    href: "/investors#market"          },
   { label: "خارطة الطريق", href: "#roadmap"         },
 ];
 
