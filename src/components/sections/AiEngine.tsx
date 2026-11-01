@@ -66,7 +66,7 @@ export default function AiEngine() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-5 max-w-xl text-sm sm:text-base leading-relaxed text-slate-500 dark:text-slate-300 font-light font-arabic"
           >
-            الذكاء الاصطناعي في منصة دِثار يرتّب أولويات المرضى للطبيب بناءً على الضغط والتوازن والحرارة — ولا يشخّص الحالة ولا يتنبأ بالمضاعفات. القرار الطبي يبقى دائماً للطبيب.
+            يرصد الذكاء الاصطناعي الأنماط غير المعتادة في بيانات المريض، ويرتّب الحالات حسب الأولوية ليبدأ الطبيب بالأهم. لا يشخّص ولا يقترح علاجاً، والقرار الطبي دائماً للطبيب.
           </motion.p>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2">

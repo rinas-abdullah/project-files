@@ -122,6 +122,13 @@ export function PortalHeader() {
         </div>
       </header>
 
+      {/* Demo environment notice — applies to every portal screen (patient, doctor, hospital) */}
+      <div className="w-full bg-amber-50 border-t border-amber-100 px-4 md:px-6 py-1.5">
+        <p className="max-w-[1400px] mx-auto text-[11px] text-amber-700 font-bold text-center">
+          {t.demo_banner}
+        </p>
+      </div>
+
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-200 shadow-lg z-40 animate-in slide-in-from-top-2">

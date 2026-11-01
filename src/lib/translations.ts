@@ -48,6 +48,7 @@ export const translations = {
     my_shoes: "أحذيتي",
     calibrate_new_shoe: "معايرة حذاء جديد",
     illustrative_data_badge: "بيانات توضيحية",
+    demo_banner: "بيئة عرض توضيحي — الحسابات والبيانات المعروضة تجريبية، وليست سجلات مرضى حقيقيين.",
     escalation_title: "التصعيد المتدرج للتنبيهات",
     escalation_desc: "اهتزاز الكبسولة فوراً، ثم إشعار في الجوال، ثم إشعار للعائلة إذا تكرر أو كان خطيراً، ثم ظهورك في أعلى قائمة الطبيب إذا استمر الأمر لأيام — حتى لا يزعجك التنبيه دون داعٍ.",
 
@@ -131,6 +132,7 @@ export const translations = {
     my_shoes: "My Shoes",
     calibrate_new_shoe: "Calibrate New Shoe",
     illustrative_data_badge: "Illustrative Data",
+    demo_banner: "Demo environment — accounts and data shown are illustrative test data, not real patient records.",
     escalation_title: "Graduated Alert Escalation",
     escalation_desc: "The capsule vibrates immediately, then a phone notification, then a family alert if it repeats or is severe, then you rise to the top of the doctor's list if it persists for days — so alerts never overwhelm you unnecessarily.",
 
