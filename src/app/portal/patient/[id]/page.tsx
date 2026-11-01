@@ -31,11 +31,12 @@ export default function PatientDetailsPage() {
   const [addingNote, setAddingNote] = useState(false);
 
   // Plan setting — doctor chooses the category and sets the numeric limit; the
-  // platform never sets a therapeutic value on its own. Illustrative/local only.
+  // platform never sets a therapeutic value on its own. Saved via the API.
   const [planCategory, setPlanCategory] = useState(CATEGORY_OPTIONS[0].value);
   const [planLimit, setPlanLimit] = useState("15");
   const [planSchedule, setPlanSchedule] = useState("15 كغم لأول أسبوعين، ثم 30 كغم");
   const [planSaved, setPlanSaved] = useState(false);
+  const [savingPlan, setSavingPlan] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -47,6 +48,12 @@ export default function PatientDetailsPage() {
         const json = await res.json();
         if (!json.patient) throw new Error("لم يتم العثور على بيانات المريض");
         setPatient(json.patient);
+        if (json.patient.carePlan) {
+          setPlanCategory(json.patient.carePlan.category);
+          setPlanLimit(json.patient.carePlan.limitValue);
+          setPlanSchedule(json.patient.carePlan.schedule || "");
+          setPlanSaved(true);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "حدث خطأ أثناء جلب البيانات");
       } finally {
@@ -55,6 +62,36 @@ export default function PatientDetailsPage() {
     }
     loadData();
   }, [patientId]);
+
+  const handleSavePlan = async () => {
+    if (!patientId) return;
+    try {
+      setSavingPlan(true);
+      const res = await fetch(`/api/patients/${patientId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "set_plan",
+          category: planCategory,
+          limitValue: planLimit,
+          schedule: planSchedule,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "تعذر حفظ الخطة");
+      if (json.patient) setPatient(json.patient);
+      setPlanSaved(true);
+      toast({ title: "تم حفظ الخطة", description: "تم تحديث الفئة والحد المسموح لهذا المريض.", type: "success" });
+    } catch (err) {
+      toast({
+        title: "خطأ",
+        description: err instanceof Error ? err.message : "تعذر حفظ الخطة.",
+        type: "error",
+      });
+    } finally {
+      setSavingPlan(false);
+    }
+  };
 
   const handleAddNote = async () => {
     if (!note.trim() || !patientId) return;
@@ -196,13 +233,11 @@ export default function PatientDetailsPage() {
                 </div>
               </div>
               <button
-                onClick={() => {
-                  setPlanSaved(true);
-                  toast({ title: "تم حفظ الخطة", description: "تم تحديث الفئة والحد المسموح لهذا المريض.", type: "success" });
-                }}
-                className="w-full py-2 bg-[#0B4D8D] text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors"
+                onClick={handleSavePlan}
+                disabled={savingPlan}
+                className="w-full py-2 bg-[#0B4D8D] text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors disabled:opacity-60"
               >
-                {planSaved ? "تم الحفظ ✓" : "حفظ الخطة"}
+                {savingPlan ? "جاري الحفظ..." : planSaved ? "تم الحفظ ✓" : "حفظ الخطة"}
               </button>
             </div>
           </GlassCard>

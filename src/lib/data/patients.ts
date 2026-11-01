@@ -1,13 +1,21 @@
 import "server-only";
 import { eq, inArray } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { patients as patientsTable, alerts as alertsTable, medicalNotes as medicalNotesTable } from "@/lib/db/schema";
+import {
+  patients as patientsTable,
+  alerts as alertsTable,
+  medicalNotes as medicalNotesTable,
+  patientShoes as patientShoesTable,
+  carePlans as carePlansTable,
+} from "@/lib/db/schema";
 import { Patient } from "@/lib/types/portal";
 
 function toPatient(
   row: typeof patientsTable.$inferSelect,
   rowAlerts: (typeof alertsTable.$inferSelect)[],
-  rowNotes: (typeof medicalNotesTable.$inferSelect)[]
+  rowNotes: (typeof medicalNotesTable.$inferSelect)[],
+  rowShoes: (typeof patientShoesTable.$inferSelect)[] = [],
+  rowPlan?: typeof carePlansTable.$inferSelect
 ): Patient {
   return {
     id: row.id,
@@ -41,21 +49,35 @@ function toPatient(
     medicalNotes: rowNotes
       .map(n => ({ id: n.id, author: n.author, date: n.date, content: n.content }))
       .reverse(),
+    shoes: rowShoes.map(s => ({ id: s.id, label: s.label, calibrated: s.calibrated })),
+    carePlan: rowPlan
+      ? {
+          category: rowPlan.category,
+          limitValue: rowPlan.limitValue,
+          schedule: rowPlan.schedule ?? undefined,
+          updatedBy: rowPlan.updatedBy,
+          updatedAt: rowPlan.updatedAt.toISOString(),
+        }
+      : undefined,
   };
 }
 
 async function attachRelations(rows: (typeof patientsTable.$inferSelect)[]): Promise<Patient[]> {
   if (rows.length === 0) return [];
   const ids = rows.map(r => r.id);
-  const [allAlerts, allNotes] = await Promise.all([
+  const [allAlerts, allNotes, allShoes, allPlans] = await Promise.all([
     db.select().from(alertsTable).where(inArray(alertsTable.patientId, ids)),
     db.select().from(medicalNotesTable).where(inArray(medicalNotesTable.patientId, ids)),
+    db.select().from(patientShoesTable).where(inArray(patientShoesTable.patientId, ids)),
+    db.select().from(carePlansTable).where(inArray(carePlansTable.patientId, ids)),
   ]);
   return rows.map(row =>
     toPatient(
       row,
       allAlerts.filter(a => a.patientId === row.id),
-      allNotes.filter(n => n.patientId === row.id)
+      allNotes.filter(n => n.patientId === row.id),
+      allShoes.filter(s => s.patientId === row.id),
+      allPlans.find(p => p.patientId === row.id)
     )
   );
 }
@@ -100,6 +122,45 @@ export async function addMedicalNote(patientId: string, author: string, content:
 
 export async function updateRecommendation(patientId: string, recommendation: string): Promise<Patient | undefined> {
   await db.update(patientsTable).set({ recommendation }).where(eq(patientsTable.id, patientId));
+  return getPatientById(patientId);
+}
+
+// The patient adds a shoe/slipper/cast and calibrates it by standing on a
+// scale with known loads — recorded here as calibrated immediately since the
+// platform has no real scale integration yet; this is the "أحذيتي" screen.
+export async function addShoe(patientId: string, label: string): Promise<Patient | undefined> {
+  await db.insert(patientShoesTable).values({
+    id: `shoe-${Date.now()}`,
+    patientId,
+    label,
+    calibrated: true,
+  });
+  return getPatientById(patientId);
+}
+
+export async function setCarePlan(
+  patientId: string,
+  plan: { category: string; limitValue: string; schedule?: string; updatedBy: string }
+): Promise<Patient | undefined> {
+  await db
+    .insert(carePlansTable)
+    .values({
+      patientId,
+      category: plan.category,
+      limitValue: plan.limitValue,
+      schedule: plan.schedule,
+      updatedBy: plan.updatedBy,
+    })
+    .onConflictDoUpdate({
+      target: carePlansTable.patientId,
+      set: {
+        category: plan.category,
+        limitValue: plan.limitValue,
+        schedule: plan.schedule,
+        updatedBy: plan.updatedBy,
+        updatedAt: new Date(),
+      },
+    });
   return getPatientById(patientId);
 }
 

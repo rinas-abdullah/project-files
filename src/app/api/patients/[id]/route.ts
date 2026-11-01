@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verifySessionToken, SESSION_COOKIE_NAME } from "@/lib/auth/session";
-import { getPatientById, addMedicalNote, updateRecommendation } from "@/lib/data/patients";
+import { getPatientById, addMedicalNote, updateRecommendation, addShoe, setCarePlan } from "@/lib/data/patients";
 
 export async function GET(
   request: Request,
@@ -41,10 +41,6 @@ export async function POST(
   if (!user) {
     return NextResponse.json({ error: "غير مصرح لك بالوصول" }, { status: 401 });
   }
-  // Only clinicians may write medical notes or recommendations.
-  if (user.role !== "doctor") {
-    return NextResponse.json({ error: "لا تملك صلاحية تعديل هذا السجل" }, { status: 403 });
-  }
 
   const { id } = await params;
   const existing = await getPatientById(id);
@@ -53,6 +49,20 @@ export async function POST(
   }
 
   const body = await request.json();
+
+  // The patient calibrates their own "أحذيتي" shoes — no clinician needed for this.
+  if (body.type === "add_shoe" && body.label) {
+    if (user.role === "patient" && user.id !== id) {
+      return NextResponse.json({ error: "لا تملك صلاحية تعديل هذا السجل" }, { status: 403 });
+    }
+    const patient = await addShoe(id, body.label);
+    return NextResponse.json({ success: true, message: "تمت إضافة الحذاء ومعايرته", patient });
+  }
+
+  // Everything else is a clinician-only write (notes, recommendation, the plan).
+  if (user.role !== "doctor") {
+    return NextResponse.json({ error: "لا تملك صلاحية تعديل هذا السجل" }, { status: 403 });
+  }
 
   if (body.type === "add_note" && body.content) {
     const patient = await addMedicalNote(id, user.name, body.content);
@@ -70,6 +80,18 @@ export async function POST(
       message: "تم تحديث التوصية الطبية",
       patient
     });
+  }
+
+  // The doctor sets the category and the numeric limit — the platform never
+  // sets a therapeutic value on its own.
+  if (body.type === "set_plan" && body.category && body.limitValue) {
+    const patient = await setCarePlan(id, {
+      category: body.category,
+      limitValue: body.limitValue,
+      schedule: body.schedule,
+      updatedBy: user.name,
+    });
+    return NextResponse.json({ success: true, message: "تم حفظ الخطة", patient });
   }
 
   return NextResponse.json({ success: false, error: "Invalid action" }, { status: 400 });

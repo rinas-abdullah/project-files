@@ -69,6 +69,28 @@ export const medicalNotes = pgTable("medical_notes", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// One pad per shoe/slipper/cast the patient uses — calibrated the first time
+// they stand on a scale with that shoe so the system saves a per-shoe baseline.
+export const patientShoes = pgTable("patient_shoes", {
+  id: text("id").primaryKey(),
+  patientId: text("patient_id").notNull().references(() => patients.id, { onDelete: "cascade" }),
+  label: text("label").notNull(),
+  calibrated: boolean("calibrated").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// The doctor's current plan for a patient: which of the 5 categories, and the
+// numeric limit (and how it's scheduled to change). The platform never sets
+// this value on its own — only a doctor writes to this table.
+export const carePlans = pgTable("care_plans", {
+  patientId: text("patient_id").primaryKey().references(() => patients.id, { onDelete: "cascade" }),
+  category: text("category").notNull(),
+  limitValue: text("limit_value").notNull(),
+  schedule: text("schedule"),
+  updatedBy: text("updated_by").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const devices = pgTable("devices", {
   id: text("id").primaryKey(),
   deviceId: text("device_id").notNull().unique(),

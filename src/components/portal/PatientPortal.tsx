@@ -58,12 +58,52 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
   const { t, language } = useLanguage();
   const { toast } = useToast();
 
-  // Illustrative only — the pad stays in each shoe, only the capsule moves between them.
-  const MY_SHOES = [
-    { id: "shoe-1", labelAr: "حذاء طبي يومي", labelEn: "Daily medical shoe", calibrated: true },
-    { id: "shoe-2", labelAr: "شبشب منزلي", labelEn: "Home slipper", calibrated: true },
-    { id: "shoe-3", labelAr: "جبيرة التأهيل", labelEn: "Rehab cast", calibrated: false },
-  ];
+  // The pad stays in each shoe, only the capsule moves between them — this
+  // list is real, saved via /api/patients/[id] (type: "add_shoe").
+  const [shoes, setShoes] = React.useState(patientData?.shoes ?? []);
+  const [addingShoe, setAddingShoe] = React.useState(false);
+  const [newShoeLabel, setNewShoeLabel] = React.useState("");
+  const [savingShoe, setSavingShoe] = React.useState(false);
+
+  React.useEffect(() => {
+    setShoes(patientData?.shoes ?? []);
+  }, [patientData?.shoes]);
+
+  const handleAddShoe = async () => {
+    if (!newShoeLabel.trim() || !patientData?.id) return;
+    try {
+      setSavingShoe(true);
+      const res = await fetch(`/api/patients/${patientData.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "add_shoe", label: newShoeLabel.trim() }),
+      });
+      const json = await res.json();
+      if (res.ok && json.patient) {
+        setShoes(json.patient.shoes);
+        setNewShoeLabel("");
+        setAddingShoe(false);
+        toast({
+          title: language === "ar" ? "تمت المعايرة" : "Calibrated",
+          description:
+            language === "ar"
+              ? "حُفظت معايرة هذا الحذاء."
+              : "This shoe's calibration was saved.",
+          type: "success",
+        });
+      } else {
+        throw new Error(json.error || "failed");
+      }
+    } catch {
+      toast({
+        title: language === "ar" ? "خطأ" : "Error",
+        description: language === "ar" ? "تعذر حفظ الحذاء." : "Could not save the shoe.",
+        type: "error",
+      });
+    } finally {
+      setSavingShoe(false);
+    }
+  };
 
   const RADAR_DATA = [
     { subject: language === 'ar' ? 'مخاطر القدم' : 'Foot Risk', A: 80, fullMark: 100 },
@@ -257,41 +297,57 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
                 <h3 className="font-bold text-slate-900 text-sm">{t.my_shoes}</h3>
               </div>
               <button
-                onClick={() =>
-                  toast({
-                    title: language === "ar" ? "معايرة حذاء جديد" : "Calibrate new shoe",
-                    description:
-                      language === "ar"
-                        ? "قفي على الميزان بأحمال معروفة ليحفظ النظام خطاً أساسياً خاصاً بهذا الحذاء."
-                        : "Stand on the scale with known loads so the system saves a baseline for this shoe.",
-                    type: "success",
-                  })
-                }
+                onClick={() => setAddingShoe((v) => !v)}
                 className="text-[10px] font-bold text-[#0B4D8D] bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-md hover:bg-blue-100 transition-colors"
               >
                 + {t.calibrate_new_shoe}
               </button>
             </div>
-            <div className="space-y-2">
-              {MY_SHOES.map((shoe) => (
-                <div
-                  key={shoe.id}
-                  className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5"
+
+            {addingShoe && (
+              <div className="flex items-center gap-2 mb-3">
+                <input
+                  type="text"
+                  value={newShoeLabel}
+                  onChange={(e) => setNewShoeLabel(e.target.value)}
+                  placeholder={language === "ar" ? "مثال: حذاء رياضي" : "e.g. Sports shoe"}
+                  className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+                  onKeyDown={(e) => { if (e.key === "Enter") handleAddShoe(); }}
+                />
+                <button
+                  onClick={handleAddShoe}
+                  disabled={savingShoe || !newShoeLabel.trim()}
+                  className="px-3 py-2 bg-[#0B4D8D] text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors disabled:opacity-50"
                 >
-                  <span className="text-xs font-bold text-slate-800">
-                    {language === "ar" ? shoe.labelAr : shoe.labelEn}
-                  </span>
-                  {shoe.calibrated ? (
-                    <GlassBadge status="success" className="text-[9px] px-1.5 py-0.5">
-                      {language === "ar" ? "مُعايَر" : "Calibrated"}
-                    </GlassBadge>
-                  ) : (
-                    <GlassBadge status="warning" className="text-[9px] px-1.5 py-0.5">
-                      {language === "ar" ? "بحاجة لمعايرة" : "Needs calibration"}
-                    </GlassBadge>
-                  )}
-                </div>
-              ))}
+                  {savingShoe ? "..." : language === "ar" ? "حفظ" : "Save"}
+                </button>
+              </div>
+            )}
+
+            <div className="space-y-2">
+              {shoes.length === 0 ? (
+                <p className="text-xs text-slate-400 text-center py-3">
+                  {language === "ar" ? "لا توجد أحذية معايَرة بعد." : "No calibrated shoes yet."}
+                </p>
+              ) : (
+                shoes.map((shoe) => (
+                  <div
+                    key={shoe.id}
+                    className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5"
+                  >
+                    <span className="text-xs font-bold text-slate-800">{shoe.label}</span>
+                    {shoe.calibrated ? (
+                      <GlassBadge status="success" className="text-[9px] px-1.5 py-0.5">
+                        {language === "ar" ? "مُعايَر" : "Calibrated"}
+                      </GlassBadge>
+                    ) : (
+                      <GlassBadge status="warning" className="text-[9px] px-1.5 py-0.5">
+                        {language === "ar" ? "بحاجة لمعايرة" : "Needs calibration"}
+                      </GlassBadge>
+                    )}
+                  </div>
+                ))
+              )}
             </div>
           </GlassCard>
 

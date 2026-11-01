@@ -25,6 +25,22 @@ export interface Patient {
   recommendation?: string;
   alerts: Alert[];
   medicalNotes: MedicalNote[];
+  shoes: Shoe[];
+  carePlan?: CarePlan;
+}
+
+export interface Shoe {
+  id: string;
+  label: string;
+  calibrated: boolean;
+}
+
+export interface CarePlan {
+  category: string;
+  limitValue: string;
+  schedule?: string;
+  updatedBy: string;
+  updatedAt: string;
 }
 
 export interface Device {
