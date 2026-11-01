@@ -65,8 +65,8 @@ export default function HowItWorks() {
       <div className="relative flex items-center justify-center select-none" dir="ltr">
         {/* Large Smart PAD Photo directly on background */}
         <Image
-          src="/smart-insole-closed.png"
-          alt="Dithar Smart PAD"
+          src="/pad-closed.png"
+          alt="Dithar pad — assembled"
           width={300}
           height={800}
           className={cn(

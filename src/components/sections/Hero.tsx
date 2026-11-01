@@ -28,8 +28,8 @@ const hotspots: Hotspot[] = [
     nameEn: "The Pad — Pressure Sensors",
     descAr: "لبادة رقيقة تبقى داخل كل حذاء أو شبشب أو جبيرة: حساسات ضغط رقيقة ورقاقة NFC تعرّف نوع الحذاء وطبقة EVA مريحة وطبقة قابلة للغسل. لا بطارية ولا إلكترونيات تحت وزن الجسم.",
     descEn: "A thin pad that stays inside each shoe, slipper, or cast: thin pressure sensors, an NFC chip that identifies the shoe, an EVA comfort layer, and a washable top layer. No battery or electronics under body weight.",
-    dotX: 62,
-    dotY: 26,
+    dotX: 68,
+    dotY: 36,
     labelY: 20,
     side: "left",
     icon: Footprints,
@@ -41,8 +41,8 @@ const hotspots: Hotspot[] = [
     nameEn: "The Magnetic Capsule",
     descAr: "كبسولة واحدة لكل قدم تثبت مغناطيسياً على جانب الكعب من الخارج وتنتقل بين اللبادات عند تغيير الحذاء. بداخلها المعالج وحساس الحركة والميلان وحساس الحرارة والرطوبة والهزّاز والبلوتوث والبطارية.",
     descEn: "One capsule per foot, magnetically attached to the outside of the heel, moving between pads when the shoe changes. It holds the processor, motion/tilt sensor, temperature/humidity sensor, buzzer, Bluetooth, and battery.",
-    dotX: 50,
-    dotY: 45,
+    dotX: 26,
+    dotY: 47,
     labelY: 38,
     side: "right",
     icon: Cpu,
@@ -54,8 +54,8 @@ const hotspots: Hotspot[] = [
     nameEn: "Temperature & Humidity",
     descAr: "تقيس الكبسولة الحرارة والرطوبة داخل الحذاء — جُرّب هذا فعلياً: ارتفاع +4.9°C داخل الحذاء و+1.4°C داخل الشبشب خلال 20 دقيقة في تجارب أولية.",
     descEn: "The capsule measures in-shoe temperature and humidity — tested in early trials: +4.9°C inside a shoe and +1.4°C inside a slipper over 20 minutes.",
-    dotX: 45,
-    dotY: 55,
+    dotX: 52,
+    dotY: 58,
     labelY: 68,
     side: "left",
     icon: Thermometer,
@@ -67,8 +67,8 @@ const hotspots: Hotspot[] = [
     nameEn: "Immediate Alert",
     descAr: "عند تجاوز الحد الذي يضعه الطبيب، تهتز الكبسولة فوراً ويظهر إشعار في جوال المريض، ثم تتصاعد التنبيهات تدريجياً إذا تكرر الأمر.",
     descEn: "When the doctor-set limit is exceeded, the capsule vibrates immediately and a phone notification appears, escalating gradually if it repeats.",
-    dotX: 38,
-    dotY: 74,
+    dotX: 80,
+    dotY: 60,
     labelY: 82,
     side: "right",
     icon: Activity,
@@ -175,8 +175,8 @@ export default function Hero() {
             {/* Product Photograph (Full cover fit for landscape diagnostic view) */}
             <div className="absolute inset-0 w-full h-full select-none">
               <Image
-                src="/insole-clinical-premium.png"
-                alt="DITHAR pad and magnetic capsule"
+                src="/pad-sensor-view.jpg"
+                alt="DITHAR pad — sensor layout"
                 fill
                 priority
                 className="object-cover filter drop-shadow-sm"

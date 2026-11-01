@@ -207,7 +207,7 @@ export default function PlatformDashboard() {
                           ))}
                         </div>
                         <div className="flex flex-col items-center justify-center gap-4">
-                          <Image src="/smart-insole-closed.png" alt="Dithar Smart PAD" width={130} height={130} className="object-contain" />
+                          <Image src="/pad-closed.png" alt="Dithar pad — assembled" width={130} height={130} className="object-contain" />
                           <button className="w-full rounded-3xl bg-[#0B4D8D] text-white py-3 text-sm font-bold hover:bg-blue-800 transition-colors">
                             خارطة الصحة الشاملة
                           </button>

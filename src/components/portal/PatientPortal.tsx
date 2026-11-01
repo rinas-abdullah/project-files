@@ -259,13 +259,13 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
 
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-3 mt-4 md:mt-0">
                 <Image
-                  src="/smart-insole-closed.png"
+                  src="/capsule-exploded.jpg"
                   alt="Dithar magnetic capsule"
                   width={110}
                   height={110}
-                  className="object-contain drop-shadow-xl"
+                  className="object-contain drop-shadow-xl rounded-xl"
                   unoptimized
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/insole-clinical-premium.png'; }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/pad-closed.png'; }}
                 />
                 
                 {/* Hardware Web Serial Button */}

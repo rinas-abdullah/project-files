@@ -107,8 +107,8 @@ export default function IntroducingDithar() {
           <div className="relative w-full max-w-120 sm:max-w-137.5 lg:max-w-150 select-none transition-all duration-300">
             {/* The Smart PAD Photo */}
             <motion.img
-              src="/smart-insole-closed.png"
-              alt="Dithar pad and magnetic capsule"
+              src="/pad-closed.png"
+              alt="Dithar pad — assembled"
               className="w-full h-auto object-contain filter drop-shadow-2xl"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
