@@ -13,8 +13,10 @@ interface Hotspot {
   nameEn: string;
   descAr: string;
   descEn: string;
-  dotX: number; // SVG % coordinate X
-  dotY: number; // SVG % coordinate Y
+  dotX: number; // % position over the landscape (desktop) photo
+  dotY: number;
+  dotXMobile: number; // % position over the portrait (mobile) photo
+  dotYMobile: number;
   labelY: number; // SVG % coordinate Y for label alignment
   side: "left" | "right";
   icon: ComponentType<SVGProps<SVGSVGElement>>;
@@ -30,6 +32,8 @@ const hotspots: Hotspot[] = [
     descEn: "A thin pad that stays inside each shoe, slipper, or cast: thin pressure sensors, an NFC chip that identifies the shoe, an EVA comfort layer, and a washable top layer. No battery or electronics under body weight.",
     dotX: 68,
     dotY: 36,
+    dotXMobile: 64,
+    dotYMobile: 68,
     labelY: 20,
     side: "left",
     icon: Footprints,
@@ -43,6 +47,8 @@ const hotspots: Hotspot[] = [
     descEn: "One capsule per foot, magnetically attached to the outside of the heel, moving between pads when the shoe changes. It holds the processor, motion/tilt sensor, temperature/humidity sensor, buzzer, Bluetooth, and battery.",
     dotX: 26,
     dotY: 47,
+    dotXMobile: 53,
+    dotYMobile: 26,
     labelY: 38,
     side: "right",
     icon: Cpu,
@@ -56,6 +62,8 @@ const hotspots: Hotspot[] = [
     descEn: "The capsule measures in-shoe temperature and humidity — tested in early trials: +4.9°C inside a shoe and +1.4°C inside a slipper over 20 minutes.",
     dotX: 52,
     dotY: 58,
+    dotXMobile: 42,
+    dotYMobile: 52,
     labelY: 68,
     side: "left",
     icon: Thermometer,
@@ -69,6 +77,8 @@ const hotspots: Hotspot[] = [
     descEn: "When the doctor-set limit is exceeded, the capsule vibrates immediately and a phone notification appears, escalating gradually if it repeats.",
     dotX: 80,
     dotY: 60,
+    dotXMobile: 40,
+    dotYMobile: 80,
     labelY: 82,
     side: "right",
     icon: Activity,
@@ -78,10 +88,15 @@ const hotspots: Hotspot[] = [
 export default function Hero() {
   const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  // Matches ContainerScroll's own breakpoint (768px) for when its device
+  // frame switches from the tall mobile shape to the wide desktop shape —
+  // the portrait vs. landscape pad photo must switch at the same point.
+  const [isFrameMobile, setIsFrameMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
+      setIsFrameMobile(window.innerWidth <= 768);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -172,10 +187,10 @@ export default function Hero() {
               <span className="text-[11px] font-bold font-arabic text-primary-blue dark:text-medical-blue">دِثار — لبادة وكبسولة</span>
             </div>
 
-            {/* Product Photograph (Full cover fit for landscape diagnostic view) */}
+            {/* Product Photograph — portrait crop on mobile (matches the tall device frame), landscape on desktop */}
             <div className="absolute inset-0 w-full h-full select-none">
               <Image
-                src="/pad-sensor-view.jpg"
+                src={isFrameMobile ? "/pad-sensor-view-portrait.jpg" : "/pad-sensor-view.jpg"}
                 alt="DITHAR pad — sensor layout"
                 fill
                 priority
@@ -200,8 +215,8 @@ export default function Hero() {
                     key={item.id}
                     className="absolute z-20 flex items-center justify-center cursor-pointer focus:outline-none"
                     style={{
-                      left: `${item.dotX}%`,
-                      top: `${item.dotY}%`,
+                      left: `${isFrameMobile ? item.dotXMobile : item.dotX}%`,
+                      top: `${isFrameMobile ? item.dotYMobile : item.dotY}%`,
                       transform: "translate(-50%, -50%)",
                     }}
                     onMouseEnter={() => setActiveHotspot(item.id)}
