@@ -58,7 +58,7 @@ export default function PadDiagram() {
 
             {/* Photo — kept small: the pad itself is thin (2.8mm), the gaps here are only to separate the layers visually */}
             <div className="flex flex-col items-center">
-              <div className="relative w-full max-w-62 aspect-[1408/768]">
+              <div className="relative w-full max-w-md aspect-[1408/768]">
                 <Image
                   src="/pad-exploded-layers.png"
                   alt="Dithar pad — exploded layers"
@@ -100,7 +100,7 @@ export default function PadDiagram() {
 
           {/* Mobile: photo + stacked list */}
           <div className="lg:hidden mt-6 flex flex-col items-center">
-            <div className="relative w-full max-w-62 aspect-[1408/768]">
+            <div className="relative w-full max-w-md aspect-[1408/768]">
               <Image
                 src="/pad-exploded-layers.png"
                 alt="Dithar pad — exploded layers"
