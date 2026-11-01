@@ -5,6 +5,7 @@ export { default as IntroducingDithar } from "./IntroducingDithar";
 export { default as DeviceSpecs } from "./DeviceSpecs";
 export { default as AiEngine } from "./AiEngine";
 export { default as SmartInsoleExplodedView } from "./SmartInsoleExplodedView";
+export { default as CapsuleExplodedView } from "./CapsuleExplodedView";
 export { default as HowItWorks } from "./HowItWorks";
 export { default as DigitalTwin } from "./DigitalTwin";
 export { default as PlatformDashboard } from "./PlatformDashboard";

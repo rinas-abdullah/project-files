@@ -23,6 +23,11 @@ const SmartInsoleExplodedView = dynamic(() => import("@/components/sections/Smar
   loading: () => <div className="w-full min-h-[400px] flex items-center justify-center text-slate-400 font-arabic text-sm">جاري تحميل العرض التفكيكي...</div>
 });
 
+const CapsuleExplodedView = dynamic(() => import("@/components/sections/CapsuleExplodedView"), {
+  ssr: true,
+  loading: () => <div className="w-full min-h-[400px] flex items-center justify-center text-slate-400 font-arabic text-sm">جاري تحميل عرض الكبسولة...</div>
+});
+
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks"), {
   ssr: true,
 });
@@ -55,6 +60,8 @@ export default function Home() {
         <DeviceSpecs />
         {/* 4. Exploded Product Experience */}
         <SmartInsoleExplodedView />
+        {/* 4b. Capsule Exploded Experience */}
+        <CapsuleExplodedView />
         {/* 5. How Dithar Works */}
         <HowItWorks />
         {/* 6. Digital Twin Experience */}
