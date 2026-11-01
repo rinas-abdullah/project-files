@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import {
   Hero,
   HealthcareGap,
+  FounderStory,
   IntroducingDithar,
   DeviceSpecs,
   AiEngine,
@@ -46,6 +47,8 @@ export default function Home() {
         <Hero />
         {/* 2. The Healthcare Gap */}
         <HealthcareGap />
+        {/* 2b. Founder Story */}
+        <FounderStory />
         {/* 3. Introducing Dithar Smart PAD */}
         <IntroducingDithar />
         {/* 3b. Device Technical Specifications */}

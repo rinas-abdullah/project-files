@@ -27,9 +27,9 @@ const features = [
     color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
   },
   {
-    titleAr: "رؤى قابلة للتطبيق",
-    titleEn: "Actionable Clinical Insights",
-    desc: "يوفر توصيات علاجية سريعة قابلة للتنفيذ.",
+    titleAr: "ترتيب الأولوية للطبيب",
+    titleEn: "Priority Ranking for the Doctor",
+    desc: "يرفع المرضى الأكثر تجاوزاً للحد إلى أعلى قائمة الطبيب — دون أن يشخّص أو يقترح علاجاً.",
     icon: Thermometer,
     color: "text-slate-700 bg-slate-100 border-slate-200 dark:text-slate-100 dark:bg-slate-900/70 dark:border-zinc-800",
   },
@@ -58,7 +58,7 @@ export default function AiEngine() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mt-3 text-lg md:text-xl font-light text-primary-blue dark:text-medical-blue tracking-wide font-sans unified-english"
           >
-            Precise Out-of-Hospital Foot Motion Analysis
+            Prioritization, Not Diagnosis
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -66,7 +66,7 @@ export default function AiEngine() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-5 max-w-xl text-sm sm:text-base leading-relaxed text-slate-500 dark:text-slate-300 font-light font-arabic"
           >
-            يجمع دِثار الذكاء الحركي الطبي مع منصة متابعة المرضى. يحلل الضغط والتوازن والحرارة مباشرةً ويحوّلها لرؤى قابلة للتطبيق.
+            الذكاء الاصطناعي في منصة دِثار يرتّب أولويات المرضى للطبيب بناءً على الضغط والتوازن والحرارة — ولا يشخّص الحالة ولا يتنبأ بالمضاعفات. القرار الطبي يبقى دائماً للطبيب.
           </motion.p>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -151,34 +151,34 @@ export default function AiEngine() {
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-xs uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400 font-semibold font-sans">
-                        أهداف الأداء المستهدفة
+                        ما جُرّب فعلياً حتى الآن
                       </p>
                       <p className="mt-2 text-lg font-bold text-dark-text dark:text-zinc-100 font-arabic">
-                        97.8% دقة رصد التغيرات الحركية
+                        استجابة حساس الضغط للوزن
                       </p>
                     </div>
                     <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-600 dark:text-amber-400">
                       <span className="h-2 w-2 rounded-full bg-amber-500" />
-                      Target · Pre-Validation
+                      Early Bench Testing
                     </div>
                   </div>
 
                   <div className="mt-6 space-y-3">
                     <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-400">
-                      <span>دقة استقرار الوقوف</span>
-                      <span className="font-semibold text-slate-900 dark:text-slate-100">92%</span>
+                      <span>أحمال مُختبرة</span>
+                      <span className="font-semibold text-slate-900 dark:text-slate-100">5–25 كغم</span>
                     </div>
                     <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-400">
-                      <span>انحراف توزيع الضغط</span>
-                      <span className="font-semibold text-slate-900 dark:text-slate-100">4.3°</span>
+                      <span>قياس دقيق بالكيلوغرام</span>
+                      <span className="font-semibold text-amber-600 dark:text-amber-400">لم يتحقق بعد</span>
                     </div>
                     <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-400">
-                      <span>معدل الاستجابة التنبيهي</span>
-                      <span className="font-semibold text-slate-900 dark:text-slate-100">1.2s</span>
+                      <span>التجربة على مرضى فعليين</span>
+                      <span className="font-semibold text-amber-600 dark:text-amber-400">لم تتم بعد</span>
                     </div>
                   </div>
                   <p className="mt-4 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 font-arabic border-t border-slate-200 dark:border-zinc-800 pt-3">
-                    أهداف أداء أولية من بيئة التطوير، قيد التحقق السريري، وليست نتائج دراسة سريرية منشورة.
+                    نتائج تجارب مخبرية أولية على الباحثة نفسها فقط، وليست نتائج دراسة سريرية منشورة. الذكاء الاصطناعي في المنصة يرتّب الأولويات للطبيب ولا يشخّص أو يتنبأ بالمضاعفات.
                   </p>
                 </div>
               </div>

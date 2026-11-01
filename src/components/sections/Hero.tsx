@@ -24,10 +24,10 @@ const hotspots: Hotspot[] = [
   {
     id: "pressure",
     index: "01",
-    nameAr: "مستشعرات الضغط",
-    nameEn: "Pressure Sensors",
-    descAr: "ترسم خريطة توزيع الضغط الديناميكي عبر 9 مناطق حيوية في القدم لتقييم حركة السير واكتشاف نقاط التحميل غير المتوازنة.",
-    descEn: "Maps dynamic pressure distribution across 9 bio-zones to evaluate gait and detect off-balance loading points.",
+    nameAr: "اللبادة — حساسات الضغط",
+    nameEn: "The Pad — Pressure Sensors",
+    descAr: "لبادة رقيقة تبقى داخل كل حذاء أو شبشب أو جبيرة: حساسات ضغط رقيقة ورقاقة NFC تعرّف نوع الحذاء وطبقة EVA مريحة وطبقة قابلة للغسل. لا بطارية ولا إلكترونيات تحت وزن الجسم.",
+    descEn: "A thin pad that stays inside each shoe, slipper, or cast: thin pressure sensors, an NFC chip that identifies the shoe, an EVA comfort layer, and a washable top layer. No battery or electronics under body weight.",
     dotX: 62,
     dotY: 26,
     labelY: 20,
@@ -35,25 +35,25 @@ const hotspots: Hotspot[] = [
     icon: Footprints,
   },
   {
-    id: "motion",
+    id: "capsule",
     index: "02",
-    nameAr: "تحليل الحركة",
-    nameEn: "Motion Analysis",
-    descAr: "مستشعر القصور الذاتي (IMU) ثلاثي المحاور يقيس اتزان المشي، وطول الخطوة، والتردد الحركي بدقة متناهية.",
-    descEn: "3-axis inertial measurement unit (IMU) registers gait symmetry, step length, and motion frequency.",
+    nameAr: "الكبسولة المغناطيسية",
+    nameEn: "The Magnetic Capsule",
+    descAr: "كبسولة واحدة لكل قدم تثبت مغناطيسياً على جانب الكعب من الخارج وتنتقل بين اللبادات عند تغيير الحذاء. بداخلها المعالج وحساس الحركة والميلان وحساس الحرارة والرطوبة والهزّاز والبلوتوث والبطارية.",
+    descEn: "One capsule per foot, magnetically attached to the outside of the heel, moving between pads when the shoe changes. It holds the processor, motion/tilt sensor, temperature/humidity sensor, buzzer, Bluetooth, and battery.",
     dotX: 50,
     dotY: 45,
     labelY: 38,
     side: "right",
-    icon: Activity,
+    icon: Cpu,
   },
   {
     id: "temp",
     index: "03",
-    nameAr: "مراقبة الحرارة",
-    nameEn: "Temperature Sensors",
-    descAr: "ترصد الفروقات الحرارية الدقيقة للتنبؤ بالالتهابات الصامتة ونقص التروية الدموية الطرفية.",
-    descEn: "Detects micro-thermal fluctuations to predict silent localized inflammation and arterial insufficiency.",
+    nameAr: "الحرارة والرطوبة",
+    nameEn: "Temperature & Humidity",
+    descAr: "تقيس الكبسولة الحرارة والرطوبة داخل الحذاء — جُرّب هذا فعلياً: ارتفاع +4.9°C داخل الحذاء و+1.4°C داخل الشبشب خلال 20 دقيقة في تجارب أولية.",
+    descEn: "The capsule measures in-shoe temperature and humidity — tested in early trials: +4.9°C inside a shoe and +1.4°C inside a slipper over 20 minutes.",
     dotX: 45,
     dotY: 55,
     labelY: 68,
@@ -61,17 +61,17 @@ const hotspots: Hotspot[] = [
     icon: Thermometer,
   },
   {
-    id: "ai",
+    id: "alert",
     index: "04",
-    nameAr: "معالج الذكاء الاصطناعي",
-    nameEn: "AI Processing Core",
-    descAr: "معالج مدمج متناهي الصغر يعالج البيانات محلياً لتصفية التشويش وتأمين نقل تدفق البيانات بشكل مشفر.",
-    descEn: "Ultra-low power processor computes clinical metrics edge-side, ensuring encrypted data transfer.",
+    nameAr: "التنبيه الفوري",
+    nameEn: "Immediate Alert",
+    descAr: "عند تجاوز الحد الذي يضعه الطبيب، تهتز الكبسولة فوراً ويظهر إشعار في جوال المريض، ثم تتصاعد التنبيهات تدريجياً إذا تكرر الأمر.",
+    descEn: "When the doctor-set limit is exceeded, the capsule vibrates immediately and a phone notification appears, escalating gradually if it repeats.",
     dotX: 38,
     dotY: 74,
     labelY: 82,
     side: "right",
-    icon: Cpu,
+    icon: Activity,
   },
 ];
 
@@ -128,7 +128,7 @@ export default function Hero() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="mt-5 font-arabic text-sm sm:text-base font-light leading-relaxed text-slate-500 max-w-2xl"
               >
-                دِثار منصة صحية ذكية تربط اللباد الطبي الذكي (Smart PAD) بمنصة تحليل سريرية متقدمة لمراقبة توزيع الضغط، الحرارة الموضعية، والتغيرات الوظيفية للمريض بشكل استباقي.
+                دِثار لبادة طبية ذكية رقيقة تبقى داخل كل حذاء، وكبسولة إلكترونية واحدة تنتقل بينها وتثبت مغناطيسياً على الكعب — تقيس الحمل على القدم والحركة والحرارة والرطوبة، وتنبّه المريض فوراً، وترسل البيانات إلى منصة تربط المريض وعائلته وطبيبه والمنشأة الصحية. الفئة الأولى للإطلاق: التأهيل بعد جراحات القدم والكاحل (التحميل الجزئي للوزن).
               </motion.p>
 
               {/* Minimal Horizontal Capability List (Replaces all generic cards) */}
@@ -169,14 +169,14 @@ export default function Hero() {
             <div className="absolute top-3 right-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 shadow-xs select-none">
               <Image src="/logo-icon.png" alt="Dithar" width={16} height={16} className="object-contain dark:hidden" />
               <Image src="/logo-icon-white.png" alt="Dithar" width={16} height={16} className="object-contain hidden dark:block" />
-              <span className="text-[11px] font-bold font-arabic text-primary-blue dark:text-medical-blue">دِثار Smart PAD</span>
+              <span className="text-[11px] font-bold font-arabic text-primary-blue dark:text-medical-blue">دِثار — لبادة وكبسولة</span>
             </div>
 
             {/* Product Photograph (Full cover fit for landscape diagnostic view) */}
             <div className="absolute inset-0 w-full h-full select-none">
               <Image
                 src="/insole-clinical-premium.png"
-                alt="DITHAR Smart Clinical PAD"
+                alt="DITHAR pad and magnetic capsule"
                 fill
                 priority
                 className="object-cover filter drop-shadow-sm"

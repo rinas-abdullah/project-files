@@ -1,5 +1,6 @@
 export { default as Hero } from "./Hero";
 export { default as HealthcareGap } from "./HealthcareGap";
+export { default as FounderStory } from "./FounderStory";
 export { default as IntroducingDithar } from "./IntroducingDithar";
 export { default as DeviceSpecs } from "./DeviceSpecs";
 export { default as AiEngine } from "./AiEngine";

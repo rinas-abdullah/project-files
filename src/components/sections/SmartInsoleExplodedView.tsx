@@ -16,89 +16,56 @@ type Layer = {
   color: string;
 };
 
-// --- Combined Layer Data from ExplodedView & Reference Images ---
+// --- Pad (لبادة) layers only. No battery/processor/BLE here — those live in the
+// separate magnetic capsule, listed in CAPSULE_COMPONENTS. ---
 const INSOLE_LAYERS: Layer[] = [
   {
     id: "layer-1",
-    index: 7,
-    nameAr: "طبقة قماش مضاد للبكتيريا",
-    nameEn: "Antibacterial Fabric",
-    shortDescAr: "ناعمة وتهوية عالية",
-    fullDescAr: "السطح العلوي الناعم المضاد للبكتيريا والفطريات، عالي التهوية ومقاوم للروائح، يلامس القدم مباشرةً ويوفر بيئة صحية نظيفة في جميع الظروف.",
+    index: 3,
+    nameAr: "طبقة قابلة للغسل",
+    nameEn: "Washable Top Layer",
+    shortDescAr: "تلامس القدم، قابلة للغسل",
+    fullDescAr: "السطح العلوي القابل للغسل الذي يلامس القدم مباشرةً، للحفاظ على نظافة اللبادة التي تبقى داخل الحذاء باستمرار.",
     color: "#222222",
   },
   {
     id: "layer-2",
-    index: 6,
-    nameAr: "طبقة رغوة مرنة (PU)",
-    nameEn: "Flexible PU Foam",
-    shortDescAr: "لمنح الراحة وامتصاص الصدمات",
-    fullDescAr: "رغوة بوليمر مرنة عالية الاسترداد تمنح الراحة القصوى وتمتص صدمات الخطوة، تقع مباشرةً أسفل سطح الملامسة لضمان أعلى مستوى راحة.",
+    index: 2,
+    nameAr: "طبقة EVA مريحة",
+    nameEn: "EVA Comfort Layer",
+    shortDescAr: "لمنح الراحة أثناء المشي",
+    fullDescAr: "طبقة EVA مريحة تقع أسفل سطح الملامسة لضمان راحة القدم طوال فترة اللبس.",
     color: "#e5e7eb",
   },
   {
     id: "layer-3",
-    index: 5,
-    nameAr: "طبقة المستشعرات",
-    nameEn: "Multi-Sensor Array",
-    shortDescAr: "حساسات الضغط والحرارة والرطوبة و IMU",
-    fullDescAr: "الطبقة الاستشعارية المتكاملة التي تضم حساسات الضغط (14 نقطة) والحرارة الموزعة والرطوبة ووحدة قياس الحركة IMU — كلها في طبقة واحدة مرنة.",
+    index: 1,
+    nameAr: "حساسات الضغط ورقاقة NFC",
+    nameEn: "Pressure Sensors & NFC Chip",
+    shortDescAr: "تستجيب للوزن، وتعرّف نوع الحذاء",
+    fullDescAr: "حساسات ضغط رقيقة جُرّبت فعلياً بأحمال من 5 إلى 25 كغم في حذاء وشبشب (3 محاولات لكل حمل) — تستجيب للوزن، لكن القياس الدقيق بالكيلوغرام لم يتحقق بعد لأن الحساس يتشبّع عند الأحمال الأعلى. رقاقة NFC تعرّف نوع الحذاء عند تركيب الكبسولة.",
     color: "#4b5563",
   },
   {
     id: "layer-4",
-    index: 4,
-    nameAr: "لوحة الدوائر PCB",
-    nameEn: "Flexible Circuit Board",
-    shortDescAr: "مصممة خصيصاً بشكل مرن",
-    fullDescAr: "لوحة دوائر مرنة مصممة خصيصاً بشكل يتوافق مع انحناء القدم، تحتوي على المعالج المركزي وهوائي BLE وكافة مسارات الإشارة الكهربائية.",
-    color: "#059669",
-  },
-  {
-    id: "layer-5",
-    index: 3,
-    nameAr: "طبقة حصاد الطاقة",
-    nameEn: "Energy Harvesting Layer",
-    shortDescAr: "كهرضغطية تولد طاقة من الضغط والاحتكاك",
-    fullDescAr: "ملفات كهروضغطية نحاسية تولّد تياراً كهربائياً من ضغط المشي، تساهم مع تقنية طاقة الاحتكاك في تقليل استهلاك الشحن الخارجي وإطالة عمر البطارية بين الشحنات.",
-    color: "#b45309",
-  },
-  {
-    id: "layer-6",
-    index: 2,
-    nameAr: "بطارية ليثيوم بوليمر",
-    nameEn: "Lithium Polymer Battery",
-    shortDescAr: "تُشحن خارجياً وتُدعم ذاتياً أثناء الحركة",
-    fullDescAr: "خلية تخزين طاقة رقيقة (Li-Po) تُشحن عبر منفذ خارجي، وتستفيد من طاقة الحركة المُحصّلة لتقليل عدد مرات الشحن وإطالة عمر التشغيل بين الشحنات.",
-    color: "#9ca3af",
-  },
-  {
-    id: "layer-7",
-    index: 1,
-    nameAr: "طبقة عزل وحماية",
-    nameEn: "Insulation & Protection Layer",
-    shortDescAr: "مقاومة للرطوبة والاهتزاز",
-    fullDescAr: "طبقة عازلة متخصصة مقاومة للرطوبة والاهتزاز، تحمي المكونات الإلكترونية الداخلية وتمنع التأثيرات البيئية الخارجية.",
-    color: "#1f2937",
-  },
-  {
-    id: "layer-8",
     index: 0,
     nameAr: "طبقة EVA سفلية",
     nameEn: "EVA Bottom Base",
-    shortDescAr: "مقاومة للانزلاق والتآكل",
-    fullDescAr: "الطبقة الخارجية السفلية المصنوعة من مواد طبية متقدمة مقاومة للانزلاق والتآكل والصدمات، تشكّل الهيكل الواقي الأساسي للباد الذكي.",
+    shortDescAr: "الهيكل الواقي الأساسي للبادة",
+    fullDescAr: "الطبقة الخارجية السفلية التي تشكّل الهيكل الواقي الأساسي للبادة. لا توجد بطارية أو إلكترونيات تحت وزن الجسم في أي من طبقات اللبادة.",
     color: "#111827",
   },
 ];
 
-const PCB_COMPONENTS = [
-  { name: "BLE Antenna", nameAr: "هوائي البلوتوث" },
-  { name: "Microcontroller", nameAr: "وحدة المعالجة المركزية" },
-  { name: "Power Management", nameAr: "نظام إدارة الطاقة" },
-  { name: "Memory", nameAr: "وحدة التخزين المؤقت" },
-  { name: "Connectors", nameAr: "موصلات الشحن والبرمجة" },
-  { name: "LED Indicator", nameAr: "مؤشر الحالة الضوئي" },
+// --- Capsule (الكبسولة): a single separate object that attaches magnetically
+// to the outside of the heel and moves between pads. Design only — not built yet.
+const CAPSULE_COMPONENTS = [
+  { name: "Processor", nameAr: "المعالج" },
+  { name: "Motion & tilt sensor", nameAr: "حساس حركة وميلان" },
+  { name: "Temperature & humidity sensor", nameAr: "حساس حرارة ورطوبة" },
+  { name: "Buzzer", nameAr: "هزّاز للتنبيه الفوري" },
+  { name: "Bluetooth", nameAr: "بلوتوث" },
+  { name: "Battery", nameAr: "بطارية (تُشحن عبر محطة USB)" },
 ];
 
 // --- Shared Base Path ---
@@ -193,28 +160,7 @@ const LayerShape = ({ layer, isExploded }: { layer: Layer; isExploded: boolean }
       wallFill = "#1a202c";
       thickness = 2;
       break;
-    case "layer-4": // PCB
-      topFill = "url(#pcb-grad)";
-      wallFill = "#022c22";
-      thickness = 2.5;
-      break;
-    case "layer-5": // Coils
-      topFill = "url(#copper-base)";
-      wallFill = "#2d1502";
-      thickness = 2;
-      break;
-    case "layer-6": // Battery
-      topFill = "url(#silver-foil)";
-      wallFill = "#4b5563";
-      thickness = 3;
-      break;
-    case "layer-7": // Insulation (make it match Energy Harvesting layer appearance)
-      // Match visual style and thickness to layer-5 (Energy Harvesting)
-      topFill = "url(#copper-base)";
-      wallFill = "#2d1502";
-      thickness = 2;
-      break;
-    case "layer-8": // EVA Base
+    case "layer-4": // EVA Bottom Base
       topFill = "url(#eva-grip)";
       wallFill = "#050608";
       thickness = 6.5;
@@ -238,7 +184,7 @@ const LayerShape = ({ layer, isExploded }: { layer: Layer; isExploded: boolean }
         fill={topFill}
         stroke="#00000020"
         strokeWidth="0.8"
-        filter={layer.id === "layer-1" || layer.id === "layer-8" ? "url(#noise)" : ""}
+        filter={layer.id === "layer-1" || layer.id === "layer-4" ? "url(#noise)" : ""}
       />
 
       {/* Layer 1: Fabric Top branding & contoured highlights */}
@@ -262,7 +208,7 @@ const LayerShape = ({ layer, isExploded }: { layer: Layer; isExploded: boolean }
              
              {/* Brand Logo text (White/Silver pop) */}
              <text x="50" y="112" fontSize="9" fill="#ffffff" textAnchor="middle" fontWeight="bold" letterSpacing="0.6" fontFamily="sans-serif">Dithar</text>
-             <text x="50" y="120" fontSize="3.5" fill="#94a3b8" textAnchor="middle" letterSpacing="0.8" fontFamily="sans-serif">SMART PAD</text>
+             <text x="50" y="120" fontSize="3.5" fill="#94a3b8" textAnchor="middle" letterSpacing="0.8" fontFamily="sans-serif">PAD</text>
            </g>
 
            {/* Ventilation holes grid */}
@@ -318,88 +264,9 @@ const LayerShape = ({ layer, isExploded }: { layer: Layer; isExploded: boolean }
         </g>
       )}
 
-      {/* Layer 4: Flexible PCB (with copper/gold traces & realistic SMD components) */}
+      {/* Layer 4: EVA Bottom Base grip texture */}
       {layer.id === "layer-4" && (
-        <g>
-          {/* Main Gold Tracks */}
-          <path d="M 50 30 L 50 250 M 35 90 Q 50 110 65 90 M 32 150 Q 50 170 68 150 M 35 210 L 65 210" stroke="url(#gold-grad)" strokeWidth="0.75" opacity="0.7" fill="none" />
-          <path d={INSOLE_PATH} fill="url(#pcb-pads)" opacity="0.25" />
-          
-          {/* Main MCU (Microprocessor) with pins */}
-          <g transform="translate(40, 120)">
-            <rect x="0" y="0" width="20" height="20" fill="#111827" rx="1.5" stroke="#374151" strokeWidth="0.5" />
-            {/* Pins on left and right */}
-            {[-1.5, 3.5, 8.5, 13.5, 18.5].map((yPin, idx) => (
-              <g key={idx}>
-                <rect x="-2" y={yPin} width="2.5" height="1" fill="#cbd5e1" />
-                <rect x="20" y={yPin} width="2.5" height="1" fill="#cbd5e1" />
-              </g>
-            ))}
-            {/* Center Core dot */}
-            <circle cx="16" cy="4" r="1" fill="#d97706" />
-          </g>
-          
-          {/* Memory Chip */}
-          <rect x="44" y="80" width="12" height="18" fill="#1f2937" rx="1" stroke="#4b5563" strokeWidth="0.5" />
-          {/* Resistors & Capacitors (SMD styling) */}
-          {[
-            [34, 52, "#9ca3af"], [62, 48, "#9ca3af"],
-            [35, 100, "#d97706"], [60, 102, "#9ca3af"],
-            [36, 195, "#cbd5e1"], [55, 220, "#9ca3af"]
-          ].map(([xPos, yPos, colorStr], idx) => (
-            <g key={idx}>
-              <rect x={Number(xPos)} y={Number(yPos)} width="6" height="3" fill={String(colorStr)} rx="0.5" />
-              {/* Metallic ends of capacitor */}
-              <rect x={Number(xPos)} y={Number(yPos)} width="1.5" height="3" fill="#e5e7eb" />
-              <rect x={Number(xPos) + 4.5} y={Number(yPos)} width="1.5" height="3" fill="#e5e7eb" />
-            </g>
-          ))}
-          
-          {/* Bluetooth module / BLE Antenna meander line */}
-          <g transform="translate(22, 205)">
-            <path d="M 0 0 L 12 0 L 12 4 L 2 4 L 2 8 L 12 8 L 12 12 L 0 12" fill="none" stroke="url(#gold-grad)" strokeWidth="0.8" />
-          </g>
-        </g>
-      )}
-
-      {/* Layer 5: Energy Coils (concentric golden ellipses) */}
-      {layer.id === "layer-5" && (
-        <g>
-          <path d={INSOLE_PATH} fill="url(#coils)" />
-          {/* Concentric forefoot coil lines */}
-          <ellipse cx="50" cy="70" rx="18" ry="24" fill="none" stroke="url(#gold-grad)" strokeWidth="0.8" opacity="0.8" />
-          <ellipse cx="50" cy="70" rx="14" ry="19" fill="none" stroke="url(#gold-grad)" strokeWidth="0.8" opacity="0.8" />
-          <ellipse cx="50" cy="70" rx="10" ry="14" fill="none" stroke="url(#gold-grad)" strokeWidth="0.8" opacity="0.8" />
-
-          {/* Concentric heel coil lines */}
-          <ellipse cx="50" cy="200" rx="15" ry="20" fill="none" stroke="url(#gold-grad)" strokeWidth="0.8" opacity="0.8" />
-          <ellipse cx="50" cy="200" rx="11" ry="15" fill="none" stroke="url(#gold-grad)" strokeWidth="0.8" opacity="0.8" />
-        </g>
-      )}
-
-      {/* Layer 6: Battery Silver Foil with 3D Depth */}
-      {layer.id === "layer-6" && (
-        <g>
-          {/* Battery Wall (Thickness / Shading) */}
-          <rect x="32" y="77" width="36" height="110" fill="#4b5563" rx="2" />
-          {/* Silver foil body */}
-          <rect x="32" y="75" width="36" height="110" fill="url(#silver-foil)" rx="2" stroke="#9ca3af" strokeWidth="0.6" />
-          {/* Yellow Kapton Tape wrap */}
-          <rect x="32" y="75" width="36" height="9" fill="#eab308" fillOpacity="0.95" rx="1" />
-          {/* Red/Black wire terminal leads */}
-          <rect x="42" y="72" width="2" height="3" fill="#ef4444" />
-          <rect x="56" y="72" width="2" height="3" fill="#111827" />
-          {/* White manufacturer label card */}
-          <rect x="36" y="94" width="28" height="76" fill="#ffffff" fillOpacity="0.85" rx="1.5" />
-          {/* Technical Specs Text */}
-          <text x="50" y="128" fontSize="4.5" fill="#374151" textAnchor="middle" fontWeight="bold" transform="rotate(90 50 128)">Li-Po 3.7V 500mAh 1.85Wh</text>
-          <text x="44" y="128" fontSize="3.5" fill="#4b5563" textAnchor="middle" transform="rotate(90 44 128)">DITHAR SYSTEM A-1</text>
-        </g>
-      )}
-
-      {/* Layer 7: Insulation Ribs */}
-      {layer.id === "layer-7" && (
-        <g opacity="0.25">
+        <g opacity="0.3">
           {Array.from({ length: 18 }).map((_, i) => (
             <path key={i} d={`M 22 ${25 + i * 13} Q 50 ${35 + i * 13} 78 ${25 + i * 13}`} stroke="#000" strokeWidth="2.5" fill="none" />
           ))}
@@ -440,10 +307,10 @@ export default function SmartInsoleExplodedView() {
             INTERACTIVE EXPLODED DEMO
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-dark-text font-arabic mb-4 unified-typography">
-            العرض المفكك التقني
+            العرض المفكك: اللبادة والكبسولة
           </h2>
           <h3 className="text-lg md:text-xl font-light text-primary-blue dark:text-medical-blue mt-2 font-sans tracking-wide">
-            Exploded Smart PAD View
+            Exploded View: Pad + Capsule
           </h3>
           <div className="w-24 h-1 bg-primary-blue dark:bg-medical-blue mx-auto rounded-full mt-4"></div>
         </div>
@@ -452,7 +319,7 @@ export default function SmartInsoleExplodedView() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-4 relative" dir="ltr">
           
           {/* Left: Arabic Labels (Interactive list using Unified Theme colors) */}
-          <div className="hidden lg:grid grid-rows-8 h-175 w-1/4 z-20 relative" dir="rtl">
+          <div className="hidden lg:grid grid-rows-4 h-175 w-1/4 z-20 relative" dir="rtl">
             {INSOLE_LAYERS.map((layer, idx) => (
               <motion.div 
                 key={layer.id}
@@ -508,9 +375,9 @@ export default function SmartInsoleExplodedView() {
               >
                 {[...INSOLE_LAYERS].reverse().map((layer, index) => {
                   const layerIndexFromTop = INSOLE_LAYERS.length - 1 - index;
-                  const zPosition = isExploded 
-                    ? (3.5 - layerIndexFromTop) * 58 
-                    : (3.5 - layerIndexFromTop) * 1;
+                  const zPosition = isExploded
+                    ? (1.5 - layerIndexFromTop) * 58
+                    : (1.5 - layerIndexFromTop) * 1;
 
                   return (
                     <motion.div
@@ -550,14 +417,17 @@ export default function SmartInsoleExplodedView() {
               {/* Subtle top background highlight */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary-blue to-medical-blue" />
               
-              <div className="flex justify-between items-center mb-6">
+              <div className="flex justify-between items-center mb-2">
                 <Bluetooth className="w-6 h-6 text-primary-blue dark:text-medical-blue" />
-                <h3 className="text-base font-bold text-dark-text font-arabic text-right w-full pr-2">مكونات النظام الإلكتروني</h3>
+                <h3 className="text-base font-bold text-dark-text font-arabic text-right w-full pr-2">الكبسولة المغناطيسية</h3>
               </div>
+              <p className="text-xs text-muted-text font-arabic text-right leading-relaxed">
+                قطعة منفصلة تثبّت مغناطيسياً على جانب الكعب وتنتقل بين اللبادات — تصميم مستقبلي لم يُبنَ بعد.
+              </p>
 
-              {/* Decorative PCB Edge on the left (facing the center model) */}
+              {/* Decorative edge on the left (facing the center model) */}
               <div className="relative border-l-2 border-primary-blue/30 dark:border-medical-blue/30 pl-10 mt-8 space-y-6">
-                {/* Decorative PCB line elements on left edge */}
+                {/* Decorative capsule stripe on left edge */}
                 <div className="absolute -left-2 -top-4 -bottom-4 w-6 bg-emerald-900 rounded-r-full overflow-hidden opacity-90 shadow-inner">
                   <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(#fbbf24 1px, transparent 1px)', backgroundSize: '4px 4px' }} />
                   <div className="absolute top-8 left-1 w-3.5 h-3.5 bg-zinc-800 rounded-sm" />
@@ -565,12 +435,12 @@ export default function SmartInsoleExplodedView() {
                   <div className="absolute bottom-16 left-1 w-3.5 h-3.5 bg-yellow-600 rounded-sm" />
                 </div>
 
-                {PCB_COMPONENTS.map((comp, idx) => (
+                {CAPSULE_COMPONENTS.map((comp, idx) => (
                   <div key={idx} className="relative flex flex-col items-start text-left select-none group">
-                    {/* Connecting line to the PCB stripe on the left edge */}
+                    {/* Connecting line to the stripe on the left edge */}
                     <div className="absolute -left-6 top-1/2 w-5 border-t border-slate-350 dark:border-slate-650 -translate-y-1/2" />
                     <div className="absolute -left-7 top-1/2 w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500 -translate-y-1/2 group-hover:bg-primary-blue dark:group-hover:bg-medical-blue transition-colors" />
-                    
+
                     <span className="text-sm font-semibold text-dark-text font-sans">{comp.name}</span>
                     {comp.nameAr && (
                       <span className="text-xs text-muted-text font-arabic mt-0.5">{comp.nameAr}</span>
@@ -648,7 +518,7 @@ export default function SmartInsoleExplodedView() {
               >
                 <HelpCircle className="w-8 h-8 text-slate-400 dark:text-zinc-650 mb-3 animate-pulse" />
                 <p className="text-sm text-muted-text font-arabic font-light">
-                  انقر على أي طبقة من طبقات اللباد الطبي الذكي أو استكشف المكونات لرؤية المواصفات الفنية التفصيلية هنا.
+                  انقر على أي طبقة من طبقات اللبادة، أو استكشف مكونات الكبسولة، لرؤية ما جُرّب فعلياً وما هو تصميم مستقبلي.
                 </p>
               </motion.div>
             )}
@@ -670,7 +540,7 @@ export default function SmartInsoleExplodedView() {
             )}
           >
             <Layers className="w-4 h-4" />
-            تفكيك طبقات اللباد الذكي
+            تفكيك طبقات اللبادة
           </button>
           <button 
             onClick={() => {
