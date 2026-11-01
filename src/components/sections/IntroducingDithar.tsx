@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Thermometer, Droplets, HelpCircle, Cpu, Zap, Wifi } from "lucide-react";
+import { Activity, HelpCircle, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // --- Types ---
@@ -32,8 +32,8 @@ export default function IntroducingDithar() {
       desc: "حساسات ضغط رقيقة داخل اللبادة التي تبقى في الحذاء تستجيب لوزن القدم — جُرّب هذا بأحمال 5 إلى 25 كغم في حذاء وشبشب. القياس الدقيق بالكيلوغرام لم يتحقق بعد؛ الحساس يتشبّع عند الأحمال الأعلى.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#1e88c8",
-      x: "24%",
-      y: "76%",
+      x: "65%",
+      y: "43%",
     },
     {
       id: "nfc",
@@ -43,8 +43,8 @@ export default function IntroducingDithar() {
       desc: "تعرّف نوع الحذاء عند تركيب الكبسولة، فتستخدم المعايرة الخاصة بهذا الحذاء تلقائياً دون إدخال يدوي من المريض.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#06b6d4",
-      x: "49%",
-      y: "41%",
+      x: "38%",
+      y: "52%",
     },
     {
       id: "eva",
@@ -54,41 +54,8 @@ export default function IntroducingDithar() {
       desc: "طبقة EVA مريحة وطبقة علوية قابلة للغسل — لا بطارية ولا إلكترونيات تحت وزن الجسم، فقط الحساسات الرقيقة والرقاقة.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#fbbf24",
-      x: "36%",
-      y: "60%",
-    },
-    {
-      id: "motion",
-      icon: <Wifi className="w-5 h-5" />,
-      title: "حساس الحركة والميلان (في الكبسولة)",
-      titleEn: "Motion & Tilt Sensor (in the Capsule)",
-      desc: "داخل الكبسولة المغناطيسية التي تنتقل بين الأحذية: يسجل تردد المشي والميلان والتوازن — رؤية تصميمية لم تُختبر بعد على هذا الشكل النهائي.",
-      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
-      dotColor: "#6366f1",
-      x: "53%",
-      y: "22%",
-    },
-    {
-      id: "ai",
-      icon: <Cpu className="w-5 h-5" />,
-      title: "المعالج والبطارية (في الكبسولة)",
-      titleEn: "Processor & Battery (in the Capsule)",
-      desc: "المعالج والبطارية والهزّاز والبلوتوث كلها داخل الكبسولة التي تثبّت مغناطيسياً على جانب الكعب من الخارج — ليست تحت وزن الجسم أبداً.",
-      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
-      dotColor: "#8b5cf6",
-      x: "55%",
-      y: "33%",
-    },
-    {
-      id: "comms",
-      icon: <Thermometer className="w-5 h-5" />,
-      title: "حساس الحرارة والرطوبة (في الكبسولة)",
-      titleEn: "Temperature & Humidity (in the Capsule)",
-      desc: "جُرّب فعلياً: ارتفاع حرارة +4.9°C داخل الحذاء و+1.4°C داخل الشبشب خلال 20 دقيقة، في تجارب أولية على الباحثة نفسها فقط.",
-      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
-      dotColor: "#ef4444",
-      x: "59%",
-      y: "27%",
+      x: "50%",
+      y: "16%",
     },
   ];
 
@@ -107,8 +74,8 @@ export default function IntroducingDithar() {
           <div className="relative w-full max-w-120 sm:max-w-137.5 lg:max-w-150 select-none transition-all duration-300">
             {/* The Smart PAD Photo */}
             <motion.img
-              src="/pad-closed.png"
-              alt="Dithar pad — assembled"
+              src="/pad-exploded-layers.png"
+              alt="Dithar pad — exploded layers"
               className="w-full h-auto object-contain filter drop-shadow-2xl"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -168,7 +135,7 @@ export default function IntroducingDithar() {
           </p>
 
           {/* Hotspots Buttons Grid */}
-          <div className="grid grid-cols-2 gap-3 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8">
             {hotspots.map((h, index) => {
               const isSelected = selectedHotspot === h.id;
               const badgeNum = index + 1;
