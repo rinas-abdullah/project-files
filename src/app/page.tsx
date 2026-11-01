@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import {
   Hero,
   HealthcareGap,
+  FounderStory,
   IntroducingDithar,
   DeviceSpecs,
   AiEngine,
@@ -20,6 +21,11 @@ import { ScrollProgress } from "@/components/ui/scroll-progress";
 const SmartInsoleExplodedView = dynamic(() => import("@/components/sections/SmartInsoleExplodedView"), {
   ssr: true,
   loading: () => <div className="w-full min-h-[400px] flex items-center justify-center text-slate-400 font-arabic text-sm">جاري تحميل العرض التفكيكي...</div>
+});
+
+const CapsuleExplodedView = dynamic(() => import("@/components/sections/CapsuleExplodedView"), {
+  ssr: true,
+  loading: () => <div className="w-full min-h-[400px] flex items-center justify-center text-slate-400 font-arabic text-sm">جاري تحميل عرض الكبسولة...</div>
 });
 
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks"), {
@@ -46,12 +52,16 @@ export default function Home() {
         <Hero />
         {/* 2. The Healthcare Gap */}
         <HealthcareGap />
+        {/* 2b. Founder Story */}
+        <FounderStory />
         {/* 3. Introducing Dithar Smart PAD */}
         <IntroducingDithar />
         {/* 3b. Device Technical Specifications */}
         <DeviceSpecs />
         {/* 4. Exploded Product Experience */}
         <SmartInsoleExplodedView />
+        {/* 4b. Capsule Exploded Experience */}
+        <CapsuleExplodedView />
         {/* 5. How Dithar Works */}
         <HowItWorks />
         {/* 6. Digital Twin Experience */}

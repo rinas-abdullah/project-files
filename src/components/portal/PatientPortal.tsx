@@ -3,10 +3,11 @@ import Image from "next/image";
 import {
   Wifi,
   Clock, Battery, Bluetooth, Cpu,
-  ActivitySquare, CheckCircle2, AlertTriangle
+  ActivitySquare, CheckCircle2, AlertTriangle, Footprints, BellRing, Users
 } from "lucide-react";
 import { portalMockData } from "@/lib/portal-mock-data";
 import { GlassCard, GlassBadge } from "@/components/ui/glass";
+import { useToast } from "@/components/ui/use-toast";
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 import { useArduinoFirebase } from "@/hooks/useArduinoFirebase";
 import { useArduino } from "@/hooks/useArduino";
@@ -55,6 +56,54 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
 
   const data = portalMockData.patientPortal;
   const { t, language } = useLanguage();
+  const { toast } = useToast();
+
+  // The pad stays in each shoe, only the capsule moves between them — this
+  // list is real, saved via /api/patients/[id] (type: "add_shoe").
+  const [shoes, setShoes] = React.useState(patientData?.shoes ?? []);
+  const [addingShoe, setAddingShoe] = React.useState(false);
+  const [newShoeLabel, setNewShoeLabel] = React.useState("");
+  const [savingShoe, setSavingShoe] = React.useState(false);
+
+  React.useEffect(() => {
+    setShoes(patientData?.shoes ?? []);
+  }, [patientData?.shoes]);
+
+  const handleAddShoe = async () => {
+    if (!newShoeLabel.trim() || !patientData?.id) return;
+    try {
+      setSavingShoe(true);
+      const res = await fetch(`/api/patients/${patientData.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "add_shoe", label: newShoeLabel.trim() }),
+      });
+      const json = await res.json();
+      if (res.ok && json.patient) {
+        setShoes(json.patient.shoes);
+        setNewShoeLabel("");
+        setAddingShoe(false);
+        toast({
+          title: language === "ar" ? "تمت المعايرة" : "Calibrated",
+          description:
+            language === "ar"
+              ? "حُفظت معايرة هذا الحذاء."
+              : "This shoe's calibration was saved.",
+          type: "success",
+        });
+      } else {
+        throw new Error(json.error || "failed");
+      }
+    } catch {
+      toast({
+        title: language === "ar" ? "خطأ" : "Error",
+        description: language === "ar" ? "تعذر حفظ الحذاء." : "Could not save the shoe.",
+        type: "error",
+      });
+    } finally {
+      setSavingShoe(false);
+    }
+  };
 
   const RADAR_DATA = [
     { subject: language === 'ar' ? 'مخاطر القدم' : 'Foot Risk', A: 80, fullMark: 100 },
@@ -186,7 +235,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
               )}
             </div>
 
-            <p className="text-[9px] font-mono font-bold text-slate-400 text-left w-full mb-4" dir="ltr">ID: DITHAR-PAD-9842</p>
+            <p className="text-[9px] font-mono font-bold text-slate-400 text-left w-full mb-4" dir="ltr">ID: DITHAR-CAPSULE-9842</p>
 
             <div className="flex-1 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-y-3 w-full md:w-1/2" dir="ltr">
@@ -209,14 +258,14 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
               </div>
 
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-3 mt-4 md:mt-0">
-                <Image 
-                  src="/smart-insole-closed.png"
-                  alt="Dithar Smart PAD"
+                <Image
+                  src="/capsule-exploded.jpg"
+                  alt="Dithar magnetic capsule"
                   width={110}
                   height={110}
-                  className="object-contain drop-shadow-xl"
+                  className="object-contain drop-shadow-xl rounded-xl"
                   unoptimized
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/insole-clinical-premium.png'; }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/pad-closed.png'; }}
                 />
                 
                 {/* Hardware Web Serial Button */}
@@ -237,6 +286,86 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
                   </button>
                 )}
               </div>
+            </div>
+          </GlassCard>
+
+          {/* MY SHOES — the pad stays in the shoe, only the capsule moves */}
+          <GlassCard className="p-4 md:p-6 flex flex-col w-full overflow-hidden">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Footprints className="w-4 h-4 text-slate-400" />
+                <h3 className="font-bold text-slate-900 text-sm">{t.my_shoes}</h3>
+              </div>
+              <button
+                onClick={() => setAddingShoe((v) => !v)}
+                className="text-[10px] font-bold text-[#0B4D8D] bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-md hover:bg-blue-100 transition-colors"
+              >
+                + {t.calibrate_new_shoe}
+              </button>
+            </div>
+
+            {addingShoe && (
+              <div className="flex items-center gap-2 mb-3">
+                <input
+                  type="text"
+                  value={newShoeLabel}
+                  onChange={(e) => setNewShoeLabel(e.target.value)}
+                  placeholder={language === "ar" ? "مثال: حذاء رياضي" : "e.g. Sports shoe"}
+                  className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+                  onKeyDown={(e) => { if (e.key === "Enter") handleAddShoe(); }}
+                />
+                <button
+                  onClick={handleAddShoe}
+                  disabled={savingShoe || !newShoeLabel.trim()}
+                  className="px-3 py-2 bg-[#0B4D8D] text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors disabled:opacity-50"
+                >
+                  {savingShoe ? "..." : language === "ar" ? "حفظ" : "Save"}
+                </button>
+              </div>
+            )}
+
+            <div className="space-y-2">
+              {shoes.length === 0 ? (
+                <p className="text-xs text-slate-400 text-center py-3">
+                  {language === "ar" ? "لا توجد أحذية معايَرة بعد." : "No calibrated shoes yet."}
+                </p>
+              ) : (
+                shoes.map((shoe) => (
+                  <div
+                    key={shoe.id}
+                    className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5"
+                  >
+                    <span className="text-xs font-bold text-slate-800">{shoe.label}</span>
+                    {shoe.calibrated ? (
+                      <GlassBadge status="success" className="text-[9px] px-1.5 py-0.5">
+                        {language === "ar" ? "مُعايَر" : "Calibrated"}
+                      </GlassBadge>
+                    ) : (
+                      <GlassBadge status="warning" className="text-[9px] px-1.5 py-0.5">
+                        {language === "ar" ? "بحاجة لمعايرة" : "Needs calibration"}
+                      </GlassBadge>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          </GlassCard>
+
+          {/* ESCALATION EXPLAINER */}
+          <GlassCard className="p-4 md:p-6 flex flex-col w-full overflow-hidden">
+            <div className="flex items-center gap-2 mb-3">
+              <BellRing className="w-4 h-4 text-slate-400" />
+              <h3 className="font-bold text-slate-900 text-sm">{t.escalation_title}</h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed font-medium">{t.escalation_desc}</p>
+            <div className="flex items-center gap-2 mt-3 text-[9px] font-bold text-slate-400">
+              <span className="flex items-center gap-1"><Bluetooth className="w-3 h-3" />{language === "ar" ? "اهتزاز" : "Vibrate"}</span>
+              <span>→</span>
+              <span className="flex items-center gap-1"><Wifi className="w-3 h-3" />{language === "ar" ? "إشعار" : "Notify"}</span>
+              <span>→</span>
+              <span className="flex items-center gap-1"><Users className="w-3 h-3" />{language === "ar" ? "العائلة" : "Family"}</span>
+              <span>→</span>
+              <span className="flex items-center gap-1"><AlertTriangle className="w-3 h-3" />{language === "ar" ? "أعلى قائمة الطبيب" : "Top of doctor's list"}</span>
             </div>
           </GlassCard>
 
@@ -360,8 +489,11 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
 
           {/* PLANTAR HEATMAP */}
           <GlassCard className="p-6 flex flex-col min-h-[280px]">
-            <div className="mb-6">
+            <div className="mb-6 flex items-center justify-between">
               <h3 className="font-bold text-slate-900 text-sm mb-1">{t.live_heatmap}</h3>
+              <span className="text-[9px] font-bold text-amber-700 bg-amber-50 border border-amber-100 rounded-md px-1.5 py-0.5">
+                {t.illustrative_data_badge}
+              </span>
             </div>
             <div className="flex-1 flex flex-col sm:flex-row items-center sm:items-stretch gap-4">
               <div className="flex-1 flex flex-col justify-center space-y-3 w-full">

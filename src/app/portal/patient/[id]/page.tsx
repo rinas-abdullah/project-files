@@ -6,7 +6,15 @@ import { Patient } from "@/lib/types/portal";
 import { PageLoader, EmptyState } from "@/components/ui/loading-states";
 import { GlassCard } from "@/components/ui/glass";
 import { useToast } from "@/components/ui/use-toast";
-import { ChevronRight, User, AlertTriangle, FileText, ActivitySquare, ShieldCheck, Thermometer, Footprints, Send } from "lucide-react";
+import { ChevronRight, User, AlertTriangle, FileText, ActivitySquare, ShieldCheck, Thermometer, Footprints, Send, Settings2 } from "lucide-react";
+
+const CATEGORY_OPTIONS = [
+  { value: "post_surgical", labelAr: "التأهيل بعد الجراحة (فئة الإطلاق)" },
+  { value: "diabetic_foot", labelAr: "القدم السكرية" },
+  { value: "stroke", labelAr: "الجلطات الدماغية (الشلل النصفي)" },
+  { value: "elderly_falls", labelAr: "كبار السن (السقوط)" },
+  { value: "congenital", labelAr: "تشوهات القدم الخلقية" },
+];
 
 export default function PatientDetailsPage() {
   const params = useParams();
@@ -22,6 +30,14 @@ export default function PatientDetailsPage() {
   const [note, setNote] = useState("");
   const [addingNote, setAddingNote] = useState(false);
 
+  // Plan setting — doctor chooses the category and sets the numeric limit; the
+  // platform never sets a therapeutic value on its own. Saved via the API.
+  const [planCategory, setPlanCategory] = useState(CATEGORY_OPTIONS[0].value);
+  const [planLimit, setPlanLimit] = useState("15");
+  const [planSchedule, setPlanSchedule] = useState("15 كغم لأول أسبوعين، ثم 30 كغم");
+  const [planSaved, setPlanSaved] = useState(false);
+  const [savingPlan, setSavingPlan] = useState(false);
+
   useEffect(() => {
     async function loadData() {
       if (!patientId) return;
@@ -32,6 +48,12 @@ export default function PatientDetailsPage() {
         const json = await res.json();
         if (!json.patient) throw new Error("لم يتم العثور على بيانات المريض");
         setPatient(json.patient);
+        if (json.patient.carePlan) {
+          setPlanCategory(json.patient.carePlan.category);
+          setPlanLimit(json.patient.carePlan.limitValue);
+          setPlanSchedule(json.patient.carePlan.schedule || "");
+          setPlanSaved(true);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "حدث خطأ أثناء جلب البيانات");
       } finally {
@@ -40,6 +62,36 @@ export default function PatientDetailsPage() {
     }
     loadData();
   }, [patientId]);
+
+  const handleSavePlan = async () => {
+    if (!patientId) return;
+    try {
+      setSavingPlan(true);
+      const res = await fetch(`/api/patients/${patientId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "set_plan",
+          category: planCategory,
+          limitValue: planLimit,
+          schedule: planSchedule,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "تعذر حفظ الخطة");
+      if (json.patient) setPatient(json.patient);
+      setPlanSaved(true);
+      toast({ title: "تم حفظ الخطة", description: "تم تحديث الفئة والحد المسموح لهذا المريض.", type: "success" });
+    } catch (err) {
+      toast({
+        title: "خطأ",
+        description: err instanceof Error ? err.message : "تعذر حفظ الخطة.",
+        type: "error",
+      });
+    } finally {
+      setSavingPlan(false);
+    }
+  };
 
   const handleAddNote = async () => {
     if (!note.trim() || !patientId) return;
@@ -136,6 +188,57 @@ export default function PatientDetailsPage() {
                   <span className="text-sm font-bold text-slate-900 font-mono">{patient.complianceScore}%</span>
                 </div>
               </div>
+            </div>
+          </GlassCard>
+
+          {/* PLAN SETTING — doctor-only: category + numeric limit + schedule */}
+          <GlassCard className="p-6">
+            <div className="flex items-center gap-2 mb-1">
+              <Settings2 className="w-5 h-5 text-[#0B4D8D]" />
+              <h3 className="font-bold text-slate-900 text-sm">ضبط خطة التأهيل</h3>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-4">الحد الرقمي لهذه الفئة يضعه الطبيب، والمنصة لا تضع قيماً علاجية من نفسها.</p>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 mb-1 block">الفئة</label>
+                <select
+                  value={planCategory}
+                  onChange={(e) => { setPlanCategory(e.target.value); setPlanSaved(false); }}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+                >
+                  {CATEGORY_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.labelAr}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] font-bold text-slate-500 mb-1 block">الحد الحالي (كغم)</label>
+                  <input
+                    type="number"
+                    value={planLimit}
+                    onChange={(e) => { setPlanLimit(e.target.value); setPlanSaved(false); }}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-500 mb-1 block">جدولة التغيير</label>
+                  <input
+                    type="text"
+                    value={planSchedule}
+                    onChange={(e) => { setPlanSchedule(e.target.value); setPlanSaved(false); }}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:outline-none focus:ring-2 focus:ring-[#0B4D8D]/20 focus:border-[#0B4D8D]"
+                  />
+                </div>
+              </div>
+              <button
+                onClick={handleSavePlan}
+                disabled={savingPlan}
+                className="w-full py-2 bg-[#0B4D8D] text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors disabled:opacity-60"
+              >
+                {savingPlan ? "جاري الحفظ..." : planSaved ? "تم الحفظ ✓" : "حفظ الخطة"}
+              </button>
             </div>
           </GlassCard>
 

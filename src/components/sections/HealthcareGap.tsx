@@ -10,7 +10,7 @@ export default function HealthcareGap() {
       icon: <EyeOff className="w-7 h-7 text-medical-blue" />,
       title: "مراقبة محدودة",
       subtitle: "Limited Monitoring",
-      description: "معظم المرضى يتلقون مراقبة أثناء المستشفى وينقطع المتابعة بعد الخروج، مما يزيد من خطر تدهور حالتهم الصحية دون اكتشاف.",
+      description: "معظم المرضى يتلقون مراقبة أثناء المستشفى وتنقطع المتابعة بعد الخروج، مما يزيد من خطر تدهور حالتهم الصحية دون اكتشاف.",
     },
     {
       icon: <RotateCcw className="w-7 h-7 text-medical-blue" />,

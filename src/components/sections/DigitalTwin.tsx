@@ -63,7 +63,7 @@ export default function DigitalTwin() {
           </h2>
           
           <p className="text-slate-600 text-sm md:text-base font-arabic leading-relaxed font-light">
-            تحليل فوري دقيق لبيانات ميكانيكا القدم وتوزيع الضغط والحرارة الموضعية عبر 9 مستشعرات ذكية مدمجة في اللباد الطبي، لتمكين الفريق الطبي من التنبؤ بالمخاطر قبل ظهورها سريرياً.
+            عرض توضيحي لبيانات ميكانيكا القدم وتوزيع الضغط والحرارة الموضعية كما ستظهر للفريق الطبي — بيانات توضيحية وليست قراءات حقيقية من مريض.
           </p>
         </div>
         
@@ -109,15 +109,15 @@ export default function DigitalTwin() {
                   </h3>
                 </div>
                 <p className="text-xs text-slate-400 font-sans mt-0.5" dir="ltr">
-                  {activeTab === "pressure" && "Dual Foot Real-time 9-Zone Matrix"}
+                  {activeTab === "pressure" && "Illustrative Data — Dual Foot Matrix"}
                   {activeTab === "thermal" && "Thermal Gradient & Micro-inflammation Detection"}
                   {activeTab === "gait" && "Center of Pressure (COP) & Weight Symmetry"}
                 </p>
               </div>
 
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                <span>Live Feed</span>
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-bold font-arabic">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                <span>بيانات توضيحية</span>
               </div>
             </div>
 
