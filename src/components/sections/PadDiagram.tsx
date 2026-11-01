@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
 
 type Callout = {
   id: string;
@@ -32,12 +31,8 @@ export default function PadDiagram() {
     <section className="relative w-full py-20 px-4 sm:px-6 lg:px-12 bg-transparent overflow-hidden font-sans">
       <div className="max-w-6xl mx-auto">
         <div className="relative rounded-[2rem] border border-slate-200/70 bg-white/70 backdrop-blur-sm shadow-[0_20px_60px_rgba(15,23,42,0.06)] p-6 sm:p-10">
-          <div className="flex items-start justify-between mb-2" dir="rtl">
+          <div className="mb-2" dir="rtl">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-arabic">مكوّنات لباد دِثار</h2>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-bold font-arabic shrink-0">
-              <Sparkles className="w-3 h-3" />
-              تصوّر تصميمي
-            </span>
           </div>
 
           {/* Desktop: real photo with leader-line callouts on both sides */}
