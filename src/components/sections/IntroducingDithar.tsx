@@ -6,13 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Activity, HelpCircle, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Traced from the real assembled-pad photo (public/pad-closed.png) so the
-// silhouette matches the actual product shape exactly, then re-styled as an
-// original illustration (gradient, fabric texture, teal trim, connector) —
-// not a placed photo.
-const PAD_SILHOUETTE_PATH =
-  "M3330 6239 c-290 -17 -528 -78 -767 -195 -290 -142 -457 -304 -499 -483 -53 -222 48 -609 226 -876 129 -192 330 -395 605 -610 42 -33 91 -72 108 -86 18 -14 50 -36 72 -49 22 -13 90 -56 150 -95 229 -150 248 -160 560 -320 169 -87 254 -126 372 -171 35 -13 89 -37 120 -53 32 -16 87 -38 123 -49 36 -12 142 -49 235 -82 94 -34 197 -71 230 -81 33 -11 105 -38 160 -59 55 -21 132 -47 170 -58 39 -11 120 -38 180 -60 61 -22 146 -53 190 -68 44 -15 116 -40 160 -56 177 -65 363 -131 415 -148 30 -10 87 -33 125 -50 39 -18 105 -43 148 -56 43 -13 99 -34 125 -48 26 -14 90 -39 142 -57 52 -17 123 -47 157 -65 34 -19 95 -43 135 -53 40 -10 96 -29 123 -41 58 -25 192 -70 210 -70 7 0 30 -12 51 -26 21 -15 75 -39 119 -54 44 -15 103 -38 130 -52 28 -14 73 -31 100 -38 28 -7 111 -42 185 -77 74 -36 151 -67 170 -71 44 -7 202 -69 323 -127 52 -25 101 -45 108 -45 16 0 158 -57 174 -70 12 -9 135 -54 285 -103 71 -24 166 -61 285 -112 116 -49 389 -141 539 -181 49 -13 106 -30 125 -37 48 -19 264 -72 376 -92 50 -9 110 -22 135 -30 25 -7 65 -16 88 -19 24 -4 60 -15 80 -25 52 -26 174 -51 215 -44 20 3 59 -2 93 -12 41 -12 90 -16 168 -15 61 1 129 0 151 -3 105 -13 143 -19 177 -29 45 -13 156 6 206 35 26 15 42 17 82 12 41 -6 56 -3 84 14 48 30 72 26 111 -16 33 -36 35 -36 77 -27 25 6 58 6 79 1 29 -7 44 -4 83 17 62 33 100 21 133 -42 39 -77 60 -87 120 -58 27 13 87 31 144 43 20 4 35 -3 61 -26 42 -36 43 -37 97 -13 34 15 49 17 89 9 68 -14 98 -4 122 41 35 65 73 100 153 138 43 20 86 48 95 62 48 71 78 92 131 92 88 0 125 75 60 122 -38 28 -56 62 -65 119 -8 53 -25 87 -54 114 -26 23 -53 81 -45 95 11 18 -21 62 -59 82 -23 11 -54 31 -69 44 -16 13 -41 24 -57 24 -83 0 -182 96 -261 256 -40 80 -62 112 -86 126 -38 23 -46 39 -48 100 -2 56 -20 80 -87 114 -31 16 -54 37 -69 63 -25 45 -36 52 -144 89 -90 31 -125 67 -125 131 -1 126 -71 292 -174 413 -143 167 -360 314 -826 558 -359 188 -960 511 -985 530 -5 4 -91 53 -190 107 -943 523 -1274 641 -2230 792 -585 93 -717 133 -1195 363 -69 33 -183 88 -255 123 -451 218 -1379 489 -2070 604 -245 41 -652 64 -885 50z";
-
 // --- Types ---
 type Hotspot = {
   id: string;
@@ -39,7 +32,7 @@ export default function IntroducingDithar() {
       desc: "حساسات ضغط رقيقة داخل اللبادة التي تبقى في الحذاء تستجيب لوزن القدم — جُرّب هذا بأحمال 5 إلى 25 كغم في حذاء وشبشب. القياس الدقيق بالكيلوغرام لم يتحقق بعد؛ الحساس يتشبّع عند الأحمال الأعلى.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#1e88c8",
-      x: "50%",
+      x: "45%",
       y: "45%",
     },
     {
@@ -50,8 +43,8 @@ export default function IntroducingDithar() {
       desc: "تعرّف نوع الحذاء عند تركيب الكبسولة، فتستخدم المعايرة الخاصة بهذا الحذاء تلقائياً دون إدخال يدوي من المريض.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#06b6d4",
-      x: "74%",
-      y: "62%",
+      x: "86%",
+      y: "76%",
     },
     {
       id: "eva",
@@ -61,8 +54,8 @@ export default function IntroducingDithar() {
       desc: "طبقة EVA مريحة وطبقة علوية قابلة للغسل — لا بطارية ولا إلكترونيات تحت وزن الجسم، فقط الحساسات الرقيقة والرقاقة.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#fbbf24",
-      x: "17%",
-      y: "22%",
+      x: "15%",
+      y: "20%",
     },
   ];
 
@@ -77,41 +70,16 @@ export default function IntroducingDithar() {
         <div className="lg:col-span-6 flex justify-center items-center relative order-last lg:order-first">
 
 
-          {/* Container scaled up to 600px max width */}
-          <div className="relative w-full max-w-120 sm:max-w-137.5 lg:max-w-150 select-none transition-all duration-300">
-            {/* Original illustration — silhouette traced from the real pad photo, re-drawn with its own gradient, fabric texture and trim color */}
-            <motion.svg
-              viewBox="0 0 1408 768"
-              className="w-full h-auto filter drop-shadow-2xl"
+          {/* Container — large, background removed */}
+          <div className="relative w-full max-w-137.5 sm:max-w-162.5 lg:max-w-175 select-none transition-all duration-300">
+            <motion.img
+              src="/pad-closed-transparent.png"
+              alt="Dithar pad — assembled, real photo"
+              className="w-full h-auto object-contain filter drop-shadow-2xl"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
-              aria-label="Dithar pad illustration"
-            >
-              <defs>
-                <linearGradient id="padIllustrationGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#6b7684" />
-                  <stop offset="55%" stopColor="#4b5563" />
-                  <stop offset="100%" stopColor="#333a44" />
-                </linearGradient>
-                <pattern id="padFabricTexture" width="14" height="14" patternUnits="userSpaceOnUse">
-                  <circle cx="7" cy="7" r="1.1" fill="#000000" opacity="0.18" />
-                </pattern>
-              </defs>
-              <g transform="translate(0,768) scale(0.1,-0.1)">
-                <path
-                  d={PAD_SILHOUETTE_PATH}
-                  fill="url(#padIllustrationGrad)"
-                  stroke="#0f6657"
-                  strokeWidth="26"
-                  strokeLinejoin="round"
-                />
-                <path d={PAD_SILHOUETTE_PATH} fill="url(#padFabricTexture)" />
-              </g>
-              {/* Magnetic connector snap */}
-              <circle cx="1040" cy="478" r="26" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="3" />
-              <circle cx="1040" cy="478" r="14" fill="#f8fafc" />
-            </motion.svg>
+            />
 
             {/* Hotspots Overlay */}
             {hotspots.map((hs, index) => {
