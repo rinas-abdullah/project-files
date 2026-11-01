@@ -260,7 +260,7 @@ export default function PlatformDashboard() {
 
       {/* caption */}
       <p className="text-center text-xs text-slate-500 -mt-10 pb-8 font-arabic font-medium">
-        معاينة توضيحية للمنصة • اضغط لفتح المنصة الكاملة • البيانات تتحدث عبر BLE 5.2
+        معاينة توضيحية للمنصة • اضغط لفتح المنصة الكاملة • البيانات تُنقل عبر BLE 5.2
       </p>
 
       {/* Toast */}
