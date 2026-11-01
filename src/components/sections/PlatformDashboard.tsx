@@ -187,7 +187,7 @@ export default function PlatformDashboard() {
                     <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
                       <div className="flex items-center justify-between mb-5">
                         <div>
-                          <h4 className="text-base font-bold text-slate-900">Dithar Smart PAD Node</h4>
+                          <h4 className="text-base font-bold text-slate-900">Dithar Capsule Node</h4>
                           <p className="text-[10px] text-slate-500 mt-1">ID: {patient.id}</p>
                         </div>
                         <span className="rounded-full bg-red-50 text-red-700 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] border border-red-100">غير متصل</span>
@@ -207,7 +207,7 @@ export default function PlatformDashboard() {
                           ))}
                         </div>
                         <div className="flex flex-col items-center justify-center gap-4">
-                          <Image src="/pad-closed.png" alt="Dithar pad — assembled" width={130} height={130} className="object-contain" />
+                          <Image src="/capsule-exploded.jpg" alt="Dithar magnetic capsule" width={130} height={130} className="object-contain rounded-xl" />
                           <button className="w-full rounded-3xl bg-[#0B4D8D] text-white py-3 text-sm font-bold hover:bg-blue-800 transition-colors">
                             خارطة الصحة الشاملة
                           </button>
