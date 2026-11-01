@@ -80,7 +80,7 @@ export default function HospitalPortalPage() {
     <div className="space-y-6 flex flex-col w-full h-full">
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-slate-900 mb-1">إدارة المنشأة</h1>
-        <p className="text-sm text-slate-500">نظرة عامة على أسطول الأجهزة الذكية والأداء السريري.</p>
+        <p className="text-sm text-slate-500">نظرة عامة على مخزون الكبسولات (اللبادات تبقى مع كل مريض) والأداء السريري.</p>
       </div>
 
       {/* STATS ROW */}
@@ -137,8 +137,10 @@ export default function HospitalPortalPage() {
         {/* Table Header Controls */}
         <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white">
           <div>
-            <h3 className="font-bold text-slate-900">أسطول الأجهزة الذكية</h3>
-            <p className="text-xs text-slate-500 mt-1">إدارة ومتابعة البادات المخصصة للمرضى والمستودع</p>
+            <h3 className="font-bold text-slate-900">مخزون الكبسولات المغناطيسية</h3>
+            <p className="text-xs text-slate-500 mt-1">
+              ما سُلّم لكل مريض وما أُعيد للمستودع — اللبادة تبقى في حذاء المريض، والكبسولة هي الجزء الذي تديره المنشأة.
+            </p>
           </div>
           
           <div className="flex items-center gap-3 w-full md:w-auto">

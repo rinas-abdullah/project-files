@@ -131,7 +131,7 @@ async function seed() {
       id: "a3",
       patientId: "pat-5",
       title: "إنذار سريري أحمر: ارتفاع حاد في الضغط والحرارة",
-      description: "مستشعرات اللباد الذكي تسجل ضغطاً غير متوازن وحرارة 38.4C على مقدمة القدم.",
+      description: "مستشعرات اللبادة تسجل ضغطاً غير متوازن وحرارة 38.4C على مقدمة القدم.",
       time: "منذ دقيقتين",
       type: "critical",
       recommendation: "يلزم حضور المريضة فوراً للعيادة أو توجيه فريق الرعاية المنزلية.",
@@ -144,21 +144,21 @@ async function seed() {
       patientId: "pat-1",
       author: "د. خالد السليمان",
       date: "2025-05-12",
-      content: "المريضة تظهر استجابة ممتازة لتوزيع الحمل عبر اللباد الطبي الذكي. تحسّن ملحوظ في التوازن الحركي مقارنة بخط الأساس.",
+      content: "المريضة تظهر استجابة ممتازة لتوزيع الحمل عبر اللبادة والكبسولة. تحسّن ملحوظ في الالتزام بحد التحميل مقارنة بخط الأساس.",
     },
     {
       id: "n2",
       patientId: "pat-2",
       author: "د. خلود المطيري",
       date: "2025-05-10",
-      content: "القراءات الحيوية طبيعية والامتثال لارتداء اللباد الذكي ممتاز.",
+      content: "القراءات الحيوية طبيعية والامتثال لحد التحميل الذي حدده الطبيب ممتاز.",
     },
   ]).onConflictDoNothing();
 
   await db.insert(devices).values([
     {
       id: "dev-1",
-      deviceId: "DITHAR-PAD-9842",
+      deviceId: "DITHAR-CAPSULE-9842",
       status: "connected",
       patientId: "pat-4",
       patientName: "أحمد بن عبد الله السلمان",
@@ -173,7 +173,7 @@ async function seed() {
     },
     {
       id: "dev-2",
-      deviceId: "DITHAR-PAD-8812",
+      deviceId: "DITHAR-CAPSULE-8812",
       status: "connected",
       patientId: "pat-1",
       patientName: "سارة بنت أحمد العتيبي",
@@ -188,7 +188,7 @@ async function seed() {
     },
     {
       id: "dev-3",
-      deviceId: "DITHAR-PAD-4091",
+      deviceId: "DITHAR-CAPSULE-4091",
       status: "disconnected",
       patientId: null,
       patientName: "غير مرتبط",
@@ -203,7 +203,7 @@ async function seed() {
     },
     {
       id: "dev-4",
-      deviceId: "DITHAR-PAD-7733",
+      deviceId: "DITHAR-CAPSULE-7733",
       status: "low_battery",
       patientId: "pat-2",
       patientName: "محمد بن عبد العزيز الغامدي",
@@ -244,7 +244,7 @@ async function seed() {
       email: "sara.alotaibi@ditharhealth.sa",
       passwordHash: bcrypt.hashSync(PATIENT_PASSWORD, 10),
       mrn: "#DH-8812",
-      deviceId: "DITHAR-PAD-9842",
+      deviceId: "DITHAR-CAPSULE-9842",
       hospital: "مدينة الملك فهد الطبية",
     },
   ]).onConflictDoNothing();
