@@ -20,7 +20,7 @@ const inter = Inter({
  });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://project-files-biliilez7200-9710s-projects.vercel.app"),
+  metadataBase: new URL("https://project-files-sable.vercel.app"),
   title: "دِثار | Dithar — منصة الرعاية الرقمية واللباد الطبي الذكي",
   description: "منصة دِثار للرعاية الصحية الذكية المدعومة باللباد الطبي الذكي (Smart PAD) وخوارزميات الذكاء الاصطناعي السريري للمراقبة الوظيفية المستمرة والوقاية من المضاعفات.",
   keywords: [
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "دِثار | Dithar — منصة الرعاية الرقمية واللباد الطبي الذكي",
     description: "منظومة دِثار المتكاملة لمراقبة التوازن والحركة لمرضى التأهيل العصبي والحركي عبر اللباد الطبي الذكي والذكاء الاصطناعي السريري.",
-    url: "https://project-files-biliilez7200-9710s-projects.vercel.app",
+    url: "https://project-files-sable.vercel.app",
     siteName: "دِثار | Dithar",
     images: [{ url: "/logo.png" }],
     locale: "ar_SA",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     images: ["/logo.png"],
   },
   alternates: {
-    canonical: "https://project-files-biliilez7200-9710s-projects.vercel.app",
+    canonical: "https://project-files-sable.vercel.app",
   },
 };
  
