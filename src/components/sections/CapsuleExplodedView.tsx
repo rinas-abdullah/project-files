@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Magnet, HelpCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type CapsulePart = {
@@ -15,15 +15,15 @@ type CapsulePart = {
   y: string;
 };
 
-// Positions are approximate — placed over public/capsule-exploded.jpg
+// Positions are calibrated against public/capsule-only.png (a cropped, background-removed cutout)
 const CAPSULE_PARTS: CapsulePart[] = [
   {
     id: "shell",
     nameAr: "الغلاف الخارجي",
     nameEn: "Outer Shell",
     descAr: "الغلاف الذي يثبّت مغناطيسياً على جانب الكعب من الخارج، ويحوي كل الإلكترونيات — لا شيء منها تحت وزن الجسم.",
-    x: "49%",
-    y: "16%",
+    x: "50%",
+    y: "11%",
   },
   {
     id: "motion",
@@ -31,7 +31,7 @@ const CAPSULE_PARTS: CapsulePart[] = [
     nameEn: "Tiny Motion Sensor",
     descAr: "يسجّل تردد المشي والميلان والتوازن.",
     x: "50%",
-    y: "36%",
+    y: "35%",
   },
   {
     id: "temp",
@@ -39,7 +39,7 @@ const CAPSULE_PARTS: CapsulePart[] = [
     nameEn: "Temperature & Humidity Sensor",
     descAr: "نفس نوع القياس الذي جُرّب فعلياً مبكراً: ارتفاع +4.9°C داخل الحذاء و+1.4°C داخل الشبشب خلال 20 دقيقة.",
     x: "50%",
-    y: "43%",
+    y: "41%",
   },
   {
     id: "bluetooth",
@@ -47,7 +47,7 @@ const CAPSULE_PARTS: CapsulePart[] = [
     nameEn: "Bluetooth Chip",
     descAr: "تنقل البيانات من الكبسولة إلى جوال المريض، ومنه إلى المنصة.",
     x: "50%",
-    y: "50%",
+    y: "48%",
   },
   {
     id: "motor",
@@ -55,15 +55,15 @@ const CAPSULE_PARTS: CapsulePart[] = [
     nameEn: "Coin-Sized Vibration Motor",
     descAr: "يهتز فوراً عند تجاوز الحد الذي يضعه الطبيب — أول خطوة في التصعيد المتدرج للتنبيه.",
     x: "50%",
-    y: "58%",
+    y: "56%",
   },
   {
     id: "battery",
     nameAr: "بطارية قابلة لإعادة الشحن",
     nameEn: "Rechargeable Battery",
     descAr: "تُشحن عبر محطة شحن USB ليلاً — داخل الكبسولة فقط، أبداً تحت القدم.",
-    x: "50%",
-    y: "66%",
+    x: "48%",
+    y: "63%",
   },
   {
     id: "magnet",
@@ -71,14 +71,14 @@ const CAPSULE_PARTS: CapsulePart[] = [
     nameEn: "Magnetic Ring",
     descAr: "تثبّت الكبسولة على جانب الكعب، وتسمح بفكها وتركيبها بنقرة واحدة عند تغيير الحذاء.",
     x: "50%",
-    y: "73%",
+    y: "68%",
   },
   {
     id: "contacts",
     nameAr: "نقاط تماس الشحن",
     nameEn: "Charging Contact Pads",
     descAr: "تلامس محطة الشحن لتعبئة الكبسولتين (واحدة لكل قدم) ليلاً.",
-    x: "54%",
+    x: "68%",
     y: "82%",
   },
 ];
@@ -102,13 +102,6 @@ export default function CapsuleExplodedView() {
             Exploded View: The Magnetic Capsule
           </h3>
           <div className="w-24 h-1 bg-primary-blue dark:bg-medical-blue mx-auto rounded-full mt-4"></div>
-        </div>
-
-        <div className="flex justify-center mb-10">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold font-arabic">
-            <Magnet className="w-3.5 h-3.5" />
-            تصميم مفاهيمي — لم تُبنَ الكبسولة بعد
-          </span>
         </div>
 
         <div className="flex flex-col lg:flex-row items-stretch justify-between gap-10 lg:gap-6" dir="ltr">
@@ -159,12 +152,12 @@ export default function CapsuleExplodedView() {
 
           {/* Center: the real photo with numbered hotspots */}
           <div className="w-full lg:w-2/4 flex items-center justify-center relative" dir="ltr">
-            <div className="relative w-full max-w-xl aspect-[1179/629] select-none">
+            <div className="relative h-100 sm:h-120 lg:h-130 w-auto aspect-[265/532] select-none">
               <Image
-                src="/capsule-exploded.jpg"
+                src="/capsule-only.png"
                 alt="Dithar magnetic capsule — exploded concept render"
                 fill
-                className="object-contain drop-shadow-xl rounded-2xl"
+                className="object-contain drop-shadow-xl"
               />
               {CAPSULE_PARTS.map((part, idx) => {
                 const isActive = activeId === part.id;
