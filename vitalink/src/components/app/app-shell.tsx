@@ -60,8 +60,10 @@ type ShellUser = { name: string; email: string; role: string; org: string; unit:
 export function AppShell({ user, nav, unread, compact, children }: { user: ShellUser; nav: NavSection[]; unread: number; compact?: boolean; children: React.ReactNode }) {
   const { t } = useI18n();
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  useEffect(() => setOpen(false), [pathname]);
+  // Mobile drawer closes automatically on navigation: it is "open" only for the path it was opened on.
+  const [openAt, setOpenAt] = useState<string | null>(null);
+  const open = openAt === pathname;
+  const setOpen = (v: boolean) => setOpenAt(v ? pathname : null);
 
   const isActive = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(href + "/")) || pathname === href.split("?")[0];
 
@@ -128,7 +130,7 @@ export function AppShell({ user, nav, unread, compact, children }: { user: Shell
         <div className="flex-1 overflow-y-auto pe-1">{navList}</div>
         <div className="mt-4 rounded-lg bg-white/5 px-3 py-2.5 text-[11px] text-white/55">
           <div className="font-medium text-white/80">{user.org}</div>
-          {user.unit ? <div>{user.unit}</div> : null}
+          {user.unit && user.unit !== user.org ? <div>{user.unit}</div> : null}
         </div>
       </aside>
 
@@ -235,11 +237,16 @@ function NotificationBell({ unread: initial, btnClass }: { unread: number; btnCl
   const { t, locale } = useI18n();
   const { subscribe } = useLive();
   const [unread, setUnread] = useState(initial);
+  const [base, setBase] = useState(initial);
+  if (base !== initial) {
+    // server-rendered count changed (router.refresh) — adopt it
+    setBase(initial);
+    setUnread(initial);
+  }
   const [items, setItems] = useState<Notif[]>([]);
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  useEffect(() => setUnread(initial), [initial]);
   useEffect(
     () =>
       subscribe((ev) => {

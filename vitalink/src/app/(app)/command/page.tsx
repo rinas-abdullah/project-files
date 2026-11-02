@@ -15,6 +15,7 @@ import { EncounterStatusBadge, PriorityBadge, T } from "@/components/shared/stat
 import { AlertsList } from "@/components/shared/alerts-list";
 import { LiveRefresh } from "@/components/live-provider";
 import { LiveMap } from "@/components/maps/live-map";
+import { minutesSince } from "@/lib/utils";
 
 export default async function CommandCenter() {
   const user = await requirePermission("command:read");
@@ -147,7 +148,7 @@ export default async function CommandCenter() {
                       <PriorityBadge p={c.priority} /> <span className="ltr">{c.code}</span>
                     </Link>
                     <span className="text-xs text-muted-foreground">
-                      {c.destination?.name} · {c.preAlertSentAt ? Math.round((Date.now() - new Date(c.preAlertSentAt).getTime()) / 60000) : 0} {t.common.min}
+                      {c.destination?.name} · {c.preAlertSentAt ? minutesSince(c.preAlertSentAt) : 0} {t.common.min}
                     </span>
                   </li>
                 ))}

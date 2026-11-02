@@ -23,7 +23,7 @@ import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { ResourceBadge } from "@/components/shared/status";
 import { BarList, ColumnChart, DailyStack } from "@/components/charts/charts";
-import { cn } from "@/lib/utils";
+import { cn, nowMs } from "@/lib/utils";
 
 const VIEWS = ["overview", "ambulances", "hospitals", "flow", "response", "completeness", "triage", "destination", "resources", "quality"] as const;
 type View = (typeof VIEWS)[number];
@@ -36,7 +36,7 @@ export default async function AnalyticsPage({ params, searchParams }: { params: 
   const { days: rawDays } = await searchParams;
   const days = [7, 30, 60, 90].includes(Number(rawDays)) ? Number(rawDays) : 30;
   const { t, locale } = await getDict();
-  const to = new Date(Date.now() + 60_000);
+  const to = new Date(nowMs() + 60_000);
   const from = new Date(to.getTime() - days * 86400_000);
   from.setUTCHours(0, 0, 0, 0);
   const list = await loadEncounters(user, from, to);

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2, Play } from "lucide-react";
@@ -16,17 +16,25 @@ import { formatEta } from "@/lib/i18n/format";
 
 type Sim = { running: boolean; tick: number; tickMs: number; drives: string[]; monitors: { encounterId: string; scenario: string }[] };
 
+type ActionProps = { action: string; label: string; extra?: Record<string, unknown>; variant?: "outline" | "default" | "critical" | "ai" | "stable" | "warning"; run: (a: string, e?: Record<string, unknown>) => void; busy: string | null };
+
+function DemoAction({ action, label, extra, variant = "outline", run, busy }: ActionProps) {
+  return (
+    <Button variant={variant} onClick={() => run(action, extra)} disabled={!!busy} data-testid={`demo-${action}`} className="justify-start">
+      {busy === action ? <Loader2 className="animate-spin" /> : <Play />} {label}
+    </Button>
+  );
+}
+
 export function DemoPanel({ cases, sim }: { cases: CardData[]; sim: Sim }) {
   const { t } = useI18n();
   const router = useRouter();
-  const [id, setId] = useState(cases[0]?.id ?? "");
+  const [selected, setId] = useState(cases[0]?.id ?? "");
   const [busy, setBusy] = useState<string | null>(null);
   const [steps, setSteps] = useState(5);
   const [trend, setTrend] = useState("DETERIORATING");
   const [resource, setResource] = useState("CT_STATUS");
-  useEffect(() => {
-    if (!cases.find((c) => c.id === id) && cases[0]) setId(cases[0].id);
-  }, [cases, id]);
+  const id = cases.some((c) => c.id === selected) ? selected : cases[0]?.id ?? "";
   const c = cases.find((x) => x.id === id);
   if (!cases.length) return <div className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">{t.demo.noActive}</div>;
 
@@ -38,11 +46,6 @@ export function DemoPanel({ cases, sim }: { cases: CardData[]; sim: Sim }) {
     toast.success(`${t.demo.result}: ✓`);
     router.refresh();
   };
-  const B = ({ action, label, extra, variant = "outline" }: { action: string; label: string; extra?: Record<string, unknown>; variant?: "outline" | "default" | "critical" | "ai" | "stable" | "warning" }) => (
-    <Button variant={variant} onClick={() => run(action, extra)} disabled={!!busy} data-testid={`demo-${action}`} className="justify-start">
-      {busy === action ? <Loader2 className="animate-spin" /> : <Play />} {label}
-    </Button>
-  );
   const driving = c ? sim.drives.length > 0 : false;
 
   return (
@@ -88,12 +91,12 @@ export function DemoPanel({ cases, sim }: { cases: CardData[]; sim: Sim }) {
                   ))}
                 </Select>
               </Field>
-              <B action="move" label={t.demo.moveAmbulance} extra={{ steps }} />
-              <B action="drive_start" label={t.paramedic.startDriving} variant="default" />
-              <B action="drive_stop" label={t.paramedic.stopDriving} />
-              <B action="delay" label={`${t.demo.changeEta} (+3 ${t.common.min})`} extra={{ minutes: 3 }} />
-              <B action="geofence" label={t.demo.geofence} variant="warning" />
-              <B action="arrive" label={t.demo.arrive} />
+              <DemoAction run={run} busy={busy} action="move" label={t.demo.moveAmbulance} extra={{ steps }} />
+              <DemoAction run={run} busy={busy} action="drive_start" label={t.paramedic.startDriving} variant="default" />
+              <DemoAction run={run} busy={busy} action="drive_stop" label={t.paramedic.stopDriving} />
+              <DemoAction run={run} busy={busy} action="delay" label={`${t.demo.changeEta} (+3 ${t.common.min})`} extra={{ minutes: 3 }} />
+              <DemoAction run={run} busy={busy} action="geofence" label={t.demo.geofence} variant="warning" />
+              <DemoAction run={run} busy={busy} action="arrive" label={t.demo.arrive} />
             </CardContent>
           </Card>
           <Card>
@@ -101,9 +104,9 @@ export function DemoPanel({ cases, sim }: { cases: CardData[]; sim: Sim }) {
               <CardTitle>{t.caseView.patient}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-2">
-              <B action="vital" label={t.demo.sendVital} />
-              <B action="monitor_start" label={`${t.paramedic.simulateMonitor} (${t.paramedic.scenario.DETERIORATING})`} variant="ai" />
-              <B action="monitor_stop" label={t.paramedic.stopMonitor} />
+              <DemoAction run={run} busy={busy} action="vital" label={t.demo.sendVital} />
+              <DemoAction run={run} busy={busy} action="monitor_start" label={`${t.paramedic.simulateMonitor} (${t.paramedic.scenario.DETERIORATING})`} variant="ai" />
+              <DemoAction run={run} busy={busy} action="monitor_stop" label={t.paramedic.stopMonitor} />
               <Field label={t.paramedic.conditionForm.trend}>
                 <Select value={trend} onChange={(e) => setTrend(e.target.value)}>
                   {(["STABLE", "IMPROVING", "DETERIORATING", "CRITICAL"] as const).map((x) => (
@@ -113,9 +116,9 @@ export function DemoPanel({ cases, sim }: { cases: CardData[]; sim: Sim }) {
                   ))}
                 </Select>
               </Field>
-              <B action="condition" label={t.demo.changeCondition} extra={{ trend }} />
-              <B action="upload_image" label={t.demo.uploadImage} />
-              <B action="identify" label={t.demo.identify} />
+              <DemoAction run={run} busy={busy} action="condition" label={t.demo.changeCondition} extra={{ trend }} />
+              <DemoAction run={run} busy={busy} action="upload_image" label={t.demo.uploadImage} />
+              <DemoAction run={run} busy={busy} action="identify" label={t.demo.identify} />
             </CardContent>
           </Card>
           <Card>
@@ -123,7 +126,7 @@ export function DemoPanel({ cases, sim }: { cases: CardData[]; sim: Sim }) {
               <CardTitle>{t.caseView.hospital}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-2">
-              <B action="ack" label={t.demo.ack} variant="stable" />
+              <DemoAction run={run} busy={busy} action="ack" label={t.demo.ack} variant="stable" />
               <Field label={t.resources.resources}>
                 <Select value={resource} onChange={(e) => setResource(e.target.value)}>
                   {["CT_STATUS", "CATH_LAB", "OR_STATUS", "ICU_BEDS", "TRAUMA_BAY"].map((x) => (
@@ -133,9 +136,9 @@ export function DemoPanel({ cases, sim }: { cases: CardData[]; sim: Sim }) {
                   ))}
                 </Select>
               </Field>
-              <B action="resource" label={t.demo.resourceChange} extra={{ resourceType: resource }} />
-              <B action="handover" label={t.demo.handover} />
-              <B action="release" label={t.demo.release} />
+              <DemoAction run={run} busy={busy} action="resource" label={t.demo.resourceChange} extra={{ resourceType: resource }} />
+              <DemoAction run={run} busy={busy} action="handover" label={t.demo.handover} />
+              <DemoAction run={run} busy={busy} action="release" label={t.demo.release} />
             </CardContent>
           </Card>
           <Card>
@@ -145,8 +148,8 @@ export function DemoPanel({ cases, sim }: { cases: CardData[]; sim: Sim }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="grid gap-2">
-              <B action="triage" label={t.demo.triage} variant="ai" />
-              <B action="destination" label={t.demo.destination} variant="ai" />
+              <DemoAction run={run} busy={busy} action="triage" label={t.demo.triage} variant="ai" />
+              <DemoAction run={run} busy={busy} action="destination" label={t.demo.destination} variant="ai" />
               <p className="text-[11px] text-muted-foreground">{t.destination.disclaimer}</p>
             </CardContent>
           </Card>

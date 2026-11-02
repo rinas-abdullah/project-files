@@ -58,6 +58,8 @@ export function OutboxProvider({ storageKey, children }: { storageKey: string; c
   useEffect(() => {
     const loaded = load(storageKey).map((i) => (i.status === "PENDING" || i.status === "RETRYING" ? { ...i, nextAt: 0 } : i));
     itemsRef.current = loaded;
+    // Hydration-safe: localStorage only exists in the browser, so the persisted outbox is restored after mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setItems(loaded);
     try {
       setSim(localStorage.getItem(`${storageKey}:offline`) === "1");
@@ -147,17 +149,16 @@ export function OutboxProvider({ storageKey, children }: { storageKey: string; c
     [storageKey],
   );
 
-  const [tick, setTick] = useState(0);
+  const [now, setNow] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setTick((x) => x + 1), 5000);
+    const id = setInterval(() => setNow(Date.now()), 5000);
     return () => clearInterval(id);
   }, []);
   const connection: Connection = useMemo(() => {
-    void tick;
     if (offline) return "OFFLINE";
-    if (!connected || Date.now() - lastFailAt < 30000 || items.some((i) => i.status === "RETRYING")) return "DEGRADED";
+    if (!connected || Math.max(now, lastFailAt) - lastFailAt < 30000 && lastFailAt > 0 || items.some((i) => i.status === "RETRYING")) return "DEGRADED";
     return "ONLINE";
-  }, [offline, connected, lastFailAt, items, tick]);
+  }, [offline, connected, lastFailAt, items, now]);
 
   return <OutboxCtx.Provider value={{ items, connection, simulateOffline, setSimulateOffline, enqueue, retry, clearDelivered }}>{children}</OutboxCtx.Provider>;
 }
