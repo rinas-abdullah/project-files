@@ -144,23 +144,23 @@ export default function DigitalTwin() {
                       onClick={() => setSelectedSensor(point.id)}
                       className="absolute -translate-x-1/2 -translate-y-1/2 group cursor-pointer transition-transform hover:scale-125 focus:outline-none"
                       style={{ left: point.x, top: point.y }}
-                      title={`${point.label}: ${isThermal ? point.temp + '°C' : point.pressure + ' kPa'}`}
+                      title={`${point.label}: ${isThermal ? point.temp + '°C' : (point.risk === "elevated" ? "ضغط مرتفع نسبياً" : "ضمن النطاق الآمن")}`}
                     >
                       {/* Pulsing Aura if elevated */}
                       {point.risk === "elevated" && (
                         <span className="absolute -inset-2 rounded-full bg-amber-400/30 animate-ping pointer-events-none" />
                       )}
-                      
+
                       {/* Sensor Pin Node */}
                       <span className={cn(
                         "flex items-center justify-center rounded-full font-mono text-[9px] font-bold shadow-md transition-all",
-                        isSelected 
-                          ? "w-8 h-8 bg-[#0B4D8D] text-white ring-4 ring-blue-100 scale-110" 
+                        isSelected
+                          ? "w-8 h-8 bg-[#0B4D8D] text-white ring-4 ring-blue-100 scale-110"
                           : point.risk === "elevated"
                           ? "w-6 h-6 bg-amber-500 text-white ring-2 ring-white"
                           : "w-6 h-6 bg-white text-slate-700 border border-slate-300 hover:border-[#0B4D8D]"
                       )}>
-                        {isThermal ? `${point.temp.toFixed(0)}°` : point.pressure}
+                        {isThermal ? `${point.temp.toFixed(0)}°` : ""}
                       </span>
                     </button>
                   );
@@ -189,19 +189,19 @@ export default function DigitalTwin() {
                 </div>
                 <p className="text-xs font-bold text-slate-900 font-arabic mb-1">{activeSensorData.label}</p>
                 <div className="flex items-center gap-4 text-xs font-mono text-slate-600">
-                  <span>الضغط: <b className="text-slate-900">{activeSensorData.pressure} kPa</b></span>
+                  <span>الضغط: <b className="text-slate-900">{activeSensorData.risk === "elevated" ? "مرتفع نسبياً" : "ضمن الآمن"}</b></span>
                   <span>الحرارة: <b className="text-slate-900">{activeSensorData.temp}°C</b></span>
                 </div>
               </motion.div>
             </div>
 
-            {/* Bottom Heatmap Scale / Indicator */}
+            {/* Bottom Heatmap Scale / Indicator — relative color only, no fabricated kPa thresholds */}
             <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
               <span className="text-slate-500 font-arabic text-[11px]">تدرج الحمل السريري:</span>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-slate-400 font-bold">آمن (&lt;40 kPa)</span>
+                <span className="text-[10px] text-slate-400 font-bold">آمن</span>
                 <div className="w-36 h-2 rounded-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500" />
-                <span className="text-[10px] text-rose-600 font-bold">مرتفع (&gt;75 kPa)</span>
+                <span className="text-[10px] text-rose-600 font-bold">مرتفع</span>
               </div>
             </div>
           </div>
@@ -209,27 +209,37 @@ export default function DigitalTwin() {
           {/* ════ RIGHT: CLINICAL METRICS & AI BIOMECHANICS (5 COLS) ════ */}
           <div className="lg:col-span-5 flex flex-col gap-5 justify-between">
             
-            {/* Card 1: Peak Pressure & Tissue Risk */}
+            {/* Card 1: Load vs. the doctor-set limit */}
             <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm text-right">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 bg-blue-50 rounded-2xl text-[#0B4D8D]">
                   <Gauge className="w-5 h-5" />
                 </div>
-                <span className="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-bold text-slate-600 font-arabic">
-                  المعيار السريري للضغط
+                <span className="px-3 py-1 rounded-full bg-amber-50 text-[10px] font-bold text-amber-700 font-arabic border border-amber-100">
+                  بيانات توضيحية
                 </span>
               </div>
-              
-              <div className="flex items-baseline justify-end gap-1.5 mb-1" dir="ltr">
-                <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-mono">58.4</span>
-                <span className="text-sm font-bold text-slate-400 font-mono">kPa</span>
-              </div>
-              
-              <h4 className="text-base font-bold text-slate-900 font-arabic mb-1.5">
-                ذروة الضغط الأخمصي (Peak Pressure)
+
+              <h4 className="text-base font-bold text-slate-900 font-arabic mb-3">
+                الحمل مقابل حد الطبيب
               </h4>
+
+              <div className="space-y-2 mb-3" dir="ltr">
+                <div className="flex items-center justify-between text-sm font-arabic" dir="rtl">
+                  <span className="text-slate-500">الحمل الآن</span>
+                  <span className="font-bold text-slate-900 font-mono">12 كغم</span>
+                </div>
+                <div className="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full rounded-full bg-amber-400" style={{ width: "80%" }} />
+                </div>
+                <div className="flex items-center justify-between text-sm font-arabic" dir="rtl">
+                  <span className="text-slate-500">الحد الذي حدده الطبيب (مثال)</span>
+                  <span className="font-bold text-slate-900 font-mono">15 كغم</span>
+                </div>
+              </div>
+
               <p className="text-xs text-slate-500 font-arabic leading-relaxed font-light">
-                متوسط الضغط ضمن العتبة الآمنة (&lt; 70 kPa). تم رصد استجابة حركية متوازنة تمنع تركز الإجهاد الميكانيكي على الأنسجة الرخوة.
+                تجاوزات اليوم: <b className="text-slate-900">3 مرات</b>. أخضر أقل من 80% من الحد، أصفر من 80% إلى 100%، أحمر فوق الحد.
               </p>
             </div>
 

@@ -41,7 +41,7 @@ export default function WhyDithar() {
       withDithar: {
         icon: <ShieldCheck className="w-5 h-5 text-smart-green" />,
         text: "رصد فوري مبكر • Early Detection",
-        desc: "اكتشاف أدق التغيرات الفيزيولوجية الحركية في مهدها، مما يوفر فرصة تصحيح سريعة وخسائر سريرية صفرية.",
+        desc: "اكتشاف أدق التغيرات الفيزيولوجية الحركية في مهدها، مما يوفر فرصة تصحيح سريعة ورصد مبكر بين المواعيد.",
       },
     },
     {

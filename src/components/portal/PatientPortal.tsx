@@ -111,7 +111,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
     { subject: language === 'ar' ? 'استقرار المفصل' : 'Joint Stability', A: 90, fullMark: 100 },
     { subject: language === 'ar' ? 'تقييم الكاحل' : 'Ankle Score', A: 85, fullMark: 100 },
     { subject: language === 'ar' ? 'توزيع الحمل' : 'Load Dist', A: 65, fullMark: 100 },
-    { subject: language === 'ar' ? 'تنبؤ التوزيع' : 'Load Pred', A: 75, fullMark: 100 },
+    { subject: language === 'ar' ? 'أولوية المتابعة' : 'Follow-up Priority', A: 75, fullMark: 100 },
   ];
 
   // Poll live telemetry API periodically

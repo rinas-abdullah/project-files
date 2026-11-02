@@ -88,20 +88,24 @@ export default function HealthcareGap() {
           >
             <div className="flex flex-col items-center gap-0.5">
               <span className="text-3xl font-bold text-medical-blue font-sans">
-                <AnimatedCounter end={60} suffix="%" />
+                <AnimatedCounter end={88} suffix="%" />
+                <span className="text-slate-300 font-light"> / </span>
+                <span className="text-slate-400">19%</span>
               </span>
-              <span className="text-xs text-slate-400 font-arabic font-light text-center max-w-35">
-                من المرضى بلا متابعة بعد الخروج
+              <span className="text-xs text-slate-400 font-arabic font-light text-center max-w-44">
+                نسبة الملتزمين بحد الحمل مع تنبيه فوري، مقابل بدون تنبيه
               </span>
+              <span className="text-[10px] text-slate-300 font-sans">Lisitano et al., 2025</span>
             </div>
             <span className="hidden md:inline h-10 w-px bg-slate-200" />
             <div className="flex flex-col items-center gap-0.5">
               <span className="text-3xl font-bold text-smart-green font-sans">
-                <AnimatedCounter end={20} suffix="%" />
+                <AnimatedCounter end={178} suffix=" M" />
               </span>
-              <span className="text-xs text-slate-400 font-arabic font-light text-center max-w-35">
-                معدل إعادة التنويم خلال 30 يوم
+              <span className="text-xs text-slate-400 font-arabic font-light text-center max-w-44">
+                حالة كسر جديدة حول العالم في 2019 — كسور الساق والكاحل من أكثرها
               </span>
+              <span className="text-[10px] text-slate-300 font-sans">GBD 2019 Fracture Collaborators</span>
             </div>
           </motion.div>
         </div>

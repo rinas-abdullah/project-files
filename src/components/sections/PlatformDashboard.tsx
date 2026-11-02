@@ -88,6 +88,7 @@ export default function PlatformDashboard() {
   const selectedIdx = 0;
   const [toast, setToast] = useState<string | null>(null);
   const [showFallAlert, setShowFallAlert] = useState(false);
+  const [activeView, setActiveView] = useState<"patient" | "doctor" | "facility">("patient");
 
   const patient = PATIENTS[selectedIdx];
 
@@ -116,6 +117,27 @@ export default function PlatformDashboard() {
 
       {/* ── Dashboard preview card (clickable, links to /portal) ── */}
       <div className="max-w-6xl mx-auto">
+        {/* Role switcher for the illustrative preview below */}
+        <div className="mb-6 flex items-center justify-center gap-2">
+          {([
+            { id: "patient" as const, label: "المريض" },
+            { id: "doctor" as const, label: "الطبيب" },
+            { id: "facility" as const, label: "المنشأة" },
+          ]).map((role) => (
+            <button
+              key={role.id}
+              onClick={() => setActiveView(role.id)}
+              className={`px-5 py-2 rounded-full text-xs font-bold font-arabic border transition-colors cursor-pointer ${
+                activeView === role.id
+                  ? "bg-primary-blue text-white border-primary-blue"
+                  : "bg-white text-slate-600 border-slate-200 hover:border-primary-blue/40"
+              }`}
+            >
+              {role.label}
+            </button>
+          ))}
+        </div>
+
         <Link
           href="/portal"
           className="block w-full overflow-hidden relative group cursor-pointer rounded-[1.8rem] bg-white text-[#0F172A] shadow-2xl shadow-slate-200/50 border border-slate-200"
@@ -128,6 +150,7 @@ export default function PlatformDashboard() {
           {/* ── Main body ── */}
           <div className="bg-white relative" style={{ minHeight: 660 }}>
             <div className="p-6">
+              {activeView === "patient" && (
               <div className="grid gap-6 xl:grid-cols-[1.45fr_0.85fr]">
                 <div className="space-y-6">
                   <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm">
@@ -154,10 +177,10 @@ export default function PlatformDashboard() {
                     <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
                       <div className="flex items-center justify-between mb-5">
                         <div>
-                          <h4 className="text-base font-bold text-slate-900">Live Plantar Heatmap</h4>
-                          <p className="text-[10px] text-slate-500 mt-1">توزيع الضغط والحرارة المباشر</p>
+                          <h4 className="text-base font-bold text-slate-900">Plantar Heatmap</h4>
+                          <p className="text-[10px] text-slate-500 mt-1">توزيع الضغط والحرارة — عرض توضيحي</p>
                         </div>
-                        <span className="rounded-full bg-emerald-50 text-emerald-700 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] border border-emerald-100">Live</span>
+                        <span className="rounded-full bg-red-50 text-red-700 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] border border-red-100">غير متصل</span>
                       </div>
                       <div className="flex flex-col lg:flex-row gap-5">
                         <div className="lg:w-36 rounded-[1.75rem] bg-slate-50 p-4 flex items-center justify-center">
@@ -165,19 +188,13 @@ export default function PlatformDashboard() {
                         </div>
                         <div className="flex-1 space-y-4">
                           {[
-                            { label: "مقدمة القدم", value: "28", status: "Low Risk", style: "bg-emerald-50 text-emerald-700 border-emerald-100" },
-                            { label: "مشط القدم", value: "14", status: "Normal", style: "bg-slate-50 text-slate-700 border-slate-100" },
-                            { label: "كعب القدم", value: "46", status: "Elevated", style: "bg-orange-50 text-orange-700 border-orange-100" },
+                            { label: "مقدمة القدم", status: "Low Risk", style: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+                            { label: "مشط القدم", status: "Normal", style: "bg-slate-50 text-slate-700 border-slate-100" },
+                            { label: "كعب القدم", status: "Elevated", style: "bg-orange-50 text-orange-700 border-orange-100" },
                           ].map((item) => (
                             <div key={item.label} className="flex items-center justify-between rounded-3xl border border-slate-100 bg-slate-50 p-4">
-                              <div className="text-right">
-                                <p className="text-[10px] font-bold text-slate-900">{item.label}</p>
-                                <p className="text-[9px] text-slate-500 uppercase tracking-[0.12em] mt-1">{item.status}</p>
-                              </div>
-                              <div className="text-left">
-                                <p className="text-xl font-bold text-slate-900">{item.value}</p>
-                                <span className={`mt-1 inline-flex rounded-full border px-2 py-0.5 text-[9px] font-bold ${item.style}`}>{item.status}</span>
-                              </div>
+                              <p className="text-[10px] font-bold text-slate-900">{item.label}</p>
+                              <span className={`inline-flex rounded-full border px-2 py-0.5 text-[9px] font-bold ${item.style}`}>{item.status}</span>
                             </div>
                           ))}
                         </div>
@@ -195,10 +212,9 @@ export default function PlatformDashboard() {
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-4 text-right">
                           {[
-                            { label: "Signal", value: "Excellent" },
+                            { label: "Signal", value: "—" },
                             { label: "Battery", value: "88%" },
                             { label: "Firmware", value: "v2.4.1" },
-                            { label: "Last Sync", value: "قبل 2 دقائق" },
                           ].map((item) => (
                             <div key={item.label}>
                               <p className="text-[9px] text-slate-500 uppercase tracking-[0.2em] mb-1">{item.label}</p>
@@ -221,7 +237,7 @@ export default function PlatformDashboard() {
                       { label: "الخطوات", value: "4,281", sub: "خطوة" },
                       { label: "الرطوبة", value: "42%", sub: "RH" },
                       { label: "درجة الحرارة", value: "37.1°C", sub: "Temp" },
-                      { label: "الضغط", value: "118 kPa", sub: "Pressure" },
+                      { label: "الحمل الحالي", value: "12 كغم", sub: "حد الطبيب 15" },
                     ].map((stat) => (
                       <div key={stat.label} className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm">
                         <div className="flex items-center justify-between mb-3">
@@ -253,6 +269,123 @@ export default function PlatformDashboard() {
                   </div>
                 </div>
               </div>
+              )}
+
+              {activeView === "doctor" && (
+                <div className="space-y-5">
+                  <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-xs font-semibold text-slate-500">قائمة المرضى — مرتبة حسب الأولوية</p>
+                      <span className="rounded-full bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.1em]">بيانات توضيحية</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900">واجهة الطبيب</h3>
+                    <p className="mt-2 text-sm text-slate-500 leading-relaxed">مثال توضيحي لشكل لوحة الطبيب في المنصة.</p>
+                  </div>
+
+                  {[
+                    { name: "نورة ق.", category: "كبار السن (سقوط)", limit: "20 كغم", compliance: "71%", overruns: 5, status: "عاجل", style: "bg-red-50 text-red-700 border-red-100" },
+                    { name: "أحمد س.", category: "تأهيل ما بعد الجراحة", limit: "15 كغم", compliance: "86%", overruns: 2, status: "يحتاج متابعة", style: "bg-amber-50 text-amber-700 border-amber-100" },
+                    { name: "سارة ع.", category: "الشلل النصفي", limit: "25 كغم", compliance: "97%", overruns: 0, status: "مستقر", style: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+                  ].map((p) => (
+                    <div key={p.name} className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
+                      <div className="flex items-center justify-between gap-3 mb-3">
+                        <span className={`rounded-full border px-3 py-1 text-[10px] font-bold ${p.style}`}>{p.status}</span>
+                        <div className="text-right">
+                          <p className="text-sm font-bold text-slate-900">{p.name}</p>
+                          <p className="text-[10px] text-slate-400 mt-0.5">{p.category}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 text-center">
+                        <div className="rounded-xl bg-slate-50 p-2">
+                          <p className="text-[8px] text-slate-500 uppercase tracking-[0.1em]">الحد الحالي (يحدده الطبيب)</p>
+                          <p className="text-sm font-bold text-slate-900 mt-0.5">{p.limit}</p>
+                        </div>
+                        <div className="rounded-xl bg-slate-50 p-2">
+                          <p className="text-[8px] text-slate-500 uppercase tracking-[0.1em]">الالتزام هذا الأسبوع</p>
+                          <p className="text-sm font-bold text-slate-900 mt-0.5">{p.compliance}</p>
+                        </div>
+                        <div className="rounded-xl bg-slate-50 p-2">
+                          <p className="text-[8px] text-slate-500 uppercase tracking-[0.1em]">التجاوزات</p>
+                          <p className="text-sm font-bold text-slate-900 mt-0.5">{p.overruns}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm text-center">
+                      <p className="text-sm font-bold text-slate-900">تعديل الحد</p>
+                      <p className="text-[10px] text-slate-400 mt-1">مثال: 15 كغم أسبوعين ثم 30 كغم</p>
+                    </div>
+                    <div className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm text-center">
+                      <p className="text-sm font-bold text-slate-900">تقرير قبل الموعد</p>
+                      <p className="text-[10px] text-slate-400 mt-1">ملخص الالتزام والتجاوزات</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeView === "facility" && (
+                <div className="space-y-5">
+                  <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-xs font-semibold text-slate-500">نظرة عامة على المنشأة</p>
+                      <span className="rounded-full bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.1em]">بيانات توضيحية</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900">واجهة المنشأة</h3>
+                    <p className="mt-2 text-sm text-slate-500 leading-relaxed">مثال توضيحي لشكل لوحة المنشأة في المنصة.</p>
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.18em] mb-4">المرضى النشطون حسب الفئة</p>
+                      <div className="space-y-3">
+                        {[
+                          { label: "تأهيل ما بعد الجراحة", count: 18 },
+                          { label: "القدم السكرية", count: 14 },
+                          { label: "الشلل النصفي", count: 9 },
+                          { label: "كبار السن (سقوط)", count: 7 },
+                        ].map((c) => (
+                          <div key={c.label} className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-slate-700">{c.label}</span>
+                            <span className="text-xs font-bold text-slate-900">{c.count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.18em] mb-4">توزيع المرضى على الأطباء</p>
+                      <div className="space-y-3">
+                        {[
+                          { label: "د. خالد السليمان", count: 16 },
+                          { label: "د. خلود المطيري", count: 14 },
+                          { label: "د. ياسر عبدالمجيد", count: 18 },
+                        ].map((d) => (
+                          <div key={d.label} className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-slate-700">{d.label}</span>
+                            <span className="text-xs font-bold text-slate-900">{d.count} مريضاً</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                    {[
+                      { label: "متوسط الالتزام بالحد", value: "89%" },
+                      { label: "حالات عاجلة اليوم", value: "3" },
+                      { label: "لبادات مسلّمة", value: "62" },
+                      { label: "كبسولات مُعادة", value: "55" },
+                    ].map((stat) => (
+                      <div key={stat.label} className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm">
+                        <p className="text-[9px] text-slate-500 uppercase tracking-[0.18em] font-bold">{stat.label}</p>
+                        <p className="text-xl font-bold text-slate-900 mt-2">{stat.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </Link>
@@ -260,7 +393,7 @@ export default function PlatformDashboard() {
 
       {/* caption */}
       <p className="text-center text-xs text-slate-500 -mt-10 pb-8 font-arabic font-medium">
-        معاينة توضيحية للمنصة • اضغط لفتح المنصة الكاملة • البيانات تُنقل عبر BLE 5.2
+        معاينة توضيحية للمنصة • اضغط لفتح المنصة الكاملة • نقل البيانات عبر BLE 5.2 (تصميم مستهدف)
       </p>
 
       {/* Toast */}

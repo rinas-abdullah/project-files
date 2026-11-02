@@ -46,7 +46,7 @@ export default function MarketOpportunity() {
       metric: 530,
       metricPrefix: "",
       metricSuffix: "M+ Patients",
-      desc: "عدد مرضى الجلطات الدماغية وباركنسون والتصلب اللويحي عالمياً المعرضين لخطر فقدان التوازن والسقوط.",
+      desc: "عدد مرضى الجلطات الدماغية والتصلب اللويحي عالمياً المعرضين لخطر فقدان التوازن والسقوط.",
       progress: 60,
       barColor: "bg-purple-400",
       gradColor: "from-purple-400/8",
