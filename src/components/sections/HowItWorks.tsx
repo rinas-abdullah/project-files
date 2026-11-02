@@ -62,7 +62,12 @@ export default function HowItWorks() {
 
   const renderPreview = () => {
     return (
-      <div className="relative flex items-center justify-center select-none" dir="ltr">
+      <div className="relative flex flex-col items-center justify-center select-none" dir="ltr">
+        {/* Caption so the photo makes sense even on its own, before/without the step list */}
+        <span className="mb-4 px-3.5 py-1.5 rounded-full bg-slate-50 dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 text-slate-500 dark:text-zinc-400 text-xs font-bold font-arabic" dir="rtl">
+          اللباد الطبي الذكي دِثار — يبقى داخل كل حذاء
+        </span>
+
         {/* Large Smart PAD Photo directly on background */}
         <Image
           src="/pad-closed.png"
@@ -146,13 +151,14 @@ export default function HowItWorks() {
         {/* Dynamic Timeline Layout */}
         <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch mt-8">
           
-          {/* Left Column (DOM First in code, but order-1 on mobile & order-2 on desktop -> renders Left in RTL layout) */}
-          <div className="order-1 lg:order-2 lg:col-span-6 flex items-center justify-center relative min-h-100 sm:min-h-120 lg:min-h-135">
+          {/* Left Column (DOM First in code, but order-2 on mobile & order-2 on desktop -> renders Left in RTL layout).
+              Shown AFTER the steps on mobile since the overlays only make sense once you know what each step means. */}
+          <div className="order-2 lg:col-span-6 flex items-center justify-center relative min-h-100 sm:min-h-120 lg:min-h-135">
             {renderPreview()}
           </div>
 
-          {/* Right Column (DOM Second in code, but order-2 on mobile & order-1 on desktop -> renders Right in RTL layout) */}
-          <div className="order-2 lg:order-1 lg:col-span-6 flex flex-col gap-4 text-right justify-center" dir="rtl">
+          {/* Right Column (DOM Second in code, but order-1 on mobile & order-1 on desktop -> renders Right in RTL layout) */}
+          <div className="order-1 lg:col-span-6 flex flex-col gap-4 text-right justify-center" dir="rtl">
             <div className="relative flex flex-col gap-3 pr-6 border-r-2 border-slate-200/60 dark:border-zinc-800/80 mr-2">
               {steps.map((s, idx) => {
                 const isActive = activeStep === idx;
