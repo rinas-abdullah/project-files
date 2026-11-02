@@ -86,7 +86,9 @@ const hotspots: Hotspot[] = [
 ];
 
 export default function Hero() {
-  const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
+  // Defaults to the first hotspot so the panel always shows a real labeled
+  // example, instead of only a generic "hover/tap to explore" prompt.
+  const [activeHotspot, setActiveHotspot] = useState<string>(hotspots[0].id);
   const [isMobile, setIsMobile] = useState(false);
   // Matches ContainerScroll's own breakpoint (768px) for when its device
   // frame switches from the tall mobile shape to the wide desktop shape —
@@ -220,8 +222,8 @@ export default function Hero() {
                       transform: "translate(-50%, -50%)",
                     }}
                     onMouseEnter={() => setActiveHotspot(item.id)}
-                    onMouseLeave={() => !isMobile && setActiveHotspot(null)}
-                    onClick={() => setActiveHotspot(isMobile && isActive ? null : item.id)}
+                    onMouseLeave={() => !isMobile && setActiveHotspot(hotspots[0].id)}
+                    onClick={() => setActiveHotspot(isMobile && isActive ? hotspots[0].id : item.id)}
                   >
                     {isActive && (
                       <span className="absolute w-9 h-9 rounded-full animate-ping opacity-50 bg-smart-green/30" />
@@ -244,43 +246,29 @@ export default function Hero() {
             <div className="absolute bottom-4 left-6 right-6 z-30">
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={activeHotspot || "default"}
+                  key={activeHotspot}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.15 }}
                   className="w-full max-w-lg mx-auto bg-white/95 backdrop-blur-md border border-slate-100/60 shadow-[0_8px_30px_rgba(11,77,141,0.03)] rounded-xl p-3.5"
                 >
-                  {activeHotspot ? (
-                    <div className="flex flex-col text-right">
-                      <div className="flex flex-col border-b border-slate-100/50 pb-1.5 mb-1.5">
-                        <span className="font-arabic text-xs font-bold text-slate-800">
-                          {hotspots.find((h) => h.id === activeHotspot)?.nameAr}
-                        </span>
-                        <span className="font-sans text-[8px] font-bold tracking-[0.14em] text-smart-green uppercase mt-0.5">
-                          {hotspots.find((h) => h.id === activeHotspot)?.nameEn}
-                        </span>
-                      </div>
-                      <p className="font-arabic text-xs font-light leading-relaxed text-slate-600">
-                        {hotspots.find((h) => h.id === activeHotspot)?.descAr}
-                      </p>
-                      <p className="font-sans text-[9px] text-slate-400 mt-1 leading-relaxed">
-                        {hotspots.find((h) => h.id === activeHotspot)?.descEn}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center py-1 text-center select-none">
-                      <span className="font-sans text-[8px] font-bold uppercase tracking-[0.18em] text-slate-400">
-                        CLINICAL SPECIFICATIONS
+                  <div className="flex flex-col text-right">
+                    <div className="flex flex-col border-b border-slate-100/50 pb-1.5 mb-1.5">
+                      <span className="font-arabic text-xs font-bold text-slate-800">
+                        {hotspots.find((h) => h.id === activeHotspot)?.nameAr}
                       </span>
-                      <p className="font-arabic text-[11px] font-light text-slate-500 mt-1">
-                        {isMobile
-                          ? "انقر على النقاط النشطة لاستكشاف مكونات اللباد الطبي الذكي"
-                          : "مرر الفأرة فوق نقاط الاستشعار لاستكشاف مكونات اللباد الطبي الذكي"
-                        }
-                      </p>
+                      <span className="font-sans text-[8px] font-bold tracking-[0.14em] text-smart-green uppercase mt-0.5">
+                        {hotspots.find((h) => h.id === activeHotspot)?.nameEn}
+                      </span>
                     </div>
-                  )}
+                    <p className="font-arabic text-xs font-light leading-relaxed text-slate-600">
+                      {hotspots.find((h) => h.id === activeHotspot)?.descAr}
+                    </p>
+                    <p className="font-sans text-[9px] text-slate-400 mt-1 leading-relaxed">
+                      {hotspots.find((h) => h.id === activeHotspot)?.descEn}
+                    </p>
+                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
