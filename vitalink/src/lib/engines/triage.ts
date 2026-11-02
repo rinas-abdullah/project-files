@@ -41,6 +41,7 @@ const CARDIAC_RX = /(chest pain|stemi|cardiac|angina|palpitation|myocard|ألم.
 const ARREST_RX = /(cardiac arrest|unresponsive|unconscious|not breathing|غائب عن الوعي|فاقد الوعي)/i;
 const SEIZURE_RX = /(seizure|convuls|تشنج)/i;
 const BURN_RX = /(burn|حرق|حروق)/i;
+const HEAT_RX = /(heat ?stroke|heat exhaustion|hyperthermia|sun ?stroke|ضربة شمس|ضربة الشمس|إجهاد حراري|الإجهاد الحراري)/i;
 const RESP_RX = /(shortness of breath|dyspn|asthma|respiratory distress|ضيق.*تنفس)/i;
 const HIGH_ENERGY_RX =
   /(high[- ]speed|rollover|ejection|ejected|pedestrian|motorcycle|fall from height|fall >|penetrating|stab|gunshot|entrapment|head[- ]on|تصادم|دهس|سقوط من)/i;
@@ -138,6 +139,12 @@ export function assessTriage(input: TriageInput): TriageResult {
   if (SEIZURE_RX.test(text)) add("SEIZURE", 1, "Seizure reported");
   if (BURN_RX.test(text)) add("BURN", 1, "Burn injury");
   if (RESP_RX.test(text)) add("RESPIRATORY_COMPLAINT", 1, "Respiratory complaint");
+  // Heat stroke (Hajj / mass-gathering protocol): core temperature ≥ 40°C with altered consciousness,
+  // or a reported heat illness with ≥ 39.5°C — time-critical, needs immediate cooling on arrival.
+  const heatComplaint = HEAT_RX.test(text);
+  const heatStroke = temp != null && ((temp >= 40 && (gcs == null || gcs < 15)) || (heatComplaint && temp >= 39.5));
+  if (heatStroke) add("HEAT_STROKE", 3, `Suspected heat stroke: ${temp}°C${gcs != null ? `, GCS ${gcs}` : ""}`);
+  else if (heatComplaint) add("HEAT_ILLNESS", 1, "Heat illness reported");
   const highEnergy = HIGH_ENERGY_RX.test(mechanism) || HIGH_ENERGY_RX.test(complaint);
   if (highEnergy) add("HIGH_ENERGY_MECHANISM", 2, "High-energy injury mechanism");
 
@@ -155,6 +162,7 @@ export function assessTriage(input: TriageInput): TriageResult {
   };
   if (maxSingle >= 3) raise("P2");
   if (stroke || cardiac || highEnergy) raise("P2");
+  if (heatStroke) raise("P1");
   if ((arrest && (gcs == null || gcs <= 8)) || (stroke && total >= 6) || (maxSingle >= 3 && total >= 8)) raise("P1");
 
   // Missing data & confidence
@@ -197,6 +205,7 @@ export function requiredCapabilities(input: { chiefComplaint?: string | null; me
   if (HIGH_ENERGY_RX.test(text) || /(trauma|fracture|bleed|collision|crash|accident|حادث|نزيف|كسر)/i.test(text))
     ["TRAUMA_CENTER", "CT", "OPERATING_ROOM", "BLOOD_BANK"].forEach((c) => req.add(c));
   if (BURN_RX.test(text)) req.add("BURN_UNIT");
+  if (HEAT_RX.test(text)) req.add("ICU");
   if (/(isolation|infectious|tb|measles|عزل)/i.test(text)) req.add("ISOLATION");
   if (input.age != null && input.age < 14) req.add("PEDIATRIC");
   if (input.priority === "P1") req.add("ICU");

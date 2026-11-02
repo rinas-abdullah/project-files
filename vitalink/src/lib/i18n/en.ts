@@ -404,6 +404,8 @@ export const en = {
       SEIZURE: "Seizure",
       BURN: "Burn injury",
       RESPIRATORY_COMPLAINT: "Respiratory complaint",
+      HEAT_STROKE: "Suspected heat stroke — immediate cooling",
+      HEAT_ILLNESS: "Heat illness reported",
       HIGH_ENERGY_MECHANISM: "High-energy mechanism",
       AGE_OLDER: "Age ≥ 65",
       AGE_INFANT: "Infant",

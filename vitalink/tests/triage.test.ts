@@ -31,6 +31,16 @@ describe("AI-assisted triage (rule-based demo engine)", () => {
     expect(r.factors.some((f) => f.code === "STROKE_SIGNS")).toBe(true);
   });
 
+  it("escalates suspected heat stroke to P1 (Hajj protocol)", () => {
+    const r = assessTriage({ now, age: 58, chiefComplaint: "Collapsed in the sun at Arafat, ضربة شمس", vitals: [v("TEMPERATURE", 41.2), v("GCS", 13), v("HEART_RATE", 118), v("BLOOD_PRESSURE", 112, 1, 70), v("SPO2", 96), v("RESPIRATORY_RATE", 22)] });
+    expect(r.suggestedPriority).toBe("P1");
+    expect(r.factors[0].code).toBe("HEAT_STROKE");
+    expect(requiredCapabilities({ chiefComplaint: "heat stroke" })).toContain("ICU");
+    const mild = assessTriage({ now, age: 30, chiefComplaint: "Heat exhaustion, dizzy", vitals: [v("TEMPERATURE", 37.8), v("GCS", 15), v("HEART_RATE", 96), v("BLOOD_PRESSURE", 120, 1, 75), v("SPO2", 98), v("RESPIRATORY_RATE", 18)] });
+    expect(mild.factors.some((f) => f.code === "HEAT_ILLNESS")).toBe(true);
+    expect(mild.suggestedPriority).not.toBe("P1");
+  });
+
   it("reports missing data and lowers confidence", () => {
     const full = assessTriage({ now, age: 40, chiefComplaint: "Abdominal pain", vitals: [v("HEART_RATE", 90), v("BLOOD_PRESSURE", 120, 1, 80), v("SPO2", 98), v("RESPIRATORY_RATE", 18), v("GCS", 15)] });
     const sparse = assessTriage({ now, chiefComplaint: "", vitals: [v("HEART_RATE", 90)] });

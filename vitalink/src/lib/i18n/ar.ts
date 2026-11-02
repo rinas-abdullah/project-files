@@ -405,6 +405,8 @@ export const ar: Dict = {
       SEIZURE: "تشنج",
       BURN: "إصابة حروق",
       RESPIRATORY_COMPLAINT: "شكوى تنفسية",
+      HEAT_STROKE: "اشتباه ضربة شمس — تبريد فوري",
+      HEAT_ILLNESS: "إجهاد حراري مُبلَّغ",
       HIGH_ENERGY_MECHANISM: "آلية إصابة عالية الطاقة",
       AGE_OLDER: "العمر 65 فأكثر",
       AGE_INFANT: "رضيع",
