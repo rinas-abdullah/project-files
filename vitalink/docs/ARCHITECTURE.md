@@ -43,7 +43,7 @@ flowchart LR
 | Data | PostgreSQL + Prisma 6 | Relational clinical journey, strong constraints, `LISTEN/NOTIFY` for realtime |
 | Auth | Auth.js v5 (credentials) + bcrypt, JWT session (10 h) | Every request re-validates the user in the DB (`getCurrentUser`) so a deactivated user loses access immediately |
 | Realtime | Server-Sent Events fed by Postgres `LISTEN/NOTIFY` | Works across processes; events are small invalidation signals, and clients re-render server data with `router.refresh()`, so there is no duplicated client state |
-| Offline | Client outbox in `localStorage`, ordered delivery, exponential backoff, server de-duplication by `clientId` | The paramedic never sees "sent" until the server confirms (`PENDING → RETRYING → FAILED / DELIVERED`) |
+| Offline | Client outbox in `localStorage` (AES-GCM, per-user key held only in tab memory), ordered delivery, exponential backoff, server de-duplication by `clientId` | The paramedic never sees "sent" until the server confirms (`PENDING → RETRYING → FAILED / DELIVERED`) |
 | AI | Transparent rule engine (`engines/triage.ts`, `engines/destination.ts`) | Explainable and testable; no external AI API; labelled as demo decision support |
 | Integrations | Adapter interfaces + mock implementations + status registry | Honest status (`SIMULATED / NOT_CONFIGURED / …`); live adapters refuse to run without credentials |
 | Caching | `cacheComponents: false` | Every page is authenticated and live; nothing is pre-rendered per user |

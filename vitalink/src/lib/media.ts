@@ -2,6 +2,7 @@ import "server-only";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
+import { decryptBuffer, encryptBuffer } from "@/lib/crypto";
 
 export const MEDIA_DIR = process.env.MEDIA_DIR ?? path.join(process.cwd(), "storage", "media");
 
@@ -39,12 +40,13 @@ export async function storeMedia(encounterId: string, buf: Buffer, ext: string) 
   const dir = path.join(MEDIA_DIR, encounterId);
   await mkdir(dir, { recursive: true });
   const name = `${randomBytes(12).toString("hex")}.${ext}`;
-  await writeFile(path.join(dir, name), buf);
+  // Encrypted at rest (AES-256-GCM); a stolen disk or backup does not expose patient photos.
+  await writeFile(path.join(dir, name), encryptBuffer(buf));
   return `${encounterId}/${name}`;
 }
 
 export async function readMedia(storageKey: string) {
   const full = path.resolve(MEDIA_DIR, storageKey);
   if (!full.startsWith(path.resolve(MEDIA_DIR) + path.sep)) throw new Error("path traversal");
-  return readFile(full);
+  return decryptBuffer(await readFile(full));
 }

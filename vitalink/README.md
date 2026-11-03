@@ -187,6 +187,7 @@ E2E_BASE_URL=http://localhost:3000 npm run test:e2e
 
 E2E suites:
 
+- `outbox-encryption.spec.ts`: an unknown pilgrim's note queued offline is stored only as `enc1:` ciphertext and is delivered when back online.
 - `main-workflow.spec.ts`: the full scenario with ambulance and ED in two parallel sessions. It checks the live update without a refresh, the offline outbox, triage, destination, acknowledgment, readiness, ETA, geofence, registration, handover and release.
 - `security-and-diversion.spec.ts`: unauthenticated access, tenant isolation (404 across hospitals and ambulances), RBAC (403), zod validation, auditor scope, a diversion with **CASE DIVERTED** shown live at the old ED, Arabic RTL, analytics from the DB, and honest integration status.
 - `demo-simulation.spec.ts`: every demo-panel action plus the mock monitor stream on the unknown patient, up to identity match, handover and release.
@@ -201,11 +202,15 @@ If Playwright cannot find its browser, set `PW_CHROMIUM_PATH` to a Chromium bina
 - Zod validation on every mutation, same-origin check (CSRF), per-user API rate limiting.
 - Security headers: CSP, HSTS, X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy.
 - National ID and phone are **AES-256-GCM encrypted**, with an HMAC hash for lookup and only the last 4 digits in plain text. General tables show `••••••1234`.
-- Media is stored outside `/public`, served only through a scoped, audited endpoint with a sandbox CSP, and validated by type, size and magic bytes.
+- Media is stored outside `/public`, **encrypted at rest (AES-256-GCM)**, served only through a scoped, audited endpoint with a sandbox CSP, and validated by type, size and magic bytes.
+- **Lost tablet:** the offline outbox in `localStorage` is AES-GCM encrypted with a per-user key from `/api/device-key`. The key lives only in tab memory and `sessionStorage`, so a closed or signed-out tab leaves only ciphertext. Delivered items keep no clinical payload. The ambulance app signs itself out after 20 minutes without interaction, and queued data survives and resumes after sign-in.
+- **Data retention:** `npm run retention` (dry run) or `npm run retention -- --apply`, run daily. After a case closes, photos/videos are deleted after `RETENTION_MEDIA_DAYS`. Name, National ID, phone, free text and the fetched health profile are removed after `RETENTION_IDENTIFIER_DAYS`. Timings, priority and vitals stay for de-identified quality metrics. Audit events are kept for `RETENTION_AUDIT_DAYS`. Open cases are never touched.
+- **Stale capacity:** hospital resource statuses older than `RESOURCE_STALE_MINUTES` (default 240) are treated as UNKNOWN by the destination engine, and the recommendation says so.
 - The audit log records user, action, entity, time, before/after and IP.
 
 ## 13. Production notes
 
 - Replace the in-memory rate limiter with Redis for multi-instance deployments. Realtime already works across instances through Postgres NOTIFY.
 - Move media to object storage (S3-compatible) behind the same `/api/media/:id` contract.
+- Not yet implemented, and required before a live pilot: MFA for hospital/command roles, MDM-based remote wipe for tablets, a formal PDPL / NCA ECC compliance assessment, and clinical validation of the triage rules by a licensed emergency physician.
 - Run the simulation/ops loop as a dedicated worker (`VITALINK_DISABLE_SIM=1` on web nodes).

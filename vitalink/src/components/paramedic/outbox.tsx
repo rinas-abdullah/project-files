@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { CloudOff, RefreshCw, Wifi, WifiLow, CheckCircle2, XCircle, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { useI18n } from "@/components/i18n-provider";
@@ -8,10 +9,12 @@ import { useLive } from "@/components/live-provider";
 import { Badge } from "@/components/ui/badge";
 import { cn, uid } from "@/lib/utils";
 import { formatTime } from "@/lib/i18n/format";
+import { forgetOutboxKey, getOutboxKey, seal, unseal } from "@/lib/outbox-crypto";
 
 /**
  * Offline-first outbox for the ambulance app.
- * Clinical events are stored locally (localStorage) and delivered in order
+ * Clinical events are stored locally (localStorage, AES-GCM encrypted with a
+ * per-user key that lives only in tab memory) and delivered in order
  * with exponential backoff. Every item carries a clientId so the server
  * de-duplicates retries. Status is never shown as delivered until the server confirms.
  */
@@ -27,6 +30,7 @@ type Ctx = {
   enqueue: (label: string, url: string, body: Record<string, unknown>) => OutboxItem;
   retry: (id: string) => void;
   clearDelivered: () => void;
+  sealed: boolean;
 };
 
 const OutboxCtx = createContext<Ctx | null>(null);
@@ -36,17 +40,53 @@ export const useOutbox = () => {
   return c;
 };
 
-function load(key: string): OutboxItem[] {
+/** Reads and decrypts the stored outbox. `sealed` means data exists but no key is available yet (offline, new tab). */
+async function load(storageKey: string): Promise<{ items: OutboxItem[]; sealed: boolean }> {
+  let raw: string | null = null;
   try {
-    return JSON.parse(localStorage.getItem(key) ?? "[]");
+    raw = localStorage.getItem(storageKey);
+  } catch {}
+  if (!raw) return { items: [], sealed: false };
+  const key = await getOutboxKey();
+  if (!key) return { items: [], sealed: true };
+  try {
+    return { items: JSON.parse(await unseal(key, raw)), sealed: false };
   } catch {
-    return [];
+    return { items: [], sealed: true };
   }
+}
+
+/** Delivered items keep only their label and timestamps: no clinical payload stays on the device. */
+const strip = (i: OutboxItem): OutboxItem => (i.status === "DELIVERED" ? { ...i, body: {} } : i);
+
+/** A tablet left unattended signs itself out; queued data stays encrypted and resumes after sign-in. */
+export const IDLE_LOCK_MS = 20 * 60 * 1000;
+
+function useIdleLock() {
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const lock = () => {
+      forgetOutboxKey();
+      void signOut({ callbackUrl: "/login?reason=idle" });
+    };
+    const reset = () => {
+      clearTimeout(timer);
+      timer = setTimeout(lock, IDLE_LOCK_MS);
+    };
+    const events = ["pointerdown", "keydown", "touchstart"] as const;
+    events.forEach((e) => window.addEventListener(e, reset, { passive: true }));
+    reset();
+    return () => {
+      clearTimeout(timer);
+      events.forEach((e) => window.removeEventListener(e, reset));
+    };
+  }, []);
 }
 
 export function OutboxProvider({ storageKey, children }: { storageKey: string; children: React.ReactNode }) {
   const router = useRouter();
   const { t } = useI18n();
+  useIdleLock();
   const { connected } = useLive();
   const [items, setItems] = useState<OutboxItem[]>([]);
   const [simulateOffline, setSim] = useState(false);
@@ -55,17 +95,41 @@ export function OutboxProvider({ storageKey, children }: { storageKey: string; c
   const busy = useRef(false);
   const itemsRef = useRef<OutboxItem[]>([]);
 
+  const sealedRef = useRef(false);
+  const [sealed, setSealed] = useState(false);
+  const writeChain = useRef<Promise<void>>(Promise.resolve());
+
+  const hydrate = useCallback(async () => {
+    const res = await load(storageKey);
+    sealedRef.current = res.sealed;
+    setSealed(res.sealed);
+    if (res.sealed) return;
+    const loaded = res.items.map((i) => (i.status === "PENDING" || i.status === "RETRYING" ? { ...i, nextAt: 0 } : i));
+    // Merge anything queued while the store was sealed.
+    const ids = new Set(loaded.map((i) => i.id));
+    const merged = [...loaded, ...itemsRef.current.filter((i) => !ids.has(i.id))];
+    itemsRef.current = merged;
+    setItems(merged);
+    const key = await getOutboxKey();
+    if (key) {
+      try {
+        localStorage.setItem(storageKey, await seal(key, JSON.stringify(merged.map(strip))));
+      } catch {}
+    }
+  }, [storageKey]);
+
   useEffect(() => {
-    const loaded = load(storageKey).map((i) => (i.status === "PENDING" || i.status === "RETRYING" ? { ...i, nextAt: 0 } : i));
-    itemsRef.current = loaded;
     // Hydration-safe: localStorage only exists in the browser, so the persisted outbox is restored after mount.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setItems(loaded);
+    void hydrate();
     try {
       setSim(localStorage.getItem(`${storageKey}:offline`) === "1");
     } catch {}
     setOnline(navigator.onLine);
-    const on = () => setOnline(true);
+    const on = () => {
+      setOnline(true);
+      if (sealedRef.current) void hydrate();
+    };
     const off = () => setOnline(false);
     window.addEventListener("online", on);
     window.addEventListener("offline", off);
@@ -73,16 +137,22 @@ export function OutboxProvider({ storageKey, children }: { storageKey: string; c
       window.removeEventListener("online", on);
       window.removeEventListener("offline", off);
     };
-  }, [storageKey]);
+  }, [storageKey, hydrate]);
 
   const persist = useCallback(
     (next: OutboxItem[]) => {
-      const trimmed = [...next.filter((i) => i.status !== "DELIVERED"), ...next.filter((i) => i.status === "DELIVERED").slice(-15)];
+      const trimmed = [...next.filter((i) => i.status !== "DELIVERED"), ...next.filter((i) => i.status === "DELIVERED").slice(-15)].map(strip);
       itemsRef.current = trimmed;
       setItems(trimmed);
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(trimmed));
-      } catch {}
+      // Never overwrite a sealed store we could not read; the items stay in memory until the key is back.
+      if (sealedRef.current) return;
+      writeChain.current = writeChain.current.then(async () => {
+        const key = await getOutboxKey();
+        if (!key) return;
+        try {
+          localStorage.setItem(storageKey, await seal(key, JSON.stringify(itemsRef.current)));
+        } catch {}
+      });
     },
     [storageKey],
   );
@@ -160,7 +230,7 @@ export function OutboxProvider({ storageKey, children }: { storageKey: string; c
     return "ONLINE";
   }, [offline, connected, lastFailAt, items, now]);
 
-  return <OutboxCtx.Provider value={{ items, connection, simulateOffline, setSimulateOffline, enqueue, retry, clearDelivered }}>{children}</OutboxCtx.Provider>;
+  return <OutboxCtx.Provider value={{ items, connection, simulateOffline, setSimulateOffline, enqueue, retry, clearDelivered, sealed }}>{children}</OutboxCtx.Provider>;
 }
 
 export function ConnectionBadge() {
@@ -175,7 +245,7 @@ export function ConnectionBadge() {
 }
 
 export function OutboxPanel() {
-  const { items, simulateOffline, setSimulateOffline, retry } = useOutbox();
+  const { items, simulateOffline, setSimulateOffline, retry, sealed } = useOutbox();
   const { t, locale } = useI18n();
   const pending = items.filter((i) => i.status !== "DELIVERED");
   const shown = [...items].reverse().slice(0, 8);
@@ -191,6 +261,11 @@ export function OutboxPanel() {
           {t.paramedic.simulateOffline}
         </label>
       </div>
+      {sealed ? (
+        <p className="mt-2 rounded-md bg-warning/10 px-2 py-1 text-xs text-warning" data-testid="outbox-sealed">
+          {t.paramedic.outboxSealed}
+        </p>
+      ) : null}
       <ul className="mt-3 space-y-1.5">
         {shown.length === 0 ? <li className="text-xs text-muted-foreground">{t.paramedic.outboxEmpty}</li> : null}
         {shown.map((i) => (

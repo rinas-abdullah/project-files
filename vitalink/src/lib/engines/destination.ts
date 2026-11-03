@@ -50,6 +50,18 @@ const CAP_TO_RESOURCE: Record<string, string> = {
   TRAUMA_CENTER: "TRAUMA_BAY",
 };
 
+/** Resource statuses older than this are treated as UNKNOWN: a "bed available" from hours ago must not attract critical patients. */
+export const RESOURCE_STALE_MINUTES = 240;
+
+/**
+ * Freshness guard for manually reported resources. AVAILABLE/LIMITED decay to UNKNOWN when stale;
+ * UNAVAILABLE is kept, because assuming a resource came back is the unsafe direction.
+ */
+export function freshStatus(status: ResourceStatusKey, updatedAt: Date, now: Date = new Date(), maxMinutes = RESOURCE_STALE_MINUTES): ResourceStatusKey {
+  if (status === "UNAVAILABLE" || status === "UNKNOWN") return status;
+  return now.getTime() - updatedAt.getTime() > maxMinutes * 60_000 ? "UNKNOWN" : status;
+}
+
 const resScore = (s: ResourceStatusKey | undefined): number =>
   s === "AVAILABLE" ? 1 : s === "LIMITED" ? 0.5 : s === "UNAVAILABLE" ? 0 : 0.4;
 
@@ -92,6 +104,8 @@ export function rankHospitals(params: {
         reasons.push({ code: "RESOURCE_AVAILABLE", params: { res: r }, positive: true });
       if (s === "UNAVAILABLE") reasons.push({ code: "RESOURCE_UNAVAILABLE", params: { res: r }, positive: false });
       if (s === "LIMITED") reasons.push({ code: "RESOURCE_LIMITED", params: { res: r }, positive: false });
+      if (s === "UNKNOWN" && r !== "ED_CAPACITY" && r !== "AVAILABLE_BEDS" && r !== "SPECIALISTS")
+        reasons.push({ code: "RESOURCE_UNKNOWN", params: { res: r }, positive: false });
     }
 
     // Load

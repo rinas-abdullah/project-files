@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
+import { forgetOutboxKey } from "@/lib/outbox-crypto";
 import { DropdownMenu, Popover } from "radix-ui";
 import {
   Activity,
@@ -219,7 +220,10 @@ function TopbarTools({ user, unread, dark }: { user: ShellUser; unread: number; 
             <DropdownMenu.Separator className="my-1 h-px bg-border" />
             <DropdownMenu.Item
               className="flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-2 text-critical outline-none hover:bg-muted"
-              onSelect={() => signOut({ callbackUrl: "/login" })}
+              onSelect={() => {
+                forgetOutboxKey();
+                void signOut({ callbackUrl: "/login" });
+              }}
               data-testid="sign-out"
             >
               <LogOut className="size-4" /> {t.common.signOut}

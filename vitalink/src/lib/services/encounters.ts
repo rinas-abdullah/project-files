@@ -18,7 +18,7 @@ import { encrypt, last4, lookupHash } from "@/lib/crypto";
 import { audit } from "@/lib/audit";
 import { classifyVital, VITAL_DEFS, type VitalTypeKey } from "@/lib/engines/vitals";
 import { assessTriage, requiredCapabilities, type PriorityKey } from "@/lib/engines/triage";
-import { rankHospitals, DESTINATION_ENGINE_VERSION, type HospitalCandidate, type ResourceStatusKey } from "@/lib/engines/destination";
+import { rankHospitals, freshStatus, RESOURCE_STALE_MINUTES, DESTINATION_ENGINE_VERSION, type HospitalCandidate, type ResourceStatusKey } from "@/lib/engines/destination";
 import { getIdentityAdapter, type IdentityMethod } from "@/lib/integrations/identity";
 import { getHealthRecordAdapter } from "@/lib/integrations/health-record";
 import { IntegrationUnavailableError, recordIntegrationResult } from "@/lib/integrations/registry";
@@ -725,6 +725,8 @@ export async function hospitalCandidates(): Promise<HospitalCandidate[]> {
     prisma.hospital.findMany({ where: { active: true }, include: { capabilities: true, resources: true } }),
     hospitalLoads(),
   ]);
+  const now = new Date();
+  const staleMinutes = Number(process.env.RESOURCE_STALE_MINUTES) || RESOURCE_STALE_MINUTES;
   return hospitals.map((h) => ({
     id: h.id,
     name: h.name,
@@ -732,7 +734,7 @@ export async function hospitalCandidates(): Promise<HospitalCandidate[]> {
     lng: h.lng,
     edCapacity: h.edCapacity,
     capabilities: Object.fromEntries(h.capabilities.map((c) => [c.capability, c.available])),
-    resources: Object.fromEntries(h.resources.map((r) => [r.type, r.status as ResourceStatusKey])),
+    resources: Object.fromEntries(h.resources.map((r) => [r.type, freshStatus(r.status as ResourceStatusKey, r.updatedAt, now, staleMinutes)])),
     load: loads[h.id],
   }));
 }
