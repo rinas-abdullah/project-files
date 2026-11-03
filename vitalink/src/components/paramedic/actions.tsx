@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 
 type Tile = { icon: React.ComponentType<{ className?: string }>; label: string; tone?: "critical" | "ai" | "default" };
 
-function ActionTile({ icon: Icon, label, tone = "default", ...rest }: Tile & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+export function ActionTile({ icon: Icon, label, tone = "default", ...rest }: Tile & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       type="button"

@@ -1,3 +1,4 @@
+import { VoiceDialog } from "@/components/paramedic/voice";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Ambulance, Hospital, MapPin, UserPlus, Plus } from "lucide-react";
@@ -144,6 +145,7 @@ export default async function ParamedicWorkspace({ params }: { params: Promise<{
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5" data-testid="quick-actions">
                   <IdentifyDialog encounterId={c.id} integrationStatus={c.integrations.NAFATH ?? "NOT_CONFIGURED"} />
                   <VitalsDialog encounterId={c.id} />
+                  <VoiceDialog encounterId={c.id} />
                   <InterventionDialog encounterId={c.id} />
                   <MedicationDialog encounterId={c.id} allergies={c.patient.health?.allergies ?? []} />
                   <MediaDialog encounterId={c.id} />
