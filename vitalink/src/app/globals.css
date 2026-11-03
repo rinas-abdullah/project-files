@@ -3,24 +3,24 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #f4f6f9;
-  --foreground: #0b1a33;
+  --background: #f3f6fb;
+  --foreground: #111c33;
   --card: #ffffff;
-  --card-foreground: #0b1a33;
-  --muted: #eef1f6;
-  --muted-foreground: #5b6b82;
-  --border: #e1e6ee;
-  --input: #d6dde8;
-  --ring: #2563eb;
-  --primary: #0b1a33;
+  --card-foreground: #111c33;
+  --muted: #eef2f8;
+  --muted-foreground: #5b6780;
+  --border: #e1e7f0;
+  --input: #d3dbe8;
+  --ring: #1f3f8c;
+  --primary: #1f3f8c;
   --primary-foreground: #ffffff;
-  --accent: #e9eef7;
-  --accent-foreground: #0b1a33;
+  --accent: #e8eef9;
+  --accent-foreground: #172f6b;
 
-  --navy-950: #071226;
-  --navy-900: #0b1a33;
-  --navy-800: #12264a;
-  --navy-700: #1b3461;
+  --navy-950: #0b1838;
+  --navy-900: #1f3f8c;
+  --navy-800: #2a51a8;
+  --navy-700: #172f6b;
 
   --critical: #dc2626;
   --critical-soft: #fef2f2;
@@ -33,7 +33,8 @@
   --ai: #7c3aed;
   --ai-soft: #f5f3ff;
 
-  --radius: 0.75rem;
+  --brand-soft: #e8eef9;
+  --radius: 0.9rem;
 }
 
 @theme inline {
@@ -50,6 +51,7 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-brand-soft: var(--brand-soft);
   --color-navy-950: var(--navy-950);
   --color-navy-900: var(--navy-900);
   --color-navy-800: var(--navy-800);

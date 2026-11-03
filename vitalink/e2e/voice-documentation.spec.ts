@@ -22,6 +22,14 @@ test("voice documentation: dictation fills vitals for review, nothing sent befor
   }
   await medic.waitForURL(/\/paramedic\/[a-z0-9]+$/);
 
+  // Nusuk card: a QR payload pasted/scanned → ID extracted → identity verified (simulated adapter)
+  const nid = `1${String(Date.now()).slice(-8)}7`;
+  await medic.getByTestId("action-nusuk").click();
+  await medic.getByTestId("nusuk-id").fill(`https://nusuk.example/card?id=${nid}&v=1`);
+  await medic.getByTestId("nusuk-verify").click();
+  await expect(medic.getByTestId("nusuk-result")).toContainText(/Identity verified|تم التحقق/);
+  await medic.keyboard.press("Escape");
+
   await medic.getByTestId("action-voice").click();
   // Headless Chromium has no microphone: the typed fallback goes through the same parser.
   await medic.getByTestId("voice-transcript").fill("سقط تحت الشمس مشوش الوعي حرارته 41.2 النبض 128 الأكسجين 93 الضغط 96 على 58 التنفس 26 جلاسكو 12");

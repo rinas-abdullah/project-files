@@ -29,7 +29,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     <div className="grid min-h-screen lg:grid-cols-[1fr_1.1fr]">
       <div className="relative hidden flex-col justify-between overflow-hidden bg-navy-950 p-10 text-white lg:flex">
         <div className="pointer-events-none absolute -bottom-40 -start-40 size-[520px] rounded-full bg-red-600/20 blur-3xl" />
-        <Logo className="text-white" />
+        <Logo onDark />
         <div className="relative">
           <h2 className="max-w-md text-3xl font-semibold leading-tight">{t.landing.hero}</h2>
           <p className="mt-4 max-w-md text-sm text-white/65">{t.landing.heroSub}</p>

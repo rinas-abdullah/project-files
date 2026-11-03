@@ -48,7 +48,7 @@ export const createEncounterSchema = z
   })
   .refine((v) => v.isUnknown || (v.fullName && v.fullName.length >= 2), { message: "Name required when identity is known", path: ["fullName"] });
 
-export const identifySchema = z.object({ nationalId: z.string().trim().min(5).max(20), method: z.enum(["NATIONAL_ID", "IQAMA", "BIOMETRIC_SIM"]) });
+export const identifySchema = z.object({ nationalId: z.string().trim().min(5).max(20), method: z.enum(["NATIONAL_ID", "IQAMA", "BIOMETRIC_SIM", "NUSUK_CARD"]) });
 
 export const vitalsSchema = z.object({
   vitals: z

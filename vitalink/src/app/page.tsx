@@ -16,7 +16,7 @@ export default async function Landing() {
     <div className="min-h-screen bg-white">
       <header className="absolute inset-x-0 top-0 z-10">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5">
-          <Logo className="text-white" />
+          <Logo onDark />
           <div className="flex items-center gap-2">
             <LangToggle className="text-white/80 hover:bg-white/10" />
             <Link href={cta} className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy-900 hover:bg-white/90" data-testid="landing-signin">

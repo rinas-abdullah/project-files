@@ -162,17 +162,32 @@ export function VoiceDialog({ encounterId }: { encounterId: string }) {
       </DialogTrigger>
       <DialogContent title={v.title} description={v.hint} wide>
         <form onSubmit={submit} className="grid gap-4" data-testid="voice-form">
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-col items-center gap-2 py-1">
             {supported ? (
-              <Button type="button" size="lg" variant={listening ? "critical" : "default"} onClick={listening ? stop : start} data-testid="voice-mic">
-                {listening ? <MicOff /> : <Mic />} {listening ? v.stop : v.start}
-              </Button>
+              <button
+                type="button"
+                onClick={listening ? stop : start}
+                className={cn("flex size-20 items-center justify-center rounded-full text-white shadow-lg transition active:scale-95", listening ? "bg-critical shadow-red-900/20" : "bg-navy-900 shadow-navy-900/25 hover:bg-navy-800")}
+                aria-label={listening ? v.stop : v.start}
+                data-testid="voice-mic"
+              >
+                {listening ? <MicOff className="size-8" /> : <Mic className="size-8" />}
+              </button>
             ) : (
-              <p className="text-sm text-warning" data-testid="voice-unsupported">
+              <p className="text-center text-sm text-warning" data-testid="voice-unsupported">
                 {v.unsupported}
               </p>
             )}
-            {listening ? <span className="animate-pulse text-sm font-semibold text-critical">{v.listening}</span> : null}
+            <div className="flex h-6 items-center gap-[3px]" aria-hidden>
+              {Array.from({ length: 28 }, (_, i) => (
+                <span
+                  key={i}
+                  className={cn("w-[3px] rounded-full", listening ? "animate-pulse bg-navy-800" : "bg-border")}
+                  style={{ height: `${[30, 55, 80, 45, 100, 60, 35, 70][i % 8]}%`, animationDelay: `${(i % 7) * 90}ms` }}
+                />
+              ))}
+            </div>
+            <span className={cn("text-sm font-semibold", listening ? "text-critical" : "text-muted-foreground")}>{listening ? v.listening : supported ? v.start : ""}</span>
           </div>
           <Field label={v.transcript} hint={v.privacy}>
             <Textarea rows={3} value={interim ? `${transcript} ${interim}`.trim() : transcript} onChange={(e) => applyTranscript(e.target.value)} readOnly={listening} data-testid="voice-transcript" />

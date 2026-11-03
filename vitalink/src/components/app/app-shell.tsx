@@ -72,7 +72,7 @@ export function AppShell({ user, nav, unread, compact, children }: { user: Shell
     <nav className="flex flex-col gap-5">
       {nav.map((section) => (
         <div key={section.key}>
-          <div className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40">{t.nav[section.key]}</div>
+          <div className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/70">{t.nav[section.key]}</div>
           <ul className="flex flex-col gap-0.5">
             {section.items.map((item) => {
               const Icon = ICONS[item.key];
@@ -82,8 +82,8 @@ export function AppShell({ user, nav, unread, compact, children }: { user: Shell
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
-                      active ? "bg-white/12 text-white" : "text-white/65 hover:bg-white/6 hover:text-white",
+                      "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13.5px] font-medium transition-colors",
+                      active ? "bg-brand-soft font-semibold text-navy-700" : "text-foreground/75 hover:bg-muted hover:text-foreground",
                     )}
                   >
                     <Icon className="size-4 shrink-0" />
@@ -101,20 +101,20 @@ export function AppShell({ user, nav, unread, compact, children }: { user: Shell
   if (compact) {
     return (
       <div className="min-h-screen bg-background">
-        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-white/10 bg-navy-900 px-3 text-white sm:px-5">
-          <Logo className="text-white" />
+        <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b bg-white px-3 text-foreground sm:px-5">
+          <Logo className="text-foreground" />
           <nav className="ms-2 hidden items-center gap-1 md:flex">
             {nav.flatMap((s) => s.items).map((item) => {
               const Icon = ICONS[item.key];
               return (
-                <Link key={item.href} href={item.href} className={cn("flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm", isActive(item.href) ? "bg-white/12" : "text-white/70 hover:bg-white/6")}>
+                <Link key={item.href} href={item.href} className={cn("flex items-center gap-2 rounded-xl px-3 py-1.5 text-sm", isActive(item.href) ? "bg-brand-soft font-semibold text-navy-700" : "text-foreground/70 hover:bg-muted")}>
                   <Icon className="size-4" /> {t.nav[item.key]}
                 </Link>
               );
             })}
           </nav>
           <div className="ms-auto flex items-center gap-1.5">
-            <TopbarTools user={user} unread={unread} dark />
+            <TopbarTools user={user} unread={unread} />
           </div>
         </header>
         <main className="mx-auto max-w-[1400px] p-3 sm:p-5">{children}</main>
@@ -124,13 +124,13 @@ export function AppShell({ user, nav, unread, compact, children }: { user: Shell
 
   return (
     <div className="min-h-screen bg-background lg:ps-64">
-      <aside className="fixed inset-y-0 start-0 z-50 hidden w-64 flex-col bg-navy-900 px-3 py-4 lg:flex">
+      <aside className="fixed inset-y-0 start-0 z-50 hidden w-64 flex-col border-e bg-white px-3 py-4 lg:flex">
         <div className="mb-6 px-2">
-          <Logo className="text-white" />
+          <Logo className="text-foreground" />
         </div>
         <div className="flex-1 overflow-y-auto pe-1">{navList}</div>
-        <div className="mt-4 rounded-lg bg-white/5 px-3 py-2.5 text-[11px] text-white/55">
-          <div className="font-medium text-white/80">{user.org}</div>
+        <div className="mt-4 rounded-xl bg-brand-soft px-3 py-2.5 text-[11px] text-navy-700/80">
+          <div className="font-semibold text-navy-700">{user.org}</div>
           {user.unit && user.unit !== user.org ? <div>{user.unit}</div> : null}
         </div>
       </aside>
@@ -138,10 +138,10 @@ export function AppShell({ user, nav, unread, compact, children }: { user: Shell
       {open ? (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-navy-950/60" onClick={() => setOpen(false)} />
-          <aside className="absolute inset-y-0 start-0 flex w-72 flex-col bg-navy-900 px-3 py-4">
+          <aside className="absolute inset-y-0 start-0 flex w-72 flex-col bg-white px-3 py-4">
             <div className="mb-6 flex items-center justify-between px-2">
-              <Logo className="text-white" />
-              <button onClick={() => setOpen(false)} className="text-white/70" aria-label="Close menu">
+              <Logo className="text-foreground" />
+              <button onClick={() => setOpen(false)} className="text-muted-foreground" aria-label="Close menu">
                 <X className="size-5" />
               </button>
             </div>

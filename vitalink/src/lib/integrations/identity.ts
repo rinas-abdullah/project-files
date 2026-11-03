@@ -2,7 +2,7 @@ import "server-only";
 import { integrationStatus, isUsable, IntegrationUnavailableError } from "./registry";
 import { seeded, pick, MALE_FIRST, FEMALE_FIRST, FAMILY } from "./synthetic";
 
-export type IdentityMethod = "NATIONAL_ID" | "IQAMA" | "BIOMETRIC_SIM";
+export type IdentityMethod = "NATIONAL_ID" | "IQAMA" | "BIOMETRIC_SIM" | "NUSUK_CARD";
 
 export type IdentityResult = {
   status: "VERIFIED" | "FAILED";

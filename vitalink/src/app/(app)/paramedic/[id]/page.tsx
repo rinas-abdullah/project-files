@@ -1,3 +1,4 @@
+import { NusukScanDialog } from "@/components/paramedic/nusuk";
 import { VoiceDialog } from "@/components/paramedic/voice";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -143,6 +144,7 @@ export default async function ParamedicWorkspace({ params }: { params: Promise<{
               <div>
                 <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.paramedic.quick}</div>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5" data-testid="quick-actions">
+                  <NusukScanDialog encounterId={c.id} integrationStatus={c.integrations.NAFATH ?? "NOT_CONFIGURED"} />
                   <IdentifyDialog encounterId={c.id} integrationStatus={c.integrations.NAFATH ?? "NOT_CONFIGURED"} />
                   <VitalsDialog encounterId={c.id} />
                   <VoiceDialog encounterId={c.id} />
