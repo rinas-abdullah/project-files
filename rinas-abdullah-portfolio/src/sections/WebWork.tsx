@@ -12,7 +12,7 @@ import { cn } from "@/lib/cn";
 type View = "desktop" | "detail";
 
 function SiteSpread({ site, index }: { site: Website; index: number }) {
-  const [view, setView] = useState<View>("desktop");
+  const [view, setView] = useState<View>(site.leadView ?? "desktop");
   const flip = index % 2 === 1;
   const tabsId = useId();
   const asset = site[view];
@@ -54,7 +54,7 @@ function SiteSpread({ site, index }: { site: Website; index: number }) {
       <Reveal className={cn("relative lg:col-span-8", flip && "lg:order-1 lg:col-start-1")}>
         <div className="mb-3 flex items-center justify-between gap-4">
           <div role="group" aria-label={`${site.name} screenshot view`} className="flex border border-[var(--rule)]">
-            {(["desktop", "detail"] as View[]).map((v) => (
+            {((site.leadView === "detail" ? ["detail", "desktop"] : ["desktop", "detail"]) as View[]).map((v) => (
               <button
                 key={v}
                 type="button"
@@ -66,7 +66,7 @@ function SiteSpread({ site, index }: { site: Website; index: number }) {
                   view === v ? "bg-paper text-obsidian" : "text-steel hover:text-paper",
                 )}
               >
-                {v === "desktop" ? "Home" : "Inside"}
+                {v === "desktop" ? "Home" : site.leadView === "detail" ? "Archive" : "Inside"}
               </button>
             ))}
           </div>

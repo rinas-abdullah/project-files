@@ -86,7 +86,8 @@ export default function ProjectPage() {
         </div>
       </header>
 
-      {/* Lead figure */}
+      {/* Lead figure — only when a faithful image exists; diagram-led projects open on their module */}
+      {project.cover && (
       <motion.figure
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -98,9 +99,10 @@ export default function ProjectPage() {
         </div>
         <figcaption className="mt-3 flex flex-wrap justify-between gap-2">
           <span className="t-label">{project.figureLabel}</span>
-          {project.cover && <span className="t-label">{project.cover.caption}</span>}
+          <span className="t-label">{project.cover.caption}</span>
         </figcaption>
       </motion.figure>
+      )}
 
       {/* Overview */}
       <section aria-label="Overview" className="shell mt-24 grid gap-10 md:mt-32 lg:grid-cols-12">
@@ -139,7 +141,7 @@ export default function ProjectPage() {
             </Reveal>
             <ol className="grid gap-px bg-[var(--rule)] sm:grid-cols-2 lg:col-span-9">
               {project.highlights.map((h, n) => (
-                <Reveal as="li" key={h.title} className="bg-obsidian p-6 sm:p-8">
+                <Reveal as="li" key={h.title} className="bg-obsidian p-6 sm:p-8 sm:[&:last-child:nth-child(odd)]:col-span-2">
                   <span className="font-mono text-[11px] tracking-[0.14em] text-steel-dim">{String(n + 1).padStart(2, "0")}</span>
                   <h3 className="t-heading mt-4 text-2xl">{h.title}</h3>
                   <p className="mt-3 text-[0.95rem] leading-relaxed text-paper/75">{h.body}</p>

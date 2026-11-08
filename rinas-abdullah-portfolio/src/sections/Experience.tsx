@@ -60,7 +60,7 @@ export function Experience() {
                       onFocus={() => setHot(r.org)}
                       onBlur={() => setHot(null)}
                       onClick={() => document.getElementById(`role-${i}`)?.scrollIntoView({ block: "center" })}
-                      className={cn("truncate border-b border-[var(--rule)] py-4 text-left text-sm transition-colors", on ? "text-paper" : "text-steel")}
+                      className={cn("border-b border-[var(--rule)] py-3 text-left text-xs leading-snug transition-colors sm:py-4 sm:text-sm", on ? "text-paper" : "text-steel")}
                     >
                       {r.org}
                     </button>
@@ -77,8 +77,8 @@ export function Experience() {
                         transition={{ duration: 1.1, delay: 0.15 * i, ease }}
                         style={{ left: `${(s / 5) * 100}%`, width: `${((e - s + 1) / 5) * 100}%` }}
                         className={cn(
-                          "absolute top-1/2 h-2 origin-left -translate-y-1/2 transition-colors duration-300",
-                          on ? "bg-cyan" : "bg-slate-hi",
+                          "absolute top-1/2 h-2.5 origin-left -translate-y-1/2 transition-colors duration-300",
+                          on ? "bg-cyan" : "bg-steel/55",
                         )}
                       />
                     </div>

@@ -60,6 +60,7 @@ export const websites: Website[] = [
     contribution: "Responsive web architecture & UI/UX",
     features: ["Right-to-left Arabic interface", "Featured-build archive", "Services overview", "Appointment booking entry point"],
     rtl: true,
+    leadView: "detail",
     desktop: shot("beirut", "Beirut Al-Raed", "desktop"),
     detail: shot("beirut", "Beirut Al-Raed", "detail"),
     mobile: shot("beirut", "Beirut Al-Raed", "mobile"),

@@ -67,7 +67,7 @@ export function Hero() {
         <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-6">
           {/* Name + roles */}
           <div className="relative z-10 pl-4 lg:col-span-7">
-            <h1 id="hero-name" className="t-display text-[clamp(3.6rem,12.5vw,10.75rem)]">
+            <h1 id="hero-name" className="t-display text-[clamp(3.6rem,17vw,10.75rem)] lg:text-[clamp(3.6rem,12.5vw,10.75rem)]">
               {profile.nameParts.map((part, i) => (
                 <span key={part} className="block overflow-hidden pb-[0.06em]">
                   <motion.span
@@ -131,7 +131,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.4, delay: 0.4 }}
-            className="relative order-first -mx-[var(--gutter)] h-[min(62vw,22rem)] sm:h-[26rem] lg:order-none lg:col-span-5 lg:mx-0 lg:h-[min(72vh,40rem)]"
+            className="relative order-first -mx-[var(--gutter)] h-[min(46vw,20rem)] sm:h-[26rem] lg:order-none lg:col-span-5 lg:mx-0 lg:h-[min(72vh,40rem)]"
           >
             <div className={cn("absolute inset-0 transition-opacity duration-700", canvasReady ? "opacity-0" : "opacity-100")}>
               <LatticeFallback active={active} />

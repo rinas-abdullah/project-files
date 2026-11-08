@@ -22,7 +22,15 @@ export function useActiveSection(ids: string[], enabled = true) {
       { rootMargin: "-35% 0px -60% 0px" },
     );
     els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const onScroll = () => {
+      if (els[0].getBoundingClientRect().top > window.innerHeight * 0.35) setActive(null);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [key, enabled]);
 
   return active;

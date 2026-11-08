@@ -59,6 +59,8 @@ export interface Website {
   contribution: string;
   features: string[];
   rtl: boolean;
+  /** Which desktop capture to show first. */
+  leadView?: "desktop" | "detail";
   desktop: MediaAsset;
   detail: MediaAsset;
   mobile: MediaAsset;

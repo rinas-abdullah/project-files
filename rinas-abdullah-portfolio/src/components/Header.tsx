@@ -71,6 +71,7 @@ export function Header() {
   }, [open]);
 
   return (
+    <>
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500",
@@ -132,7 +133,9 @@ export function Header() {
           </button>
         </div>
       </div>
+    </header>
 
+      {/* Rendered outside <header>: its backdrop-filter would otherwise become the containing block for this fixed overlay. */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -145,7 +148,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-x-0 bottom-0 top-16 overflow-y-auto bg-obsidian lg:hidden"
+            className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto border-t border-[var(--rule)] bg-obsidian lg:hidden"
           >
             <nav aria-label="Mobile" className="shell flex min-h-full flex-col justify-between py-8">
               <ul>
@@ -178,6 +181,6 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
