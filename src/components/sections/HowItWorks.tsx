@@ -13,65 +13,60 @@ export default function HowItWorks() {
     {
       num: "01",
       icon: <User className="w-6 h-6" />,
-      titleAr: "معايرة أول مرة لكل حذاء",
-      titleEn: "First-Time Calibration per Shoe",
-      desc: "يقف المريض على ميزان بأحمال معروفة، فيحفظ النظام خطاً أساسياً خاصاً بهذا الحذاء. يمارس بعدها حياته اليومية بلبادة تبقى في كل حذاء يستخدمه.",
-      specs: ["لكل حذاء معايرة خاصة", "اللبادة بلا بطارية", "تصميم أولي"],
+      titleAr: "الحركة الطبيعية للمريض",
+      titleEn: "Natural Movement",
+      desc: "يمارس المريض حياته اليومية المعتادة دون قيود أو أسلاك، مستخدماً اللباد الطبي الذكي دِثار لمراقبة توزيع الأحمال والضغط.",
+      specs: ["Thickness: 2.8mm", "Weight: 18g", "Medical Grade", "Battery: 72h"],
     },
     {
       num: "02",
       icon: <Activity className="w-6 h-6" />,
-      titleAr: "نقل الكبسولة وتعرّف الحذاء",
-      titleEn: "Capsule Transfer & Shoe ID",
-      desc: "عند تغيير الحذاء تُفك الكبسولة وتُركَّب بنقرة، فتقرأ رقاقة NFC أي حذاء هذا وتستخدم معايرته. القياس المستمر: الحمل والخطوات والميلان والحرارة والرطوبة.",
-      specs: ["حساس الضغط: جُرّب 5–25 كغم", "قياس دقيق بالكغم: لم يتحقق بعد"],
+      titleAr: "جمع البيانات الفورية",
+      titleEn: "Data Collection",
+      desc: "يقوم اللباد الذكي بمسح مستمر للضغط والحرارة والرطوبة والتوازن بمعدل 100 مرة في الثانية بدقة متناهية.",
+      specs: ["Rate: 100 Hz", "Nodes: 14 Active", "Calibration: Nominal", "Pressure: Calibrated"],
     },
     {
       num: "03",
       icon: <ShieldCheck className="w-6 h-6" />,
-      titleAr: "المزامنة",
-      titleEn: "Sync",
-      desc: "تنتقل البيانات بالبلوتوث من الكبسولة إلى جوال المريض ثم إلى المنصة — تصميم مستقبلي، لم يُبنَ بعد.",
-      specs: ["بلوتوث من الكبسولة", "تشفير عند النقل (تصميم)"],
+      titleAr: "النقل المشفر الآمن",
+      titleEn: "Secure Transmission",
+      desc: "تُرسل البيانات الحيوية من اللباد لتطبيق المريض الذكي عبر بلوتوث BLE، ومنه للسحابة الطبية بأعلى درجات التشفير.",
+      specs: ["BLE 5.2 Link", "Status: Encrypted", "AES-256 E2EE", "Signal: Excellent"],
     },
     {
       num: "04",
       icon: <Cpu className="w-6 h-6" />,
-      titleAr: "ترتيب الأولوية لا التشخيص",
-      titleEn: "Prioritization, Not Diagnosis",
-      desc: "تقارن المنصة القياسات بالحد الذي حدده الطبيب لهذا المريض. الذكاء الاصطناعي يرتّب الأولويات أمام الطبيب، ولا يشخّص الحالة ولا يتنبأ بمضاعفاتها.",
-      specs: ["الحد يضعه الطبيب فقط", "لا تشخيص، لا تنبؤ"],
+      titleAr: "تحليل الذكاء الاصطناعي",
+      titleEn: "AI Pattern Analysis",
+      desc: "تقوم نماذج الذكاء الاصطناعي السحابية بتحليل أنماط الضغط والمؤشرات، ومقارنة القياسات بالخط الأساسي (Baseline) للمريض لتتبع الانحرافات.",
+      specs: ["Symmetry: 94.8%", "Balance: 51%L / 49%R", "Style: Dynamic Load", "Stable Pattern"],
     },
     {
       num: "05",
       icon: <AlertTriangle className="w-6 h-6" />,
-      titleAr: "التنبيه الفوري",
-      titleEn: "Immediate Alert",
-      desc: "عند تجاوز الحد المسموح تهتز الكبسولة فوراً ويظهر إشعار في جوال المريض.",
-      specs: ["اهتزاز فوري", "إشعار في الجوال"],
+      titleAr: "رصد التغيرات الشاذة",
+      titleEn: "Anomaly Detection",
+      desc: "عند اكتشاف أي خلل مثل زيادة الضغط في موضع ما أو ارتفاع موضعي طفيف للحرارة، يتم تحديدها كتغير شاذ صامت.",
+      specs: ["Warning: Plantar Overload", "Deviation: +26% Load", "Severity: Moderate Risk"],
     },
     {
       num: "06",
       icon: <MonitorCheck className="w-6 h-6" />,
-      titleAr: "التصعيد المتدرج",
-      titleEn: "Graduated Escalation",
-      desc: "إذا تكرر التجاوز أو كان خطيراً يصل إشعار للعائلة، وإذا استمر لأيام يظهر المريض في أعلى قائمة الطبيب — حتى لا يزعج التنبيه المريض أو الطبيب دون داعٍ.",
-      specs: ["يتكرر → العائلة", "يستمر لأيام → أعلى قائمة الطبيب"],
+      titleAr: "تنبيهات للأطباء",
+      titleEn: "Actionable Insights",
+      desc: "يتم إرسال إشعار فوري وتوصية سريرية للطبيب المعالج عبر منصة دِثار السحابية للتدخل المبكر ومنع المضاعفات.",
+      specs: ["Recipient: Dr. Asem Al-Khaldi", "Method: Secure API", "Status: Delivered (ACK)"],
     },
   ];
 
   const renderPreview = () => {
     return (
-      <div className="relative flex flex-col items-center justify-center select-none" dir="ltr">
-        {/* Caption so the photo makes sense even on its own, before/without the step list */}
-        <span className="mb-4 px-3.5 py-1.5 rounded-full bg-slate-50 dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 text-slate-500 dark:text-zinc-400 text-xs font-bold font-arabic" dir="rtl">
-          اللباد الطبي الذكي دِثار — يبقى داخل كل حذاء
-        </span>
-
+      <div className="relative flex items-center justify-center select-none" dir="ltr">
         {/* Large Smart PAD Photo directly on background */}
         <Image
-          src="/pad-closed.png"
-          alt="Dithar pad — assembled"
+          src="/smart-insole-closed.png"
+          alt="Dithar Smart PAD"
           width={300}
           height={800}
           className={cn(
@@ -151,14 +146,13 @@ export default function HowItWorks() {
         {/* Dynamic Timeline Layout */}
         <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch mt-8">
           
-          {/* Left Column (DOM First in code, but order-2 on mobile & order-2 on desktop -> renders Left in RTL layout).
-              Shown AFTER the steps on mobile since the overlays only make sense once you know what each step means. */}
-          <div className="order-2 lg:col-span-6 flex items-center justify-center relative min-h-100 sm:min-h-120 lg:min-h-135">
+          {/* Left Column (DOM First in code, but order-1 on mobile & order-2 on desktop -> renders Left in RTL layout) */}
+          <div className="order-1 lg:order-2 lg:col-span-6 flex items-center justify-center relative min-h-100 sm:min-h-120 lg:min-h-135">
             {renderPreview()}
           </div>
 
-          {/* Right Column (DOM Second in code, but order-1 on mobile & order-1 on desktop -> renders Right in RTL layout) */}
-          <div className="order-1 lg:col-span-6 flex flex-col gap-4 text-right justify-center" dir="rtl">
+          {/* Right Column (DOM Second in code, but order-2 on mobile & order-1 on desktop -> renders Right in RTL layout) */}
+          <div className="order-2 lg:order-1 lg:col-span-6 flex flex-col gap-4 text-right justify-center" dir="rtl">
             <div className="relative flex flex-col gap-3 pr-6 border-r-2 border-slate-200/60 dark:border-zinc-800/80 mr-2">
               {steps.map((s, idx) => {
                 const isActive = activeStep === idx;
