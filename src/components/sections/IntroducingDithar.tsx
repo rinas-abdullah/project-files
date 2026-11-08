@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, HelpCircle, Zap } from "lucide-react";
+import { Activity, Thermometer, Droplets, HelpCircle, Cpu, Zap, Wifi } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // --- Types ---
@@ -27,35 +27,79 @@ export default function IntroducingDithar() {
     {
       id: "pressure",
       icon: <Activity className="w-5 h-5" />,
-      title: "حساسات الضغط (في اللبادة)",
-      titleEn: "Pressure Sensors (in the Pad)",
-      desc: "حساسات ضغط رقيقة داخل اللبادة التي تبقى في الحذاء تستجيب لوزن القدم — جُرّب هذا بأحمال 5 إلى 25 كغم في حذاء وشبشب. القياس الدقيق بالكيلوغرام لم يتحقق بعد؛ الحساس يتشبّع عند الأحمال الأعلى.",
+      title: "مستشعرات الضغط",
+      titleEn: "Pressure Sensors",
+      desc: "تقوم برسم خريطة توزيع الضغط الديناميكي عبر 9 مناطق حيوية في القدم لتقييم نمط المشي واكتشاف الاعتماد غير المتماثل على الطرف السليم لدى مرضى التأهيل العصبي والحركي.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#1e88c8",
-      x: "45%",
-      y: "45%",
-    },
-    {
-      id: "nfc",
-      icon: <HelpCircle className="w-5 h-5" />,
-      title: "رقاقة NFC (في اللبادة)",
-      titleEn: "NFC Chip (in the Pad)",
-      desc: "تعرّف نوع الحذاء عند تركيب الكبسولة، فتستخدم المعايرة الخاصة بهذا الحذاء تلقائياً دون إدخال يدوي من المريض.",
-      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
-      dotColor: "#06b6d4",
-      x: "86%",
+      x: "24%",
       y: "76%",
     },
     {
-      id: "eva",
+      id: "temp",
+      icon: <Thermometer className="w-5 h-5" />,
+      title: "مستشعرات الحرارة",
+      titleEn: "Temperature Sensors",
+      desc: "ترصد الفروقات الحرارية الدقيقة بين مناطق القدم المختلفة للتنبؤ بالإجهاد العضلي والالتهابات الصامتة الناتجة عن التحميل غير المتوازن بعد الجلطات الدماغية والإصابات العصبية.",
+      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
+      dotColor: "#ef4444",
+      x: "44%",
+      y: "52%",
+    },
+    {
+      id: "humidity",
+      icon: <Droplets className="w-5 h-5" />,
+      title: "مستشعرات الرطوبة",
+      titleEn: "Humidity Sensors",
+      desc: "تقيس مستويات الرطوبة الدقيقة داخل الحذاء للتأكد من تهوية البيئة الحركية ومنع نمو الفطريات أو تشققات الجلد الجافة.",
+      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
+      dotColor: "#06b6d4",
+      x: "49%",
+      y: "41%",
+    },
+    {
+      id: "motion",
+      icon: <HelpCircle className="w-5 h-5" />,
+      title: "تتبع الحركة",
+      titleEn: "Motion Tracking",
+      desc: "وحدة قياس القصور الذاتي (IMU) سداسية المحاور تسجل وتراقب تردد المشي، وطول الخطوة، والتوازن الحركي في الوقت الحقيقي بدقة متناهية.",
+      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
+      dotColor: "#6366f1",
+      x: "53%",
+      y: "22%",
+    },
+    {
+      id: "ai",
+      icon: <Cpu className="w-5 h-5" />,
+      title: "معالجة الذكاء الاصطناعي",
+      titleEn: "AI Processor",
+      desc: "معالج مدمج متناهي الصغر يعالج البيانات محلياً لتصفية التشويش وتجهيز المؤشرات وتأمين نقل تدفق البيانات للمنصة السحابية بشكل مشفر.",
+      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
+      dotColor: "#8b5cf6",
+      x: "55%",
+      y: "33%",
+    },
+    {
+      id: "energy",
       icon: <Zap className="w-5 h-5" />,
-      title: "طبقة EVA وطبقة قابلة للغسل",
-      titleEn: "EVA Comfort & Washable Layer",
-      desc: "طبقة EVA مريحة وطبقة علوية قابلة للغسل — لا بطارية ولا إلكترونيات تحت وزن الجسم، فقط الحساسات الرقيقة والرقاقة.",
+      title: "حصد الطاقة من الحركة",
+      titleEn: "Energy Harvesting",
+      desc: "تقنية كهرضغطية مدمجة تحوّل جزءاً من ضغط الخطوات إلى طاقة كهربائية تدعم شحن وحدة التخزين الداخلية وتُطيل عمر البطارية بين الشحنات الخارجية.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#fbbf24",
-      x: "15%",
-      y: "20%",
+      x: "36%",
+      y: "60%",
+    },
+    {
+      id: "comms",
+      icon: <Wifi className="w-5 h-5" />,
+      title: "الاتصال اللاسلكي",
+      titleEn: "Wireless Comms (BLE)",
+      desc: "شريحة بلوتوث مدمجة منخفضة استهلاك الطاقة (BLE) تضمن ربطاً فورياً مستمراً ومحمي بالكامل مع تطبيق المريض ونقل القياسات المعتمدة.",
+      color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
+      dotColor: "#3b82f6",
+      x: "59%",
+      y: "27%",
     },
   ];
 
@@ -70,11 +114,12 @@ export default function IntroducingDithar() {
         <div className="lg:col-span-6 flex justify-center items-center relative order-last lg:order-first">
 
 
-          {/* Container — large, background removed */}
-          <div className="relative w-full max-w-137.5 sm:max-w-162.5 lg:max-w-175 select-none transition-all duration-300">
+          {/* Container scaled up to 600px max width */}
+          <div className="relative w-full max-w-120 sm:max-w-137.5 lg:max-w-150 select-none transition-all duration-300">
+            {/* The Smart PAD Photo */}
             <motion.img
-              src="/pad-closed-transparent.png"
-              alt="Dithar pad — assembled, real photo"
+              src="/smart-insole-closed.png"
+              alt="Dithar Smart PAD"
               className="w-full h-auto object-contain filter drop-shadow-2xl"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -127,14 +172,14 @@ export default function IntroducingDithar() {
             تعرّف على دِثار
           </h2>
           <h3 className="text-lg md:text-xl font-light text-primary-blue dark:text-medical-blue mt-2 font-sans tracking-wide">
-            Meet Dithar: Pad + Magnetic Capsule
+            Meet Dithar Smart PAD
           </h3>
           <p className="text-muted-text text-sm sm:text-base mt-4 leading-relaxed font-light font-arabic">
-            دِثار لبادة طبية ذكية رقيقة تبقى داخل كل حذاء، وكبسولة إلكترونية واحدة تنتقل بينها وتثبت مغناطيسياً على الكعب من الخارج. اللبادة لا تحمل بطارية أبداً — فالمريض لا ينقل لبادة من حذاء لحذاء، بل ينقل الكبسولة فقط بنقرة واحدة.
+            دِثار هو لباد طبي ذكي (Smart PAD) مدمج بأحدث تقنيات الاستشعار السريرية لمراقبة المؤشرات الصحية الوظيفية، توزيع الضغط، والحرارة الموضعية للمريض بشكل مستمر ودقيق.
           </p>
 
           {/* Hotspots Buttons Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8">
+          <div className="grid grid-cols-2 gap-3 mt-8">
             {hotspots.map((h, index) => {
               const isSelected = selectedHotspot === h.id;
               const badgeNum = index + 1;

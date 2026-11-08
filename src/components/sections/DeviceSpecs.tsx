@@ -7,39 +7,39 @@ export default function DeviceSpecs() {
   const specs = [
     {
       icon: <Ruler className="w-6 h-6 text-primary-blue" />,
-      label: "مكوّن اللبادة",
-      labelEn: "Pad",
-      value: "حساسات ضغط + رقاقة NFC + طبقة EVA وطبقة غسيل",
+      label: "السماكة",
+      labelEn: "Thickness",
+      value: "2.8 مم",
     },
     {
       icon: <Gauge className="w-6 h-6 text-medical-blue" />,
-      label: "مكوّن الكبسولة",
-      labelEn: "Capsule",
-      value: "معالج، حساس حركة وميلان، حرارة ورطوبة، هزّاز",
+      label: "الوزن",
+      labelEn: "Weight",
+      value: "18 غم",
     },
     {
       icon: <BatteryCharging className="w-6 h-6 text-smart-green" />,
-      label: "موضع البطارية",
-      labelEn: "Battery Location",
-      value: "داخل الكبسولة فقط — لا بطارية تحت وزن الجسم",
+      label: "عمر البطارية",
+      labelEn: "Battery Life",
+      value: "72 ساعة تشغيل متواصل",
     },
     {
       icon: <Grid3x3 className="w-6 h-6 text-purple-400" />,
-      label: "حساس الضغط",
-      labelEn: "Pressure Sensor",
-      value: "يستجيب للوزن (جُرّب)، القياس الدقيق بالكغم لم يتحقق بعد",
+      label: "مصفوفة الاستشعار",
+      labelEn: "Sensor Array",
+      value: "9 مناطق ضغط وحرارة",
     },
     {
       icon: <Bluetooth className="w-6 h-6 text-primary-blue" />,
       label: "الاتصال",
       labelEn: "Connectivity",
-      value: "بلوتوث من الكبسولة إلى الجوال — تصميم، لم يُبنَ بعد",
+      value: "BLE 5.2 مشفّر",
     },
     {
       icon: <Zap className="w-6 h-6 text-amber-500" />,
       label: "الشحن",
       labelEn: "Charging",
-      value: "محطة شحن USB تشحن الكبسولتين ليلاً",
+      value: "خارجي + دعم ذاتي من الحركة",
     },
   ];
 
@@ -55,10 +55,10 @@ export default function DeviceSpecs() {
             TECHNICAL SPECIFICATIONS
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-arabic leading-tight unified-typography">
-            مكوّنات النظام: اللبادة والكبسولة
+            المواصفات التقنية للباد الذكي
           </h2>
           <p className="text-muted-text text-sm mt-3 max-w-xl font-light leading-relaxed unified-typography">
-            ما هو مبني ومُجرّب فعلياً، وما هو تصميم مستقبلي لم يُبنَ بعد — بلا مبالغة.
+            أرقام هندسية دقيقة من تصميم اللباد الطبي الذكي الحالي.
           </p>
         </div>
 

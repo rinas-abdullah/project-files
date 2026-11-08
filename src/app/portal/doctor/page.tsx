@@ -137,11 +137,7 @@ export default function DoctorPortalPage() {
         const res = await fetch(`/api/patients?${params.toString()}`);
         const json = await res.json();
         if (!res.ok) throw new Error(json.error || t.error);
-        // Priority list: most limit-exceedances (lowest compliance) first, per the review checklist.
-        const sorted = [...(json.patients || [])].sort(
-          (a: Patient, b: Patient) => a.complianceScore - b.complianceScore
-        );
-        setPatients(sorted);
+        setPatients(json.patients || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : t.error);
       } finally {
