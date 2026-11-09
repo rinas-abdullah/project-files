@@ -1,0 +1,276 @@
+<!doctype html>
+<!--
+  Procedural generator for the hero image (original artwork, no external assets).
+  Rendered offline by scripts/hero/render.mjs → public/images/hero-rinas-cinematic*.webp
+  URL params: w, h, variant=desktop|mobile
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; }
+  canvas, svg { position: absolute; inset: 0; display: block; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c"></canvas>
+  <svg id="fig" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+<script>
+const P = new URLSearchParams(location.search);
+const W = +P.get("w") || 1600, H = +P.get("h") || 900;
+const VARIANT = P.get("variant") || "desktop";
+
+/* Scene parameters per framing. All positions in uv (0..1, y measured from the bottom). */
+const S = VARIANT === "mobile"
+  ? { horizon: 0.70, sun: [0.66, 0.725], fov: 1.05, figX: 0.60, plateauY: 0.505, plateau: [0.44, 0.86], figH: 0.085,
+      leftRock: 0.30, rightRise: 0.62 }
+  : { horizon: 0.60, sun: [0.70, 0.625], fov: 0.62, figX: 0.655, plateauY: 0.355, plateau: [0.585, 0.75], figH: 0.115,
+      leftRock: 0.11, rightRise: 0.50 };
+
+const stage = document.getElementById("stage");
+stage.style.width = W + "px"; stage.style.height = H + "px";
+const cv = document.getElementById("c");
+cv.width = W; cv.height = H; cv.style.width = W + "px"; cv.style.height = H + "px";
+const gl = cv.getContext("webgl2", { preserveDrawingBuffer: true, antialias: false });
+
+const vs = `#version 300 es
+in vec2 p; void main(){ gl_Position = vec4(p,0.,1.); }`;
+
+const fs = `#version 300 es
+precision highp float;
+out vec4 o;
+uniform vec2 R;
+uniform float HZ, FOV, PLY, PL0, PL1, LR, RR;
+uniform vec2 SUN;
+
+float h1(float n){ return fract(sin(n)*43758.5453123); }
+float h3(vec3 p){ p = fract(p*0.3183099 + .1); p *= 17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+float n3(vec3 x){
+  vec3 i = floor(x), f = fract(x); f = f*f*(3.0-2.0*f);
+  return mix(mix(mix(h3(i+vec3(0,0,0)),h3(i+vec3(1,0,0)),f.x), mix(h3(i+vec3(0,1,0)),h3(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(h3(i+vec3(0,0,1)),h3(i+vec3(1,0,1)),f.x), mix(h3(i+vec3(0,1,1)),h3(i+vec3(1,1,1)),f.x),f.y), f.z);
+}
+float fbm(vec3 p, int oct){ float a=.5, s=0.; for(int i=0;i<8;i++){ if(i>=oct) break; s+=a*n3(p); p=p*2.03+vec3(1.7,9.2,3.1); a*=.5; } return s; }
+float n2(vec2 x){ return n3(vec3(x, 0.37)); }
+float fbm2(vec2 p, int oct){ return fbm(vec3(p, 1.3), oct); }
+
+/* --- Cloud sea: a billowing layer below the camera --- */
+float density(vec3 p, int oct){
+  vec3 q = p*vec3(.16,.22,.16);
+  float big = fbm(q*0.35 + vec3(3.1,0.,7.7), 3);           // large-scale massing
+  float n = fbm(q + 0.85*vec3(fbm(q*1.9,3), fbm(q*2.3+4.1,3), 0.), oct);         // billows (domain warped)
+  float top = -1.75 + 1.7*n + 1.3*smoothstep(.45,.85,big); // surface height
+  float d = smoothstep(0.0, 0.35, top - p.y);
+  d *= 0.35 + 1.2*fbm(p*0.9, 3);
+  d *= smoothstep(-5.5, -3.0, p.y);
+  return d;
+}
+
+vec3 skyCol(vec3 rd, vec3 sd){
+  float y = max(rd.y, 0.0);
+  vec3 zen = vec3(.09,.07,.11), mid = vec3(.42,.22,.24), hor = vec3(1.0,.56,.28);
+  vec3 c = mix(hor, mid, smoothstep(0.0, .12, y));
+  c = mix(c, zen, smoothstep(.08, .55, y));
+  float s = max(dot(rd, sd), 0.0);
+  c += vec3(1.0,.55,.22)*pow(s, 8.0)*.55 + vec3(1.0,.75,.45)*pow(s, 60.0)*.9;
+  c += vec3(1.0,.93,.8)*smoothstep(.99982,.99993,s)*3.0;   // sun disc
+  // high, thin cirrus streaks lit from below
+  float ci = fbm2(vec2(rd.x/(rd.y+.08)*1.4, rd.z/(rd.y+.08)*4.0), 5);
+  c = mix(c, vec3(1.0,.62,.38)*1.1, smoothstep(.55,.85,ci)*smoothstep(.02,.12,y)*(1.0-smoothstep(.2,.5,y))*.55);
+  return c;
+}
+
+float rockTop(float x){
+  float a = R.x/R.y;
+  // right outcrop with a plateau where the figure sits
+  float right = PLY - .55*smoothstep(PL0, PL0-.30, x) + (RR-PLY)*smoothstep(PL1, 1.05, x);
+  right += .010*(fbm2(vec2(x*a*9.,2.), 4)-.5) + .004*(n2(vec2(x*a*60.,5.))-.5);
+  float inPlateau = smoothstep(PL0-.02, PL0+.03, x)*(1.-smoothstep(PL1-.03, PL1+.02, x));
+  right = mix(right, PLY + .003*(n2(vec2(x*a*40.,1.))-.5), inPlateau*.85);
+    // low left foreground rocks
+  float left = LR + .05*(fbm2(vec2(x*a*3.,7.),4)-.5) + .015*(n2(vec2(x*a*28.,3.))-.5) - .10*smoothstep(.25,.62,x);
+  return max(right, left);
+}
+
+void main(){
+  vec2 uv = gl_FragCoord.xy / R;
+  float a = R.x/R.y;
+  vec3 rd = normalize(vec3((uv.x-.5)*a*FOV, (uv.y-HZ)*FOV, 1.0));
+  vec3 sd = normalize(vec3((SUN.x-.5)*a*FOV, (SUN.y-HZ)*FOV, 1.0));
+  vec3 col = skyCol(rd, sd);
+
+  if(rd.y < 0.0){
+    // march the cloud layer
+    float t = (-0.25)/rd.y; float tmax = 140.;
+    vec3 acc = vec3(0); float T = 1.0;
+    vec3 lit = vec3(1.30,.70,.38), shade = vec3(.085,.05,.085), amb = vec3(.30,.16,.24);
+    for(int i=0;i<110;i++){
+      if(t>tmax || T<.015) break;
+      vec3 p = rd*t;
+      float dt = .06 + t*.022;
+      float d = density(p, 5);
+      if(d>.01){
+        float sh = 0.0; vec3 lp = p;
+        for(int j=0;j<5;j++){ lp += sd*.35 + vec3(0,.07,0); sh += density(lp, 3); }
+        float L = exp(-sh*1.6);
+        float powder = 1.0 - exp(-d*2.2);
+        float fwd = pow(max(dot(rd, sd),0.), 10.)*.22;
+        vec3 c = mix(shade, lit, L*powder) + amb*.18 + lit*fwd*L;
+        float h = clamp((p.y+1.6)/1.6, 0., 1.);
+        c *= mix(.55, 1.0, h);               // darker deep in the layer
+        float ab = 1.0 - exp(-d*dt*4.5);
+        acc += T*ab*c; T *= 1.0-ab;
+      }
+      t += dt;
+    }
+    // aerial perspective toward the horizon
+    vec3 haze = skyCol(normalize(vec3(rd.x, .002, rd.z)), sd);
+    float fogT = 1.0 - exp(-max(t-14.,0.)*.010);
+    vec3 cl = acc + T*haze*.9;
+    col = mix(cl, haze, clamp(fogT,0.,1.)*.7);
+  }
+
+  // rocks (screen-space silhouettes, sun-rimmed)
+  float top = rockTop(uv.x);
+  float e = uv.y - top;
+  if(e < 0.0){
+    vec2 q = vec2(uv.x*a, uv.y);
+    float tex = fbm2(q*vec2(26.,30.), 6);
+    float strata = fbm2(vec2(q.x*4., q.y*55.), 4);
+    float crack = smoothstep(.47,.5,fbm2(q*vec2(14.,9.),5))*(1.-smoothstep(.5,.53,fbm2(q*vec2(14.,9.),5)));
+    vec3 rc = vec3(.05,.042,.038)*(0.35+1.4*tex) + vec3(.06,.035,.02)*strata*.7;
+    float edge = smoothstep(-.012, 0.0, e);
+    float facing = smoothstep(SUN.x-.55, SUN.x+.1, uv.x);
+    rc += vec3(.95,.52,.24)*edge*(.15+.85*facing)*(0.6+0.6*tex)*.55;   // rim light
+    rc += vec3(.35,.18,.09)*smoothstep(-.08,0.,e)*facing*.25;          // warm bounce near the lip
+    float depth = smoothstep(0., .35, -e);
+    rc *= mix(1.0, .5, depth);
+    float aa = smoothstep(0.0, -1.5/R.y, e);
+    col = mix(col, rc, aa);
+  }
+
+  // grade: lift blacks to charcoal, warm highlights, left-side falloff for typography
+  col = pow(col, vec3(.95,1.0,1.06));
+  col = col/(1.0+col*.55);
+  col *= mix(.42, 1.0, smoothstep(.0, .62, uv.x));
+  col *= mix(.55, 1.0, smoothstep(.0, .45, uv.y));
+  float v = length((uv-vec2(.62,.55))*vec2(a*.6,1.));
+  col *= 1.0 - .35*smoothstep(.35, 1.1, v);
+  col += (h1(dot(gl_FragCoord.xy, vec2(12.9898,78.233)))-.5)*.012; // grain
+  o = vec4(clamp(col,0.,1.), 1.0);
+}`;
+
+function sh(type, src){ const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+const pr = gl.createProgram();
+gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr);
+if(!gl.getProgramParameter(pr, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(pr));
+gl.useProgram(pr);
+const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(pr, "p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+const U = n => gl.getUniformLocation(pr, n);
+gl.uniform2f(U("R"), W, H); gl.uniform1f(U("HZ"), S.horizon); gl.uniform1f(U("FOV"), S.fov);
+gl.uniform2f(U("SUN"), S.sun[0], S.sun[1]); gl.uniform1f(U("PLY"), S.plateauY);
+gl.uniform1f(U("PL0"), S.plateau[0]); gl.uniform1f(U("PL1"), S.plateau[1]);
+gl.uniform1f(U("LR"), S.leftRock); gl.uniform1f(U("RR"), S.rightRise);
+gl.viewport(0, 0, W, H);
+gl.enable(gl.SCISSOR_TEST);
+
+/* --- Figure: a young woman in abaya and hijab, seen from behind, working on a laptop. --- */
+function drawFigure(){
+  const svg = document.getElementById("fig");
+  svg.setAttribute("width", W); svg.setAttribute("height", H); svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const size = S.figH * H;                 // local box is 100 × 100, ground at y = 100
+  const gx = S.figX * W - size*0.5;
+  const gy = (1 - S.plateauY) * H - size + size*0.015;
+  const k = size/100;
+  // Silhouette (local coords). Hijab flows into the shoulders; abaya pools on the rock; knees to the right.
+  const body = `
+    M45.5 6.5
+    C52.5 6.0 57.8 11.0 58.2 18.0
+    C58.6 23.5 56.6 27.6 55.2 30.0
+    C60.6 32.0 64.6 35.6 66.4 40.8
+    C68.0 45.6 68.2 52.0 68.6 57.5
+    C72.0 60.0 77.6 64.6 82.4 71.2
+    C85.6 75.6 87.2 80.4 86.6 84.2
+    C85.6 88.6 82.0 90.6 78.6 92.4
+    C83.4 94.4 87.8 96.6 89.6 99.4
+    L90.2 100.4 L18.4 100.4
+    C19.6 97.0 22.4 94.6 25.2 93.2
+    C24.0 86.0 24.6 76.0 26.0 66.0
+    C27.2 56.4 28.6 47.6 31.6 40.8
+    C33.6 36.4 36.4 32.6 37.0 29.6
+    C34.6 26.0 33.4 21.6 33.8 17.0
+    C34.6 10.8 39.4 6.9 45.5 6.5 Z`;
+  // Laptop: screen seen over her right shoulder (facing her and us), keyboard on her lap.
+  const screen = `M63.0 50.5 L80.2 46.8 L82.6 66.4 L65.6 69.6 Z`;
+  const base = `M64.6 69.4 L83.0 66.2 L86.4 68.8 L67.4 72.6 Z`;
+  const g = (inner) => `<g transform="translate(${gx} ${gy}) scale(${k})">${inner}</g>`;
+  svg.innerHTML = `
+    <defs>
+      <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#cfe2ff" stop-opacity="0.55"/>
+        <stop offset="1" stop-color="#cfe2ff" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="scr" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#e9f1ff"/><stop offset="1" stop-color="#9fb6d6"/>
+      </linearGradient>
+      <filter id="soft"><feGaussianBlur stdDeviation="${0.7*k}"/></filter>
+      <filter id="soft2"><feGaussianBlur stdDeviation="${0.25*k}"/></filter>
+    </defs>
+    ${g(`
+      <ellipse cx="74" cy="60" rx="20" ry="16" fill="url(#glow)"/>
+      <path d="${screen}" fill="url(#scr)" opacity=".92"/>
+      <path d="${screen}" fill="none" stroke="#1a1c22" stroke-width="1.1"/>
+      <path d="${base}" fill="#0d0d10"/>
+      <ellipse cx="54" cy="101" rx="42" ry="2.6" fill="#000" opacity=".55" filter="url(#soft)"/>
+      <path d="${body}" fill="#f2a356" transform="translate(1.25 -0.7)" filter="url(#soft2)" opacity=".95"/>
+      <path d="${body}" fill="#f6c27e" transform="translate(0.55 -0.35)" opacity=".55"/>
+      <path d="${body}" fill="#0b0a0b"/>
+      <path d="M44 10 C50 9.4 55 13 56.2 18.5" fill="none" stroke="#3a2a22" stroke-width=".7" opacity=".6"/>
+      <path d="M38 44 C36.4 58 36 74 37.6 92" fill="none" stroke="#1c1716" stroke-width="1.1" opacity=".9"/>
+      <path d="M47 46 C46 60 46.6 78 48.6 93" fill="none" stroke="#1c1716" stroke-width="1" opacity=".8"/>
+      <path d="M58 54 C59.6 66 61 80 63.4 92" fill="none" stroke="#1c1716" stroke-width=".9" opacity=".7"/>
+      <path d="M66.4 41 C68 46 68.4 52 68.6 57.4" fill="none" stroke="#e9a463" stroke-width=".6" opacity=".55"/>
+    `)}
+    ${grass(gx, gy, k)}
+  `;
+}
+function grass(gx, gy, k){
+  // a few wind-bent tufts along the plateau, rim-lit
+  let out = ""; let seed = 7;
+  const r = () => (seed = (seed*16807) % 2147483647) / 2147483647;
+  const y0 = (1 - S.plateauY) * H;
+  const x0 = S.plateau[0]*W, x1 = S.plateau[1]*W;
+  for(let i=0;i<70;i++){
+    const x = x0 + r()*(x1-x0);
+    if (Math.abs(x - (gx + 54*k)) < 40*k) continue;      // keep clear of the figure
+    const n = 3 + Math.floor(r()*5);
+    for(let j=0;j<n;j++){
+      const h = (2 + r()*7) * k * 1.1, lean = (r()*1.4 - .2) * h * .55;
+      const xx = x + (r()-.5)*5*k;
+      out += `<path d="M${xx} ${y0+1} q ${lean*.4} ${-h*.6} ${lean} ${-h}" stroke="${r()>.55 ? "#c98a4c" : "#141110"}" stroke-width="${.5*k + .5}" fill="none" opacity=".9"/>`;
+    }
+  }
+  return out;
+}
+
+async function render(){
+  const T = 64;                               // rows per tile keeps each draw short
+  for(let y=0; y<H; y+=T){
+    gl.scissor(0, y, W, Math.min(T, H-y));
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.finish();
+    await new Promise(r => setTimeout(r, 0));
+  }
+  drawFigure();
+  document.title = "done";
+}
+render().catch(e => { document.title = "error: " + e.message; });
+</script>
+</body>
+</html>
