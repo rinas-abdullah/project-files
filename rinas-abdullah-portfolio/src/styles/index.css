@@ -1,0 +1,225 @@
+@import "@fontsource-variable/geist/wght.css";
+@import "@fontsource-variable/manrope/wght.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Design tokens — "Construction Documents"
+   Colour is structural; cyan is reserved for state and signal.
+------------------------------------------------------------------- */
+@theme {
+  --color-obsidian: #06080c;
+  --color-graphite: #0c1118;
+  --color-slate: #18232f;
+  --color-slate-hi: #233140;
+  --color-steel: #8192a3;
+  --color-steel-dim: #5b6977;
+  --color-paper: #f3f6f8;
+  --color-cyan: #65dfff;
+  --color-cyan-dim: #2f7f96;
+  --color-amber: #e8b45a;
+
+  --font-display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1rem;
+
+  --breakpoint-xs: 26rem;
+
+  --ease-architect: cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+
+@layer base {
+  :root {
+    --gutter: clamp(1.25rem, 4vw, 3.5rem);
+    --rule: color-mix(in oklab, var(--color-steel) 22%, transparent);
+    --rule-strong: color-mix(in oklab, var(--color-steel) 40%, transparent);
+    color-scheme: dark;
+  }
+
+  html {
+    background: var(--color-obsidian);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--color-obsidian);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-cyan);
+    color: var(--color-obsidian);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  /* Display type — tight, architectural */
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+  }
+  .t-heading {
+    font-family: var(--font-display);
+    font-weight: 560;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    line-height: 1rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-steel);
+  }
+  .t-body {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: color-mix(in oklab, var(--color-paper) 74%, var(--color-steel));
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 92rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .rule-t {
+    border-top: 1px solid var(--rule);
+  }
+  .rule-b {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* Faint drafting grid used behind diagrams */
+  .drafting-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--color-steel) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--color-steel) 8%, transparent) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Corner registration marks on figures */
+  .reg-marks {
+    position: relative;
+  }
+  .reg-marks::before,
+  .reg-marks::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .reg-marks::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1px solid var(--color-steel);
+    border-left: 1px solid var(--color-steel);
+  }
+  .reg-marks::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 1px solid var(--color-steel);
+    border-right: 1px solid var(--color-steel);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3rem;
+    padding: 0 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition:
+      background-color 0.35s var(--ease-architect),
+      color 0.35s var(--ease-architect),
+      border-color 0.35s var(--ease-architect);
+  }
+  .btn-primary {
+    background: var(--color-paper);
+    color: var(--color-obsidian);
+  }
+  .btn-primary:hover {
+    background: var(--color-cyan);
+  }
+  .btn-ghost {
+    border: 1px solid var(--rule-strong);
+    color: var(--color-paper);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-paper);
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.45s var(--ease-architect);
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    background: var(--color-paper);
+    color: var(--color-obsidian);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
