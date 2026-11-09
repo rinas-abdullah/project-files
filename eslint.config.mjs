@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Generated artifacts sometimes exist in this repo and should never be linted
     "dist/**",
     "node_modules/**",
+    // WASL is a separate workspace with its own tooling
+    "wasl/**",
   ]),
 
 ]);
