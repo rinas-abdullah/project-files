@@ -15,7 +15,6 @@ export function Hero({ onSearch }: Props) {
       <ShaderCanvas />
       <div className="grain" aria-hidden="true" />
       <div className="wrap hero-in">
-        <span className="badge"><b>جديد</b>مقدَّم لجائزة الأثر 2026 · الملتقى السعودي لشباب الرعاية الصحية</span>
         <h1>الدم النادر يُعرف مكانه قبل أن تحتاجه</h1>
         <p className="sub">
           منظومة تربط سجلاً للمتبرعين بأنماط نادرة مؤكدة مخبرياً بمخزون بنوك الدم وبنقل مراقَب حرارياً، فيصل بنك الدم إلى الوحدة المطابقة في دقائق بدل نداء عام.
