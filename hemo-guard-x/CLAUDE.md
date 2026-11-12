@@ -23,7 +23,7 @@ Landing page and interactive demo for **NAJA (نَجا)**, formerly HEMO-GUARD X
 ## Design rules
 
 - Arabic, right-to-left (`<html dir="rtl">`). Latin codes, numbers and units go in `.lat` or `.mono` spans so bidi stays correct.
-- Brand: NAJA identity. Tagline "جاهزية تسبق الحاجة". Colours: green `#0B3D36` (`--green`), red `#C6283A` (`--red`, the only accent), cream `#F5F3EE` (`--text`). Logo artwork comes from the official file `src/assets/naja-logo-original.png`, cut into `naja-mark.png`, `naja-wordmark-cream.png` (dark backgrounds) and `naja-wordmark-green.png` (light backgrounds); `Logo.tsx` exposes `Logo` (mark) and `Wordmark` (mark + نَجا/NAJA). Favicons in `public/` are the mark on a brand-green tile.
+- Brand: NAJA identity. Tagline "جاهزية تسبق الحاجة". Colours: green `#0B3D36` (`--green`), red `#C6283A` (`--red`, the only accent), cream `#F5F3EE` (`--text`). Logo: the official file `src/assets/naja-logo-original.png` is used unmodified (never recolour or redraw it). On the dark site only the drop mark is shown (`src/assets/naja-mark.png`, cut from the original), without the نَجا/NAJA name, at the owner's request; `naja-logo.png` is the full logo trimmed, for light backgrounds. Favicons in `public/` are the mark on a brand-green tile.
 - Dark 21st.dev-style page on a deep green-black base (`#07110f`); the hero shader is a green/red ribbon. Fonts: Tajawal (Arabic/Latin), Geist Mono (codes).
 - The module names HEMO-GUARD, HEMO-SUPPLY and RARE-LINK stay as they are; only the product brand is NAJA.
 - One bold moment per section; respect `prefers-reduced-motion` (every animation has a static end state).
