@@ -1,0 +1,391 @@
+// AMAD — Adaptive Cyber Readiness & Intelligence Platform
+// PostgreSQL schema (Prisma 7). See DATABASE_SCHEMA.md for the rationale.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum OrgKind {
+  INDIVIDUAL
+  ENTERPRISE
+  UNIVERSITY
+}
+
+enum Role {
+  ORG_ADMIN
+  SECURITY_MANAGER
+  INSTRUCTOR
+  TRAINEE
+  AUDITOR
+}
+
+enum ScenarioStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  RETIRED
+}
+
+enum ScenarioSource {
+  AUTHORED
+  GENERATED
+}
+
+enum SessionPhase {
+  SIMULATION
+  FORENSICS
+  COMPLETED
+}
+
+enum SessionOutcome {
+  CONTAINED
+  BREACHED
+  TIMEOUT
+}
+
+enum RecommendationStatus {
+  OPEN
+  STARTED
+  DISMISSED
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  kind      OrgKind
+  isDemo    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  memberships     Membership[]
+  sessions        SimulationSession[]
+  readinessScores ReadinessScore[]
+  profiles        BehavioralProfile[]
+  recommendations TrainingRecommendation[]
+  notifications   Notification[]
+  auditLogs       AuditLog[]
+  scenarios       Scenario[]
+  authSessions    AuthSession[]
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String
+  passwordHash    String
+  locale          String    @default("ar")
+  isSuperAdmin    Boolean   @default(false)
+  emailVerifiedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  memberships     Membership[]
+  authSessions    AuthSession[]
+  sessions        SimulationSession[]
+  readinessScores ReadinessScore[]
+  profiles        BehavioralProfile[]
+  recommendations TrainingRecommendation[]
+  notifications   Notification[]
+  auditLogs       AuditLog[]
+}
+
+model Membership {
+  id        String   @id @default(cuid())
+  userId    String
+  orgId     String
+  role      Role
+  createdAt DateTime @default(now())
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+  @@index([orgId, role])
+}
+
+/// Server-side session. Only a SHA-256 hash of the cookie token is stored.
+model AuthSession {
+  id         String    @id @default(cuid())
+  tokenHash  String    @unique
+  userId     String
+  orgId      String
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime  @default(now())
+  lastSeenAt DateTime  @default(now())
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Competency {
+  id          String  @id @default(cuid())
+  key         String  @unique
+  nameAr      String
+  nameEn      String
+  description String?
+
+  scenarios ScenarioCompetency[]
+}
+
+model Scenario {
+  id          String         @id @default(cuid())
+  key         String
+  version     Int            @default(1)
+  titleAr     String
+  titleEn     String
+  briefingAr  String
+  difficulty  Int
+  status      ScenarioStatus @default(DRAFT)
+  source      ScenarioSource @default(AUTHORED)
+  /// Full validated ScenarioDefinition (twin, adversary graph, evidence templates).
+  definition  Json
+  attackRefs  String[]
+  /// null = global catalog scenario; otherwise private to an organization.
+  orgId       String?
+  publishedAt DateTime?
+  createdAt   DateTime       @default(now())
+
+  org             Organization?            @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  competencies    ScenarioCompetency[]
+  sessions        SimulationSession[]
+  recommendations TrainingRecommendation[]
+
+  @@unique([key, version])
+  @@index([status])
+}
+
+model ScenarioCompetency {
+  scenarioId   String
+  competencyId String
+  weight       Float
+
+  scenario   Scenario   @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  competency Competency @relation(fields: [competencyId], references: [id], onDelete: Cascade)
+
+  @@id([scenarioId, competencyId])
+}
+
+model SimulationSession {
+  id          String          @id @default(cuid())
+  userId      String
+  orgId       String
+  scenarioId  String
+  seed        Int
+  phase       SessionPhase    @default(SIMULATION)
+  outcome     SessionOutcome?
+  /// Canonical engine state (SimState). Server is the only writer.
+  state       Json
+  simMinute   Int             @default(0)
+  hintsUsed   Int             @default(0)
+  /// Optimistic concurrency guard for state updates.
+  revision    Int             @default(0)
+  startedAt   DateTime        @default(now())
+  containedAt DateTime?
+  completedAt DateTime?
+  lastActionAt DateTime       @default(now())
+
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org      Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  scenario Scenario     @relation(fields: [scenarioId], references: [id])
+
+  events          SimulationEvent[]
+  defenderActions DefenderAction[]
+  adversaryActions AdversaryAction[]
+  evidence        EvidenceRecord[]
+  report          InvestigationReport?
+  readiness       ReadinessScore?
+  recommendationsFrom TrainingRecommendation[] @relation("RecommendationSource")
+
+  @@index([orgId, userId, startedAt])
+  @@index([userId, phase])
+}
+
+model SimulationEvent {
+  id        String   @id @default(cuid())
+  sessionId String
+  seq       Int
+  simMinute Int
+  actor     String
+  kind      String
+  message   String
+  data      Json
+  createdAt DateTime @default(now())
+
+  session SimulationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, seq])
+}
+
+model DefenderAction {
+  id          String   @id @default(cuid())
+  sessionId   String
+  seq         Int
+  command     String
+  kind        String
+  target      String?
+  simMinute   Int
+  /// Real wall-clock time the defender took to decide (ms since previous action).
+  latencyMs   Int
+  valid       Boolean
+  effective   Boolean  @default(false)
+  disruptive  Boolean  @default(false)
+  productive  Boolean  @default(false)
+  competency  String?
+  output      String[]
+  createdAt   DateTime @default(now())
+
+  session SimulationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, seq])
+}
+
+model AdversaryAction {
+  id               String   @id @default(cuid())
+  sessionId        String
+  seq              Int
+  nodeId           String
+  technique        String
+  tactic           String
+  target           String
+  simMinute        Int
+  rationale        String
+  approved         Boolean
+  guardianReason   String
+  considered       Json
+  createdAt        DateTime @default(now())
+
+  session SimulationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, seq])
+}
+
+model EvidenceRecord {
+  id         String   @id @default(cuid())
+  sessionId  String
+  key        String
+  asset      String
+  source     String
+  content    String
+  simMinute  Int
+  /// How the investigator obtained it: LIVE (surfaced during response) or IMAGE (forensic image).
+  acquiredVia String
+  createdAt  DateTime @default(now())
+
+  session SimulationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, key])
+}
+
+model InvestigationReport {
+  id         String   @id @default(cuid())
+  sessionId  String   @unique
+  submission Json
+  score      Json
+  total      Float
+  createdAt  DateTime @default(now())
+
+  session SimulationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model ReadinessScore {
+  id                 String   @id @default(cuid())
+  sessionId          String   @unique
+  userId             String
+  orgId              String
+  overall            Float
+  speed              Float
+  accuracy           Float
+  independence       Float
+  completeness       Float
+  /// Formulas, inputs and per-competency scores used to compute this result.
+  evidence           Json
+  methodologyVersion String
+  createdAt          DateTime @default(now())
+
+  session SimulationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org     Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, userId, createdAt])
+}
+
+model BehavioralProfile {
+  id            String   @id @default(cuid())
+  userId        String
+  orgId         String
+  competencyKey String
+  level         Float
+  samples       Int
+  updatedAt     DateTime @updatedAt
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId, competencyKey])
+}
+
+model TrainingRecommendation {
+  id                String               @id @default(cuid())
+  userId            String
+  orgId             String
+  scenarioId        String
+  sourceSessionId   String?
+  score             Float
+  targetDifficulty  Int
+  focusCompetencies String[]
+  rationale         Json
+  status            RecommendationStatus @default(OPEN)
+  createdAt         DateTime             @default(now())
+
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org           Organization       @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  scenario      Scenario           @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  sourceSession SimulationSession? @relation("RecommendationSource", fields: [sourceSessionId], references: [id], onDelete: SetNull)
+
+  @@index([userId, orgId, status, createdAt])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  orgId     String
+  kind      String
+  title     String
+  body      String
+  href      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([userId, orgId, readAt, createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  orgId      String?
+  userId     String?
+  action     String
+  targetType String?
+  targetId   String?
+  ip         String?
+  meta       Json?
+  createdAt  DateTime @default(now())
+
+  org  Organization? @relation(fields: [orgId], references: [id], onDelete: SetNull)
+  user User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, createdAt])
+  @@index([action, createdAt])
+}

@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/*
+ * AMAD design tokens. Brand: #06152B (navy), #C7F230 (lime), #FFFFFF, #AEB7C2 (silver).
+ * Supporting shades are derived from the navy for surfaces, borders and states.
+ * Documented in docs/DESIGN_SYSTEM.md.
+ */
+:root {
+  --amad-bg: #06152b;
+  --amad-surface: #0a1d38;
+  --amad-surface-2: #0e2645;
+  --amad-surface-3: #133055;
+  --amad-border: #1b3559;
+  --amad-border-strong: #29496f;
+  --amad-lime: #c7f230;
+  --amad-lime-strong: #b3db1f;
+  --amad-lime-ink: #06152b;
+  --amad-text: #ffffff;
+  --amad-silver: #aeb7c2;
+  --amad-subtle: #7f8ea1;
+  --amad-danger: #ff6b6b;
+  --amad-warn: #f5b544;
+  --amad-info: #6cc6ff;
+  --amad-ok: #4fd6a1;
+}
+
+@theme inline {
+  --color-bg: var(--amad-bg);
+  --color-surface: var(--amad-surface);
+  --color-surface-2: var(--amad-surface-2);
+  --color-surface-3: var(--amad-surface-3);
+  --color-line: var(--amad-border);
+  --color-line-strong: var(--amad-border-strong);
+  --color-lime: var(--amad-lime);
+  --color-lime-strong: var(--amad-lime-strong);
+  --color-ink: var(--amad-lime-ink);
+  --color-fg: var(--amad-text);
+  --color-silver: var(--amad-silver);
+  --color-subtle: var(--amad-subtle);
+  --color-danger: var(--amad-danger);
+  --color-warn: var(--amad-warn);
+  --color-info: var(--amad-info);
+  --color-ok: var(--amad-ok);
+  --font-sans: var(--font-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-plex), ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--amad-bg);
+  color: var(--amad-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--amad-lime);
+  color: var(--amad-lime-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--amad-lime);
+  outline-offset: 2px;
+}
+
+.ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+@media print {
+  body { background: #fff; color: #000; }
+  .no-print { display: none !important; }
+  .print-card { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
