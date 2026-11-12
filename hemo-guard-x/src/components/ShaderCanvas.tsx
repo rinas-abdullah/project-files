@@ -3,25 +3,34 @@ import { usePrefersReducedMotion } from '../lib/motion'
 
 const VERT = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}'
 
-// "Blood silk": domain-warped fbm noise mapped from near-black to crimson with a soft sheen.
+// "Blood silk": one broad ribbon of folded fabric sweeping across the hero. Low-frequency
+// domain warp drives sine folds; thin specular highlights ride the crests. Crimson only.
 const FRAG = `precision highp float;
 uniform vec2 r; uniform float t; uniform vec2 m;
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
   return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
-float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*n(p);p=p*2.01+vec2(1.7,9.2);a*=.5;}return v;}
 void main(){
-  vec2 uv=(gl_FragCoord.xy-.5*r)/r.y; uv+=(m-.5)*.08; float tt=t*.06;
-  vec2 q=vec2(fbm(uv*1.6+tt),fbm(uv*1.6-tt+3.1));
-  vec2 w=vec2(fbm(uv*1.4+2.*q+vec2(1.7,9.2)+tt*1.3),fbm(uv*1.4+2.*q+vec2(8.3,2.8)-tt));
-  float f=fbm(uv*1.2+2.4*w);
-  float silk=smoothstep(.35,.95,f);
-  float sheen=pow(smoothstep(.55,.9,f*(.6+.6*w.x)),3.);
-  vec3 col=mix(vec3(.035,.035,.045),vec3(.45,.03,.11),silk);
-  col=mix(col,vec3(.9,.13,.3),sheen*.8);
-  col+=vec3(1.,.6,.65)*pow(sheen,4.)*.25;
-  float v=smoothstep(1.25,.2,length(uv*vec2(.8,1.1)));
-  col*=.35+.65*v;
+  vec2 uv=(gl_FragCoord.xy-.5*r)/r.y; uv+=(m-.5)*.06; float tt=t*.05;
+  float a=-.55; vec2 p=mat2(cos(a),-sin(a),sin(a),cos(a))*uv;
+  float w1=fbm(p*.7+vec2(tt,-tt*.6)), w2=fbm(p*.9-vec2(tt*.8,0.)+4.3);
+  // ribbon centre line meanders; mask fades the fabric out away from it
+  float y=p.y-.18*sin(p.x*1.4+tt*3.)-.35*(w1-.5);
+  float band=exp(-pow(y*2.4,2.))*smoothstep(-1.1,.2,p.x);
+  float s=p.x*1.1+2.2*w1+1.1*w2+y*2.5;
+  float fold=.5+.5*sin(s*3.2+tt*4.);
+  float shade=smoothstep(0.,1.,fold);
+  float crest=pow(fold,18.), glint=pow(fold,70.);
+  vec3 bg=vec3(.035,.035,.045);
+  vec3 col=bg;
+  col=mix(col,vec3(.11,.01,.03),band*.9);
+  col=mix(col,vec3(.5,.03,.11),band*shade*.75);
+  col+=vec3(.95,.16,.32)*crest*band*.6;
+  col+=vec3(1.,.72,.78)*glint*band*.35;
+  col+=vec3(.2,.015,.05)*exp(-pow(y*.9,2.))*.18;
+  float v=smoothstep(1.4,.25,length(uv*vec2(.75,1.)));
+  col=mix(bg,col,.3+.7*v);
   gl_FragColor=vec4(col,1.);
 }`
 

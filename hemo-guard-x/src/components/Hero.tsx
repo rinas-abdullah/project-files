@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { ShaderCanvas } from './ShaderCanvas'
+import { HeroPreview } from './HeroPreview'
 
 const EXAMPLES = ['K−  Fy(b−)  Jk(b−)', 'K−  Jk(b−)', 'Fy(b−)']
 
@@ -35,12 +36,8 @@ export function Hero({ onSearch }: Props) {
           </div>
         </form>
 
-        <div className="hero-meta">
-          <div><b>3</b><span>وحدات في لوحة واحدة</span></div>
-          <div><b className="lat">2–8 °C</b><span>مراقبة مستمرة للنقل</span></div>
-          <div><b className="lat">&lt; 30 min</b><span>مستهدف الوصول لمتبرع جاهز</span></div>
-        </div>
       </div>
+      <div className="wrap hero-pv"><HeroPreview /></div>
     </section>
   )
 }
