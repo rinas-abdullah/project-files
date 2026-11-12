@@ -17,6 +17,7 @@ const eslintConfig = defineConfig([
     "node_modules/**",
     // Separate Vite app with its own toolchain
     "rinas-abdullah-portfolio/**",
+    "hemo-guard-x/**",
   ]),
 
 ]);

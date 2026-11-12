@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "rinas-abdullah-portfolio"]
+  "exclude": ["node_modules", "rinas-abdullah-portfolio", "hemo-guard-x"]
 }
