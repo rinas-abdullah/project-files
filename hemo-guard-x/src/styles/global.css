@@ -30,8 +30,7 @@ button{font-family:inherit}
 .nav.is-scrolled{background:rgba(7,17,15,.72);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom-color:var(--line)}
 .nav-in{max-width:1200px;margin:0 auto;height:64px;padding:0 28px;display:flex;align-items:center;gap:28px}
 .brand{display:flex;align-items:center;flex:none}
-.wm{display:inline-flex;align-items:center;gap:.4em;line-height:0}
-.wm img{display:block}
+.wm{display:block}
 .links{display:flex;gap:2px;font-size:14.5px}
 .links a{padding:7px 12px;border-radius:8px;color:var(--dim);transition:color .2s,background .2s}
 .links a:hover{color:var(--text);background:rgba(255,255,255,.06)}
