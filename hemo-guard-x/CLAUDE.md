@@ -1,6 +1,6 @@
-# HEMO-GUARD X — website
+# NAJA (نَجا) — website
 
-Landing page and interactive demo for **HEMO-GUARD X**, a youth-led health initiative (prototype stage) submitted to the Impact Award at the Saudi Youth Healthcare Forum 2026. The system has three modules:
+Landing page and interactive demo for **NAJA (نَجا)**, formerly HEMO-GUARD X, a youth-led health initiative (prototype stage) submitted to the Impact Award at the Saudi Youth Healthcare Forum 2026. The system has three modules:
 
 - **HEMO-GUARD**: smart transport container (cold-chain 2–8 °C logging, RFID/QR chain of custody, offline buffering)
 - **HEMO-SUPPLY**: inventory visibility, shortage-risk forecasting, redistribution recommendations
@@ -23,7 +23,9 @@ Landing page and interactive demo for **HEMO-GUARD X**, a youth-led health initi
 ## Design rules
 
 - Arabic, right-to-left (`<html dir="rtl">`). Latin codes, numbers and units go in `.lat` or `.mono` spans so bidi stays correct.
-- Dark 21st.dev-style theme: base `#09090b`, zinc greys, crimson (`--red`) is the only accent. Fonts: Alexandria (Arabic/Latin), Geist Mono (codes).
+- Brand: NAJA identity. Tagline "جاهزية تسبق الحاجة". Colours: green `#0B3D36` (`--green`), red `#C6283A` (`--red`, the only accent), cream `#F5F3EE` (`--text`). Logo is the folded-ribbon drop in `Logo.tsx` (`Logo` mark, `Wordmark` mark + نَجا/NAJA).
+- Dark 21st.dev-style page on a deep green-black base (`#07110f`); the hero shader is a green/red ribbon. Fonts: Tajawal (Arabic/Latin), Geist Mono (codes).
+- The module names HEMO-GUARD, HEMO-SUPPLY and RARE-LINK stay as they are; only the product brand is NAJA.
 - One bold moment per section; respect `prefers-reduced-motion` (every animation has a static end state).
 
 ## Content rules (important)

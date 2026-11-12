@@ -27,7 +27,7 @@ export function Beams() {
           <svg className="paths" viewBox="0 0 980 440" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <linearGradient id="bg1" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="980" y2="0">
-                <stop offset="0" stopColor="#e11d48" stopOpacity="0" /><stop offset=".5" stopColor="#fb7185" /><stop offset="1" stopColor="#e11d48" stopOpacity="0" />
+                <stop offset="0" stopColor="#C6283A" stopOpacity="0" /><stop offset=".5" stopColor="#e35d6e" /><stop offset="1" stopColor="#C6283A" stopOpacity="0" />
               </linearGradient>
             </defs>
             <g fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="2">
@@ -47,7 +47,7 @@ export function Beams() {
             </div>
           ))}
           <div className="node hub" style={{ left: '50%', top: 220 }}>
-            <div className="box"><b>HEMO-GUARD X</b><h3>لوحة القيادة الموحدة</h3><p>رؤية واحدة للمخزون والوحدات النادرة والتنبيهات وسجل التدقيق.</p></div>
+            <div className="box"><b>نَجا NAJA</b><h3>لوحة القيادة الموحدة</h3><p>رؤية واحدة للمخزون والوحدات النادرة والتنبيهات وسجل التدقيق.</p></div>
           </div>
         </div>
       </div>

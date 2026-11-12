@@ -3,8 +3,8 @@ import { usePrefersReducedMotion } from '../lib/motion'
 
 const VERT = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}'
 
-// "Blood silk": one broad ribbon of folded fabric sweeping across the hero. Low-frequency
-// domain warp drives sine folds; thin specular highlights ride the crests. Crimson only.
+// NAJA ribbon: one broad folded ribbon sweeping across the hero, brand green in the troughs
+// turning to NAJA red on the folds, with a soft cream glint on the crests (as on the identity board).
 const FRAG = `precision highp float;
 uniform vec2 r; uniform float t; uniform vec2 m;
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -22,13 +22,13 @@ void main(){
   float fold=.5+.5*sin(s*3.2+tt*4.);
   float shade=smoothstep(0.,1.,fold);
   float crest=pow(fold,18.), glint=pow(fold,70.);
-  vec3 bg=vec3(.035,.035,.045);
+  vec3 bg=vec3(.027,.067,.059);
   vec3 col=bg;
-  col=mix(col,vec3(.075,.006,.02),band*.9);
-  col=mix(col,vec3(.34,.02,.07),band*shade*.75);
-  col+=vec3(.75,.1,.22)*crest*band*.45;
-  col+=vec3(1.,.65,.72)*glint*band*.2;
-  col+=vec3(.14,.01,.035)*exp(-pow(y*.9,2.))*.15;
+  col=mix(col,vec3(.03,.17,.15),band*.9);
+  col=mix(col,vec3(.5,.09,.13),band*smoothstep(.35,1.,shade)*.8);
+  col+=vec3(.82,.18,.25)*crest*band*.45;
+  col+=vec3(.96,.95,.93)*glint*band*.18;
+  col+=vec3(.04,.24,.21)*exp(-pow(y*.9,2.))*.18;
   float v=smoothstep(1.4,.25,length(uv*vec2(.75,1.)));
   col=mix(bg,col,.3+.7*v);
   gl_FragColor=vec4(col,1.);

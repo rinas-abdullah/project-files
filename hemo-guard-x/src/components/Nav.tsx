@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { DECK_URL } from '../data/content'
-import { Logo } from './Logo'
+import { Wordmark } from './Logo'
 
 const LINKS = [
   ['#features', 'المنصة'],
@@ -38,7 +38,7 @@ export function Nav() {
   return (
     <header className={`nav${scrolled ? ' is-scrolled' : ''}`}>
       <nav className="nav-in" aria-label="التنقل">
-        <a className="brand" href="#top"><Logo size={22} /><span>HEMO-GUARD X</span></a>
+        <a className="brand" href="#top" aria-label="نَجا NAJA، العودة للأعلى"><Wordmark size={30} /></a>
         <div className="links">
           {LINKS.map(([href, label]) => <a key={href} href={href}>{label}</a>)}
         </div>

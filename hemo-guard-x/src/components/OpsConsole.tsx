@@ -84,19 +84,19 @@ export function OpsConsole() {
               </div>
               <div className="pane">
                 <h3><span>حرارة الشحنة <span className="mono">SHP-2211</span></span>
-                  <span style={{ color: sc.excursion ? '#fb7185' : '#34d399' }}>{sc.excursion ? 'الوحدات في حجر إلكتروني' : 'ضمن النطاق'}</span></h3>
+                  <span style={{ color: sc.excursion ? '#e35d6e' : '#34d399' }}>{sc.excursion ? 'الوحدات في حجر إلكتروني' : 'ضمن النطاق'}</span></h3>
                 <svg id="tchart" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label="منحنى حرارة الشحنة">
-                  <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#e11d48" stopOpacity=".35" /><stop offset="1" stopColor="#e11d48" stopOpacity="0" /></linearGradient></defs>
+                  <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#C6283A" stopOpacity=".35" /><stop offset="1" stopColor="#C6283A" stopOpacity="0" /></linearGradient></defs>
                   <rect x="26" y={y(8)} width={W - 36} height={y(2) - y(8)} fill="rgba(96,165,250,.06)" />
                   {[2, 8].map((v) => (
                     <g key={v}>
                       <line x1="26" x2={W - 10} y1={y(v)} y2={y(v)} stroke="rgba(255,255,255,.12)" strokeDasharray="3 5" />
-                      <text x="20" y={y(v) + 4} textAnchor="end" fontSize="11" fill="#71717a" fontFamily="Geist Mono, monospace">{v}°</text>
+                      <text x="20" y={y(v) + 4} textAnchor="end" fontSize="11" fill="#75847e" fontFamily="Geist Mono, monospace">{v}°</text>
                     </g>
                   ))}
                   <polygon fill="url(#tg)" points={`26,${H - 12} ${pts} ${x(71)},${H - 12}`} />
-                  <polyline fill="none" stroke="#fb7185" strokeWidth="2" vectorEffect="non-scaling-stroke" points={pts} />
-                  {temps.map((v, i) => (v > 8 ? <circle key={i} cx={x(i)} cy={y(v)} r="3" fill="#e11d48" /> : null))}
+                  <polyline fill="none" stroke="#e35d6e" strokeWidth="2" vectorEffect="non-scaling-stroke" points={pts} />
+                  {temps.map((v, i) => (v > 8 ? <circle key={i} cx={x(i)} cy={y(v)} r="3" fill="#C6283A" /> : null))}
                 </svg>
                 <div className="t-row">
                   <span>الأدنى <b className="lat">{Math.min(...temps).toFixed(1)} °C</b></span>

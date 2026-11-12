@@ -39,12 +39,12 @@ export function LiveTemperature() {
       cx.setLineDash([])
       const step = w / (N - 1)
       const g = cx.createLinearGradient(0, 0, 0, h)
-      g.addColorStop(0, 'rgba(225,29,72,.35)'); g.addColorStop(1, 'rgba(225,29,72,0)')
+      g.addColorStop(0, 'rgba(198,40,58,.35)'); g.addColorStop(1, 'rgba(198,40,58,0)')
       cx.beginPath(); cx.moveTo(0, h); pts.forEach((v, i) => cx.lineTo(i * step, y(v))); cx.lineTo(w, h); cx.fillStyle = g; cx.fill()
       cx.beginPath(); pts.forEach((v, i) => (i ? cx.lineTo(i * step, y(v)) : cx.moveTo(0, y(v))))
-      cx.strokeStyle = '#fb7185'; cx.lineWidth = 2; cx.shadowColor = '#e11d48'; cx.shadowBlur = 10; cx.stroke(); cx.shadowBlur = 0
+      cx.strokeStyle = '#e35d6e'; cx.lineWidth = 2; cx.shadowColor = '#C6283A'; cx.shadowBlur = 10; cx.stroke(); cx.shadowBlur = 0
       const last = pts[N - 1]
-      cx.beginPath(); cx.arc(w - 3, y(last), 4, 0, 7); cx.fillStyle = last > 8 ? '#e11d48' : '#fafafa'; cx.fill()
+      cx.beginPath(); cx.arc(w - 3, y(last), 4, 0, 7); cx.fillStyle = last > 8 ? '#C6283A' : '#F5F3EE'; cx.fill()
       setNow(last)
       setOnline(!(idx % 160 > 40 && idx % 160 < 60))
     }
@@ -60,7 +60,7 @@ export function LiveTemperature() {
     <>
       <canvas id="tcan" ref={ref} aria-hidden="true" />
       <div className="t-row">
-        <span>الآن <b className="lat" style={{ color: now > 8 ? '#fb7185' : undefined }}>{now.toFixed(1)} °C</b></span>
+        <span>الآن <b className="lat" style={{ color: now > 8 ? '#e35d6e' : undefined }}>{now.toFixed(1)} °C</b></span>
         <span>النطاق <b className="lat">2–8 °C</b></span>
         <span>الاتصال <b>{online ? 'متصل' : 'منقطع · تخزين محلي'}</b></span>
       </div>

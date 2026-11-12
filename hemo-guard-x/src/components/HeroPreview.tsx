@@ -1,4 +1,4 @@
-import { Logo } from './Logo'
+import { Wordmark } from './Logo'
 
 // A framed, non-interactive glimpse of the platform under the hero headline.
 // Every value here is synthetic and labelled as such.
@@ -30,7 +30,7 @@ export function HeroPreview() {
     <div className="pv" aria-label="معاينة توضيحية للمنصة ببيانات اصطناعية" role="img">
       <div className="pv-app" aria-hidden="true">
         <aside className="pv-side">
-          <div className="pv-brand"><Logo size={18} /><span>HEMO-GUARD X</span></div>
+          <div className="pv-brand"><Wordmark size={22} /></div>
           <div className="pv-search">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
             <span>ابحث عن نمط</span>

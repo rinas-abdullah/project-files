@@ -1,3 +1,4 @@
+import { Wordmark } from './Logo'
 import { ALIGNMENT, DECK_URL, EVIDENCE, REFERENCES, ROADMAP } from '../data/content'
 import { Spot } from './Spot'
 
@@ -82,7 +83,7 @@ export function Footer() {
   return (
     <footer>
       <div className="wrap">
-        <span className="mono" style={{ color: 'var(--text)' }}>HEMO-GUARD X</span>
+        <span style={{ color: 'var(--text)' }}><Wordmark size={24} /></span>
         <span>نموذج أولي. البيانات التفاعلية اصطناعية للعرض.</span>
       </div>
     </footer>
