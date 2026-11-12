@@ -24,11 +24,11 @@ void main(){
   float crest=pow(fold,18.), glint=pow(fold,70.);
   vec3 bg=vec3(.035,.035,.045);
   vec3 col=bg;
-  col=mix(col,vec3(.11,.01,.03),band*.9);
-  col=mix(col,vec3(.5,.03,.11),band*shade*.75);
-  col+=vec3(.95,.16,.32)*crest*band*.6;
-  col+=vec3(1.,.72,.78)*glint*band*.35;
-  col+=vec3(.2,.015,.05)*exp(-pow(y*.9,2.))*.18;
+  col=mix(col,vec3(.075,.006,.02),band*.9);
+  col=mix(col,vec3(.34,.02,.07),band*shade*.75);
+  col+=vec3(.75,.1,.22)*crest*band*.45;
+  col+=vec3(1.,.65,.72)*glint*band*.2;
+  col+=vec3(.14,.01,.035)*exp(-pow(y*.9,2.))*.15;
   float v=smoothstep(1.4,.25,length(uv*vec2(.75,1.)));
   col=mix(bg,col,.3+.7*v);
   gl_FragColor=vec4(col,1.);

@@ -51,7 +51,7 @@ button{font-family:inherit}
 
 /* glowing search */
 .ask{position:relative;max-width:640px;margin:40px auto 0}
-.ask::before{content:"";position:absolute;inset:-2px;border-radius:18px;background:conic-gradient(from var(--ang,0deg),#e11d48,#fb7185,#7f0d24,#e11d48);filter:blur(14px);opacity:.55;animation:spin 6s linear infinite;z-index:0}
+.ask::before{content:"";position:absolute;inset:-2px;border-radius:18px;background:conic-gradient(from var(--ang,0deg),#e11d48,#fb7185,#7f0d24,#e11d48);filter:blur(14px);opacity:.38;animation:spin 6s linear infinite;z-index:0}
 .ask-in{position:relative;z-index:1;display:flex;align-items:center;gap:10px;background:#0c0c0f;border:1px solid var(--line-2);border-radius:16px;padding:8px;padding-inline-start:18px}
 .ask-in svg{flex:none;color:var(--mute)}
 .ask input{flex:1;min-width:0;background:none;border:0;color:var(--text);font:inherit;font-size:16px;padding:10px 0;outline:none}
