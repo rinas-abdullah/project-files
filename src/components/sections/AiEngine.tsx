@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Activity, Cpu, Thermometer, Target, ShieldCheck, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
+import AlertLockScreen from "./AlertLockScreen";
 
 const features = [
   {
@@ -135,22 +136,12 @@ export default function AiEngine() {
                   </div>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/70">
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400 font-semibold font-sans">
-                      تحليل متكامل
-                    </p>
-                    <p className="mt-3 text-sm text-slate-900 dark:text-slate-100 font-arabic leading-relaxed">
-                      يربط الرصد الحركي والضغط والحرارة والرطوبة في رؤية واحدة.
-                    </p>
-                  </div>
-                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/70">
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400 font-semibold font-sans">
-                      متصل بالمنصة
-                    </p>
-                    <p className="mt-3 text-sm text-slate-900 dark:text-slate-100 font-arabic leading-relaxed">
-                      ينقل البيانات مباشرة إلى منصة المتابعة والفريق الطبي.
-                    </p>
+                <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 dark:border-zinc-800 dark:bg-zinc-900/70">
+                  <p className="text-[10px] uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400 font-semibold font-sans text-center">
+                    كيف يصل التنبيه لجوالك
+                  </p>
+                  <div className="mt-4">
+                    <AlertLockScreen />
                   </div>
                 </div>
 
