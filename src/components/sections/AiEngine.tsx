@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Activity, Cpu, Thermometer, Target, ShieldCheck, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -12,6 +13,8 @@ const features = [
     desc: "ينشئ خطاً أساسياً للمستخدم من قياسات صالحة، ثم يتابع تغيّر المؤشرات مقارنة بسجل المستخدم نفسه.",
     icon: Activity,
     color: "text-primary-blue bg-primary-blue/10 border-primary-blue/30 dark:text-medical-blue dark:bg-medical-blue/15 dark:border-medical-blue/30",
+    ring: "ring-primary-blue/50 dark:ring-medical-blue/50",
+    relatedStages: [3],
   },
   {
     titleAr: "تحليل الضغط والحركة",
@@ -19,6 +22,8 @@ const features = [
     desc: "يربط بيانات الضغط بنشاط القدم لتفسير أوقات الوقوف والمشي وفترات التحميل.",
     icon: Target,
     color: "text-orange-500 bg-orange-500/10 border-orange-500/20",
+    ring: "ring-orange-500/50",
+    relatedStages: [1],
   },
   {
     titleAr: "اتجاهات الحرارة والرطوبة",
@@ -26,6 +31,8 @@ const features = [
     desc: "يعرض التغيّر عبر الزمن مع مراعاة اختلاف بيئة الحذاء وموضع المستشعر.",
     icon: Thermometer,
     color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+    ring: "ring-emerald-500/50",
+    relatedStages: [],
   },
   {
     titleAr: "تقييم موثوقية البيانات",
@@ -33,6 +40,8 @@ const features = [
     desc: "يميّز بين البيانات الصالحة والناقصة وغير الموثوقة قبل استخدامها في التقارير والتنبيهات.",
     icon: ShieldCheck,
     color: "text-slate-700 bg-slate-100 border-slate-200 dark:text-slate-100 dark:bg-slate-900/70 dark:border-zinc-800",
+    ring: "ring-slate-400/50",
+    relatedStages: [2],
   },
   {
     titleAr: "التنبيهات الشخصية",
@@ -40,10 +49,14 @@ const features = [
     desc: "تُضبط حدود التحميل وفق تعليمات المختص، وتُفعَّل التنبيهات عند رصد تجاوزات ضمن نطاق تم التحقق منه — دون أن تشخّص الحالة أو تقترح علاجاً.",
     icon: Bell,
     color: "text-rose-500 bg-rose-500/10 border-rose-500/20",
+    ring: "ring-rose-500/50",
+    relatedStages: [1, 2, 3],
   },
 ];
 
 export default function AiEngine() {
+  const [activeStage, setActiveStage] = useState(0);
+
   return (
     <section id="ai-engine" className="relative w-full py-24 bg-transparent overflow-hidden font-sans scroll-mt-28">
 
@@ -80,6 +93,7 @@ export default function AiEngine() {
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
             {features.map((feature, index) => {
               const Icon = feature.icon;
+              const isActive = activeStage > 0 && feature.relatedStages.includes(activeStage);
               return (
                 <motion.div
                   key={feature.titleAr}
@@ -88,10 +102,17 @@ export default function AiEngine() {
                   viewport={{ once: true, amount: 0.4 }}
                   transition={{ duration: 0.45, delay: index * 0.08 }}
                   className={cn(
-                    "rounded-3xl border p-5 bg-white/90 dark:bg-slate-950/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] dark:shadow-none",
-                    feature.color
+                    "relative rounded-3xl border p-5 bg-white/90 dark:bg-slate-950/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] dark:shadow-none transition-all duration-500",
+                    feature.color,
+                    isActive && cn("ring-2 scale-[1.03] shadow-lg", feature.ring)
                   )}
                 >
+                  {isActive && (
+                    <span className="absolute -top-2 -left-2 flex h-4 w-4">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-60" />
+                      <span className="relative inline-flex h-4 w-4 rounded-full bg-current" />
+                    </span>
+                  )}
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm dark:bg-zinc-900">
@@ -114,6 +135,9 @@ export default function AiEngine() {
               );
             })}
           </div>
+          <p className="mt-4 text-xs text-muted-text font-arabic leading-relaxed">
+            الإطارات المضيئة تمثّل القدرات المرتبطة بالتنبيه الظاهر الآن على شاشة الجوال في الجهة المقابلة.
+          </p>
         </div>
 
         <div className="lg:col-span-6 relative flex items-center justify-center">
@@ -141,7 +165,7 @@ export default function AiEngine() {
                     كيف يصل التنبيه لجوالك
                   </p>
                   <div className="mt-4">
-                    <AlertLockScreen />
+                    <AlertLockScreen onStageChange={setActiveStage} />
                   </div>
                 </div>
 

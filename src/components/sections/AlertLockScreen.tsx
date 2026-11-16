@@ -34,7 +34,7 @@ const NOTIFICATIONS: { stage: Stage; time: string; badge: string; text: string }
   },
 ];
 
-export default function AlertLockScreen() {
+export default function AlertLockScreen({ onStageChange }: { onStageChange?: (stage: Stage) => void }) {
   const [now, setNow] = useState<Date | null>(null);
   const [stage, setStage] = useState<Stage>(0);
 
@@ -47,6 +47,10 @@ export default function AlertLockScreen() {
       clearInterval(clock);
     };
   }, []);
+
+  useEffect(() => {
+    onStageChange?.(stage);
+  }, [stage, onStageChange]);
 
   useEffect(() => {
     const t = setTimeout(() => {
