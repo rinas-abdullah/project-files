@@ -15,69 +15,71 @@ type CapsulePart = {
   y: string;
 };
 
-// Positions are calibrated against public/capsule-only.png (a cropped, background-removed cutout)
+// Positions are calibrated against public/capsule-only.png (a cropped, background-removed cutout).
+// The photo is a stand-in illustration of small internal components — Micro-Core's actual
+// low-profile housing has not been finalized or built yet.
 const CAPSULE_PARTS: CapsulePart[] = [
   {
-    id: "shell",
-    nameAr: "الغلاف الخارجي",
-    nameEn: "Outer Shell",
-    descAr: "الغلاف الذي يثبّت مغناطيسياً على جانب الكعب من الخارج، ويحوي كل الإلكترونيات — لا شيء منها تحت وزن الجسم.",
+    id: "processor",
+    nameAr: "معالج منخفض الطاقة",
+    nameEn: "Low-Power Processor",
+    descAr: "يشغّل نظام القياس ويدير المستشعرات، من داخل منطقة محمية خارج مسار التحميل المباشر — لا شيء منه تحت وزن الجسم.",
     x: "50%",
     y: "11%",
   },
   {
     id: "motion",
-    nameAr: "حساس حركة دقيق",
-    nameEn: "Tiny Motion Sensor",
-    descAr: "يسجّل تردد المشي والميلان والتوازن.",
+    nameAr: "مستشعر حركة",
+    nameEn: "Motion Sensor",
+    descAr: "يدعم تحليل الأنشطة وأنماط الحركة والمشي.",
     x: "50%",
     y: "35%",
   },
   {
-    id: "temp",
-    nameAr: "حساس حرارة ورطوبة",
-    nameEn: "Temperature & Humidity Sensor",
-    descAr: "نفس نوع القياس الذي جُرّب فعلياً مبكراً: ارتفاع +4.9°C داخل الحذاء و+1.4°C داخل الشبشب خلال 20 دقيقة.",
+    id: "reading_circuits",
+    nameAr: "دوائر قراءة المستشعرات",
+    nameEn: "Sensor-Reading Circuits",
+    descAr: "تحوّل إشارات مستشعرات النسيج إلى قياسات رقمية دقيقة.",
     x: "50%",
     y: "41%",
   },
   {
     id: "bluetooth",
-    nameAr: "رقاقة بلوتوث",
-    nameEn: "Bluetooth Chip",
-    descAr: "تنقل البيانات من الكبسولة إلى جوال المريض، ومنه إلى المنصة.",
+    nameAr: "Bluetooth Low Energy",
+    nameEn: "Bluetooth Low Energy",
+    descAr: "تنقل البيانات من الوحدة إلى تطبيق جوال المريض، ومنه إلى المنصة.",
     x: "50%",
     y: "48%",
   },
   {
-    id: "motor",
-    nameAr: "هزّاز بحجم العملة",
-    nameEn: "Coin-Sized Vibration Motor",
-    descAr: "يهتز فوراً عند تجاوز الحد الذي يضعه الطبيب — أول خطوة في التصعيد المتدرج للتنبيه.",
+    id: "power_mgmt",
+    nameAr: "نظام إدارة الطاقة",
+    nameEn: "Power Management System",
+    descAr: "ينظم الشحن والاستهلاك، ويحمي البطارية من السخونة والتلف.",
     x: "50%",
     y: "56%",
   },
   {
     id: "battery",
-    nameAr: "بطارية قابلة لإعادة الشحن",
-    nameEn: "Rechargeable Battery",
-    descAr: "تُشحن عبر محطة شحن USB ليلاً — داخل الكبسولة فقط، أبداً تحت القدم.",
+    nameAr: "بطارية محمية",
+    nameEn: "Protected Battery",
+    descAr: "تزوّد المنظومة بالطاقة — محمية داخل الوحدة فقط، أبداً تحت القدم.",
     x: "48%",
     y: "63%",
   },
   {
-    id: "magnet",
-    nameAr: "حلقة مغناطيسية",
-    nameEn: "Magnetic Ring",
-    descAr: "تثبّت الكبسولة على جانب الكعب، وتسمح بفكها وتركيبها بنقرة واحدة عند تغيير الحذاء.",
+    id: "memory",
+    nameAr: "ذاكرة محلية",
+    nameEn: "Local Memory",
+    descAr: "تسجّل البيانات أثناء انقطاع الاتصال، وتُرسلها لاحقاً عند عودته.",
     x: "50%",
     y: "68%",
   },
   {
-    id: "contacts",
-    nameAr: "نقاط تماس الشحن",
-    nameEn: "Charging Contact Pads",
-    descAr: "تلامس محطة الشحن لتعبئة الكبسولتين (واحدة لكل قدم) ليلاً.",
+    id: "connection_monitor",
+    nameAr: "دائرة متابعة الاتصال",
+    nameEn: "Connection-Monitoring Circuit",
+    descAr: "تتعرّف على أعطال التوصيل أو الانفصال قبل اعتماد القراءة.",
     x: "68%",
     y: "82%",
   },
@@ -96,10 +98,10 @@ export default function CapsuleExplodedView() {
             INTERACTIVE EXPLODED DEMO
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-dark-text font-arabic mb-4 unified-typography">
-            العرض المفكك: الكبسولة المغناطيسية
+            العرض المفكك: وحدة Dithar Micro-Core
           </h2>
           <h3 className="text-lg md:text-xl font-light text-primary-blue dark:text-medical-blue mt-2 font-sans tracking-wide">
-            Exploded View: The Magnetic Capsule
+            Exploded View: Dithar Micro-Core
           </h3>
           <div className="w-24 h-1 bg-primary-blue dark:bg-medical-blue mx-auto rounded-full mt-4"></div>
         </div>
@@ -151,11 +153,11 @@ export default function CapsuleExplodedView() {
           </div>
 
           {/* Center: the real photo with numbered hotspots */}
-          <div className="w-full lg:w-2/4 flex items-center justify-center relative" dir="ltr">
+          <div className="w-full lg:w-2/4 flex flex-col items-center justify-center relative gap-3" dir="ltr">
             <div className="relative h-100 sm:h-120 lg:h-130 w-auto aspect-[265/532] select-none">
               <Image
                 src="/capsule-only.png"
-                alt="Dithar magnetic capsule — exploded concept render"
+                alt="Dithar Micro-Core — illustrative internal-components render"
                 fill
                 className="object-contain drop-shadow-xl"
               />
@@ -185,6 +187,9 @@ export default function CapsuleExplodedView() {
                 );
               })}
             </div>
+            <p className="text-[11px] text-slate-400 font-arabic text-center max-w-70" dir="rtl">
+              تصوّر توضيحي للمكوّنات الداخلية فقط — الشكل الفعلي لوحدة Micro-Core منخفض البروز ولم يُحدَّد تصميمه النهائي بعد.
+            </p>
           </div>
 
           {/* Right (RTL: left): matches the Pad panel's placeholder space for symmetry */}
@@ -254,7 +259,7 @@ export default function CapsuleExplodedView() {
               >
                 <HelpCircle className="w-8 h-8 text-slate-400 dark:text-zinc-650 mb-3" />
                 <p className="text-sm text-muted-text font-arabic font-light">
-                  انقري على أي رقم لرؤية ماذا يفعل هذا الجزء من الكبسولة.
+                  انقري على أي رقم لرؤية ماذا يفعل هذا الجزء من وحدة Micro-Core.
                 </p>
               </motion.div>
             )}

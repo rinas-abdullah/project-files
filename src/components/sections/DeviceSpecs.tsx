@@ -7,39 +7,39 @@ export default function DeviceSpecs() {
   const specs = [
     {
       icon: <Ruler className="w-6 h-6 text-primary-blue" />,
-      label: "مكوّن اللبادة",
-      labelEn: "Pad",
-      value: "حساسات ضغط + رقاقة NFC + طبقة EVA وطبقة غسيل",
+      label: "مكوّن النسيج الذكي",
+      labelEn: "E-Fabric",
+      value: "شبكة مستشعرات ضغط + شبكة توصيل مرنة + طبقتا ملامسة وحماية",
     },
     {
       icon: <Gauge className="w-6 h-6 text-medical-blue" />,
-      label: "مكوّن الكبسولة",
-      labelEn: "Capsule",
-      value: "معالج، حساس حركة وميلان، حرارة ورطوبة، هزّاز",
+      label: "مكوّن Micro-Core",
+      labelEn: "Micro-Core",
+      value: "معالج منخفض الطاقة، بلوتوث منخفض الطاقة، حساس حركة، ذاكرة محلية",
     },
     {
       icon: <BatteryCharging className="w-6 h-6 text-smart-green" />,
       label: "موضع البطارية",
       labelEn: "Battery Location",
-      value: "داخل الكبسولة فقط — لا بطارية تحت وزن الجسم",
+      value: "داخل Micro-Core فقط — لا بطارية تحت وزن الجسم",
     },
     {
       icon: <Grid3x3 className="w-6 h-6 text-purple-400" />,
       label: "حساس الضغط",
       labelEn: "Pressure Sensor",
-      value: "يستجيب للوزن (جُرّب)، القياس الدقيق بالكغم لم يتحقق بعد",
+      value: "يستجيب للوزن (جُرّب 5–25 كغم)، يتشبّع فوق 10 كغم تقريباً — القياس الدقيق بالكغم لم يتحقق بعد",
     },
     {
       icon: <Bluetooth className="w-6 h-6 text-primary-blue" />,
       label: "الاتصال",
       labelEn: "Connectivity",
-      value: "بلوتوث من الكبسولة إلى الجوال — تصميم، لم يُبنَ بعد",
+      value: "بلوتوث منخفض الطاقة من Micro-Core إلى الجوال — تصميم، لم يُبنَ بعد",
     },
     {
       icon: <Zap className="w-6 h-6 text-amber-500" />,
-      label: "الشحن",
-      labelEn: "Charging",
-      value: "محطة شحن USB تشحن الكبسولتين ليلاً",
+      label: "فحص السلامة (Self-Check)",
+      labelEn: "Self-Check",
+      value: "يكتشف تشبّع المستشعر أو انقطاع المسار أو ضعف المعايرة قبل اعتماد القراءة",
     },
   ];
 
@@ -55,7 +55,7 @@ export default function DeviceSpecs() {
             TECHNICAL SPECIFICATIONS
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-arabic leading-tight unified-typography">
-            مكوّنات النظام: اللبادة والكبسولة
+            مكوّنات النظام: النسيج الذكي ووحدة Micro-Core
           </h2>
           <p className="text-muted-text text-sm mt-3 max-w-xl font-light leading-relaxed unified-typography">
             ما هو مبني ومُجرّب فعلياً، وما هو تصميم مستقبلي لم يُبنَ بعد — بلا مبالغة.

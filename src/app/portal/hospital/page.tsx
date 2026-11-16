@@ -80,7 +80,7 @@ export default function HospitalPortalPage() {
     <div className="space-y-6 flex flex-col w-full h-full">
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-slate-900 mb-1">إدارة المنشأة</h1>
-        <p className="text-sm text-slate-500">نظرة عامة على مخزون الكبسولات (اللبادات تبقى مع كل مريض) والأداء السريري.</p>
+        <p className="text-sm text-slate-500">نظرة عامة على مخزون وحدات Micro-Core (اللبادات تبقى مع كل مريض) والأداء السريري.</p>
       </div>
 
       {/* STATS ROW */}
@@ -92,7 +92,7 @@ export default function HospitalPortalPage() {
             </div>
             <GlassBadge status="warning" className="text-[10px]">تقديري</GlassBadge>
           </div>
-          <p className="text-xs text-slate-500 font-bold mb-1">حالات السقوط التي تم تفاديها (مستهدف)</p>
+          <p className="text-xs text-slate-500 font-bold mb-1">مضاعفات ما بعد الجراحة التي تم تفاديها (مستهدف)</p>
           <div className="flex items-baseline gap-1">
             <span className="text-3xl font-bold text-slate-900 font-mono">{stats?.fallReduction}%</span>
             <span className="text-sm text-emerald-600 font-bold">-</span>
@@ -137,9 +137,9 @@ export default function HospitalPortalPage() {
         {/* Table Header Controls */}
         <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-white">
           <div>
-            <h3 className="font-bold text-slate-900">مخزون الكبسولات المغناطيسية</h3>
+            <h3 className="font-bold text-slate-900">مخزون وحدات Micro-Core</h3>
             <p className="text-xs text-slate-500 mt-1">
-              ما سُلّم لكل مريض وما أُعيد للمستودع — اللبادة تبقى في حذاء المريض، والكبسولة هي الجزء الذي تديره المنشأة.
+              ما سُلّم لكل مريض وما أُعيد للمستودع — اللبادة تبقى في حذاء المريض، ووحدة Micro-Core هي الجزء الذي تديره المنشأة.
             </p>
           </div>
           

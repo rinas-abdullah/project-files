@@ -4,6 +4,7 @@ export { default as FounderStory } from "./FounderStory";
 export { default as IntroducingDithar } from "./IntroducingDithar";
 export { default as DeviceSpecs } from "./DeviceSpecs";
 export { default as AiEngine } from "./AiEngine";
+export { default as PrototypeResults } from "./PrototypeResults";
 export { default as CapsuleExplodedView } from "./CapsuleExplodedView";
 export { default as PadDiagram } from "./PadDiagram";
 export { default as HowItWorks } from "./HowItWorks";

@@ -30,15 +30,15 @@ const CONTACT_ITEMS = [
   {
     icon: <Mail className="w-4 h-4" />,
     label: "البريد الإلكتروني",
-    value: "dithar.sa@outlook.com",
-    href: "mailto:dithar.sa@outlook.com",
+    value: "biliilez7200@gmail.com",
+    href: "mailto:biliilez7200@gmail.com",
     dir: "ltr" as const,
   },
   {
     icon: <Phone className="w-4 h-4" />,
     label: "الهاتف",
-    value: "+966 57 199 0916",
-    href: "tel:+966571990916",
+    value: "+966 50 242 3872",
+    href: "tel:+966502423872",
     dir: "ltr" as const,
   },
   {
@@ -189,7 +189,7 @@ export default function Contact() {
             <div className="rounded-2xl border border-smart-green/15 bg-smart-green/[0.04] p-5">
               <p className="text-[11px] font-bold text-smart-green uppercase tracking-wider font-sans mb-2">Clinical-Grade Partnership</p>
               <p className="text-xs text-slate-600 font-arabic leading-relaxed">
-                جميع الشراكات تمر عبر بروتوكول تقييم سريري موثّق لضمان جودة التطبيق الطبي.
+                دِثار بالفعل في شراكة مع الخدمات الطبية بوزارة الداخلية ومستشفيات بن لادن، وأي شراكة جديدة تمر عبر بروتوكول تقييم سريري موثّق لضمان جودة التطبيق الطبي.
               </p>
             </div>
           </motion.div>

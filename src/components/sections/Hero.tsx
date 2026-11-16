@@ -26,10 +26,10 @@ const hotspots: Hotspot[] = [
   {
     id: "pressure",
     index: "01",
-    nameAr: "اللبادة — حساسات الضغط",
-    nameEn: "The Pad — Pressure Sensors",
-    descAr: "لبادة رقيقة تبقى داخل كل حذاء أو شبشب أو جبيرة: حساسات ضغط رقيقة ورقاقة NFC تعرّف نوع الحذاء وطبقة EVA مريحة وطبقة قابلة للغسل. لا بطارية ولا إلكترونيات تحت وزن الجسم.",
-    descEn: "A thin pad that stays inside each shoe, slipper, or cast: thin pressure sensors, an NFC chip that identifies the shoe, an EVA comfort layer, and a washable top layer. No battery or electronics under body weight.",
+    nameAr: "Dithar E-Fabric — حساسات الضغط",
+    nameEn: "Dithar E-Fabric — Pressure Sensors",
+    descAr: "نسيج طي إلكتروني متعدد المستشعرات مدمج داخل طبقات اللباد نفسه: عناصر استشعار موزعة على ست مناطق قياس، مع طبقة ملامسة مريحة للجلد وشبكة توصيل مرنة. النسيج نفسه جزء وظيفي من نظام الاستشعار، لا مجرد حامل للمكونات.",
+    descEn: "A multi-sensor electronic fabric woven into the pad's own layers: sensing elements distributed across six measurement zones, with a comfortable skin-contact layer and a flexible connection network. The fabric itself is a functional part of the sensing system, not just a carrier for components.",
     dotX: 68,
     dotY: 36,
     dotXMobile: 64,
@@ -39,12 +39,12 @@ const hotspots: Hotspot[] = [
     icon: Footprints,
   },
   {
-    id: "capsule",
+    id: "microcore",
     index: "02",
-    nameAr: "الكبسولة المغناطيسية",
-    nameEn: "The Magnetic Capsule",
-    descAr: "كبسولة واحدة لكل قدم تثبت مغناطيسياً على جانب الكعب من الخارج وتنتقل بين اللبادات عند تغيير الحذاء. بداخلها المعالج وحساس الحركة والميلان وحساس الحرارة والرطوبة والهزّاز والبلوتوث والبطارية.",
-    descEn: "One capsule per foot, magnetically attached to the outside of the heel, moving between pads when the shoe changes. It holds the processor, motion/tilt sensor, temperature/humidity sensor, buzzer, Bluetooth, and battery.",
+    nameAr: "Dithar Micro-Core",
+    nameEn: "Dithar Micro-Core",
+    descAr: "وحدة إلكترونية صغيرة منخفضة البروز، متصلة بالنسيج عبر توصيلة رفيعة وموضوعة في منطقة محمية خارج مسار التحميل المباشر — بديل الكبسولة الخارجية الكبيرة. تضم معالجاً منخفض الطاقة وبلوتوث منخفض الطاقة وبطارية محمية ونظام إدارة طاقة وذاكرة محلية وحساس حركة.",
+    descEn: "A small, low-profile electronic unit connected to the fabric by thin wiring, placed in a protected area outside the direct load path — replacing the large external capsule. It holds a low-power processor, Bluetooth Low Energy, a protected battery, a power management system, local memory, and a motion sensor.",
     dotX: 26,
     dotY: 47,
     dotXMobile: 53,
@@ -58,8 +58,8 @@ const hotspots: Hotspot[] = [
     index: "03",
     nameAr: "الحرارة والرطوبة",
     nameEn: "Temperature & Humidity",
-    descAr: "تقيس الكبسولة الحرارة والرطوبة داخل الحذاء — جُرّب هذا فعلياً: ارتفاع +4.9°C داخل الحذاء و+1.4°C داخل الشبشب خلال 20 دقيقة في تجارب أولية.",
-    descEn: "The capsule measures in-shoe temperature and humidity — tested in early trials: +4.9°C inside a shoe and +1.4°C inside a slipper over 20 minutes.",
+    descAr: "تقيس شبكة المستشعرات الحرارة والرطوبة داخل الحذاء — جُرّب هذا فعلياً: ارتفاع +4.9°C داخل الحذاء و+1.4°C داخل الشبشب خلال 20 دقيقة في تجارب أولية منزلية.",
+    descEn: "The sensor network measures in-shoe temperature and humidity — tested in early home-condition trials: +4.9°C inside a shoe and +1.4°C inside a slipper over 20 minutes.",
     dotX: 52,
     dotY: 58,
     dotXMobile: 42,
@@ -73,8 +73,8 @@ const hotspots: Hotspot[] = [
     index: "04",
     nameAr: "التنبيه الفوري",
     nameEn: "Immediate Alert",
-    descAr: "عند تجاوز الحد الذي يضعه الطبيب، تهتز الكبسولة فوراً ويظهر إشعار في جوال المريض، ثم تتصاعد التنبيهات تدريجياً إذا تكرر الأمر.",
-    descEn: "When the doctor-set limit is exceeded, the capsule vibrates immediately and a phone notification appears, escalating gradually if it repeats.",
+    descAr: "عند تجاوز الحد الذي يحدده المختص، يصل تنبيه فوري إلى تطبيق الجوال، ثم تتصاعد المتابعة تدريجياً إذا تكرر الأمر — ضمن حدود تم التحقق من موثوقية بياناتها.",
+    descEn: "When the limit set by the specialist is exceeded, an immediate alert reaches the phone app, then follow-up escalates gradually if it repeats — within thresholds whose data reliability has been verified.",
     dotX: 80,
     dotY: 60,
     dotXMobile: 40,
@@ -143,7 +143,7 @@ export default function Hero() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="mt-5 font-arabic text-sm sm:text-base font-light leading-relaxed text-slate-500 max-w-2xl"
               >
-                دِثار لبادة طبية ذكية رقيقة تبقى داخل كل حذاء، وكبسولة إلكترونية واحدة تنتقل بينها وتثبت مغناطيسياً على الكعب — تقيس الحمل على القدم والحركة والحرارة والرطوبة، وتنبّه المريض فوراً، وترسل البيانات إلى منصة تربط المريض وعائلته وطبيبه والمنشأة الصحية. الفئة الأولى للإطلاق: التأهيل بعد جراحات القدم والكاحل (التحميل الجزئي للوزن).
+                دِثار لبادة طبية ذكية بنسيج إلكتروني متعدد المستشعرات مدمج في طبقاتها، ووحدة معالجة وطاقة صغيرة منخفضة البروز متصلة بها خارج مسار التحميل المباشر — تقيس الحمل على القدم والحركة والحرارة والرطوبة، وتنبّه المريض فوراً، وترسل البيانات إلى منصة تربط المريض وعائلته وطبيبه والمنشأة الصحية. الفئة الأولى للإطلاق: التأهيل بعد جراحات القدم والكاحل (التحميل الجزئي للوزن).
               </motion.p>
 
               {/* Minimal Horizontal Capability List (Replaces all generic cards) */}
@@ -184,7 +184,7 @@ export default function Hero() {
             <div className="absolute top-3 right-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 shadow-xs select-none">
               <Image src="/logo-icon.png" alt="Dithar" width={16} height={16} className="object-contain dark:hidden" />
               <Image src="/logo-icon-white.png" alt="Dithar" width={16} height={16} className="object-contain hidden dark:block" />
-              <span className="text-[11px] font-bold font-arabic text-primary-blue dark:text-medical-blue">دِثار — لبادة وكبسولة</span>
+              <span className="text-[11px] font-bold font-arabic text-primary-blue dark:text-medical-blue">دِثار — نسيج ذكي ووحدة معالجة</span>
             </div>
 
             {/* Product Photograph — portrait crop on mobile (matches the tall device frame), landscape on desktop */}

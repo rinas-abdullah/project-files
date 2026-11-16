@@ -144,7 +144,7 @@ async function seed() {
       patientId: "pat-1",
       author: "د. خالد السليمان",
       date: "2025-05-12",
-      content: "المريضة تظهر استجابة ممتازة لتوزيع الحمل عبر اللبادة والكبسولة. تحسّن ملحوظ في الالتزام بحد التحميل مقارنة بخط الأساس.",
+      content: "المريضة تظهر استجابة ممتازة لتوزيع الحمل عبر النسيج الذكي ووحدة Micro-Core. تحسّن ملحوظ في الالتزام بحد التحميل مقارنة بخط الأساس.",
     },
     {
       id: "n2",
@@ -158,7 +158,7 @@ async function seed() {
   await db.insert(devices).values([
     {
       id: "dev-1",
-      deviceId: "DITHAR-CAPSULE-9842",
+      deviceId: "DITHAR-MICROCORE-9842",
       status: "connected",
       patientId: "pat-4",
       patientName: "أحمد بن عبد الله السلمان",
@@ -173,7 +173,7 @@ async function seed() {
     },
     {
       id: "dev-2",
-      deviceId: "DITHAR-CAPSULE-8812",
+      deviceId: "DITHAR-MICROCORE-8812",
       status: "connected",
       patientId: "pat-1",
       patientName: "سارة بنت أحمد العتيبي",
@@ -188,7 +188,7 @@ async function seed() {
     },
     {
       id: "dev-3",
-      deviceId: "DITHAR-CAPSULE-4091",
+      deviceId: "DITHAR-MICROCORE-4091",
       status: "disconnected",
       patientId: null,
       patientName: "غير مرتبط",
@@ -203,7 +203,7 @@ async function seed() {
     },
     {
       id: "dev-4",
-      deviceId: "DITHAR-CAPSULE-7733",
+      deviceId: "DITHAR-MICROCORE-7733",
       status: "low_battery",
       patientId: "pat-2",
       patientName: "محمد بن عبد العزيز الغامدي",
@@ -244,7 +244,7 @@ async function seed() {
       email: "sara.alotaibi@ditharhealth.sa",
       passwordHash: bcrypt.hashSync(PATIENT_PASSWORD, 10),
       mrn: "#DH-8812",
-      deviceId: "DITHAR-CAPSULE-9842",
+      deviceId: "DITHAR-MICROCORE-9842",
       hospital: "مدينة الملك فهد الطبية",
     },
   ]).onConflictDoNothing();

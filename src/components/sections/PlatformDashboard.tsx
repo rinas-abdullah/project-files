@@ -5,55 +5,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Activity, Bell, AlertTriangle, X, Check, ArrowLeft,
+  X, Check, ArrowLeft,
 } from "lucide-react";
 
 /* ═══════════════════════════════
    TYPES & CONSTANTS
 ═══════════════════════════════ */
 
-type Risk = "high" | "medium" | "stable";
-type AlertLevel = "danger" | "warning" | "info";
-
 /* ═══════════════════════════════
    PATIENT DATA
 ═══════════════════════════════ */
 
-function generateCadence(base: number, variance: number, len = 24) {
-  return Array.from({ length: len }, (_, i) => ({
-    t: `${String(Math.floor(i / 2)).padStart(2, "0")}:${i % 2 === 0 ? "00" : "30"}`,
-    left:  Math.max(10, Math.round(base + (Math.random() - 0.5) * variance)),
-    right: Math.max(10, Math.round(base * 1.05 + (Math.random() - 0.5) * variance * 0.8)),
-  }));
-}
-
-function generateTemp(base: number, trend: number, len = 48) {
-  return Array.from({ length: len }, (_, i) => ({
-    t: `${String(Math.floor(i * 0.5)).padStart(2, "0")}h`,
-    temp: parseFloat((base + trend * (i / len) + (Math.random() - 0.5) * 0.15).toFixed(1)),
-    normal: 36.8,
-  }));
-}
-
 // Illustrative-only sample used for the public homepage preview — not a real patient record.
 const PATIENTS = [
-  {
-    id: "DEMO-01", name: "عرض توضيحي", age: 58, gender: "ذكر",
-    condition: "Post-Stroke Hemiplegia (نموذج توضيحي)", ward: "—", physician: "—",
-    risk: "high" as Risk, admitted: "—",
-    vitals: { steps: 1420, balance: 78, tempC: 37.2, heartRate: 82, bmi: 29.4, fallRiskIndex: 8.7, humidity: 81 },
-    recovery: 52, compliance: 68, alerts: 4,
-    cadence: generateCadence(48, 22),
-    temperature: generateTemp(37.0, 0.25),
-    pressure: { bigToe: 0.93, toe2: 0.82, toe3: 0.66, toe4: 0.46, toe5: 0.32, ball: 0.87, arch: 0.18, heel: 0.91 },
-    pressureR: { bigToe: 0.54, toe2: 0.47, toe3: 0.38, toe4: 0.29, toe5: 0.22, ball: 0.51, arch: 0.31, heel: 0.49 },
-    aiAlerts: [
-      { level: "danger"  as AlertLevel, text: "اعتماد غير متماثل حاد على الطرف السليم — خطر سقوط مرتفع" },
-      { level: "danger"  as AlertLevel, text: "تراجع تماثل المشية 1.2° عن خط الأساس — تدهور حركي" },
-      { level: "warning" as AlertLevel, text: "رطوبة داخلية 81% — خطر تهيج الجلد" },
-      { level: "info"    as AlertLevel, text: "موعد مراجعة طارئة خلال 6 ساعات" },
-    ],
-  },
+  { id: "DEMO-01", name: "عرض توضيحي" },
 ];
 
 /* ═══════════════════════════════
@@ -87,7 +52,6 @@ function Toast({ msg, onClose }: { msg: string; onClose: () => void }) {
 export default function PlatformDashboard() {
   const selectedIdx = 0;
   const [toast, setToast] = useState<string | null>(null);
-  const [showFallAlert, setShowFallAlert] = useState(false);
   const [activeView, setActiveView] = useState<"patient" | "doctor" | "facility">("patient");
 
   const patient = PATIENTS[selectedIdx];
@@ -204,7 +168,7 @@ export default function PlatformDashboard() {
                     <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
                       <div className="flex items-center justify-between mb-5">
                         <div>
-                          <h4 className="text-base font-bold text-slate-900">Dithar Capsule Node</h4>
+                          <h4 className="text-base font-bold text-slate-900">Dithar Micro-Core Node</h4>
                           <p className="text-[10px] text-slate-500 mt-1">ID: {patient.id}</p>
                         </div>
                         <span className="rounded-full bg-red-50 text-red-700 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] border border-red-100">غير متصل</span>
@@ -223,7 +187,7 @@ export default function PlatformDashboard() {
                           ))}
                         </div>
                         <div className="flex flex-col items-center justify-center gap-4">
-                          <Image src="/capsule-exploded.jpg" alt="Dithar magnetic capsule" width={130} height={130} className="object-contain rounded-xl" />
+                          <Image src="/capsule-only.png" alt="Dithar Micro-Core — illustrative render" width={130} height={130} className="object-contain rounded-xl" />
                           <button className="w-full rounded-3xl bg-[#0B4D8D] text-white py-3 text-sm font-bold hover:bg-blue-800 transition-colors">
                             خارطة الصحة الشاملة
                           </button>
@@ -283,9 +247,9 @@ export default function PlatformDashboard() {
                   </div>
 
                   {[
-                    { name: "نورة ق.", category: "كبار السن (سقوط)", limit: "20 كغم", compliance: "71%", overruns: 5, status: "عاجل", style: "bg-red-50 text-red-700 border-red-100" },
+                    { name: "نورة ق.", category: "القدم السكرية", limit: "20 كغم", compliance: "71%", overruns: 5, status: "عاجل", style: "bg-red-50 text-red-700 border-red-100" },
                     { name: "أحمد س.", category: "تأهيل ما بعد الجراحة", limit: "15 كغم", compliance: "86%", overruns: 2, status: "يحتاج متابعة", style: "bg-amber-50 text-amber-700 border-amber-100" },
-                    { name: "سارة ع.", category: "الشلل النصفي", limit: "25 كغم", compliance: "97%", overruns: 0, status: "مستقر", style: "bg-emerald-50 text-emerald-700 border-emerald-100" },
+                    { name: "سارة ع.", category: "تحليل المشي", limit: "25 كغم", compliance: "97%", overruns: 0, status: "مستقر", style: "bg-emerald-50 text-emerald-700 border-emerald-100" },
                   ].map((p) => (
                     <div key={p.name} className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
                       <div className="flex items-center justify-between gap-3 mb-3">
@@ -343,8 +307,8 @@ export default function PlatformDashboard() {
                         {[
                           { label: "تأهيل ما بعد الجراحة", count: 18 },
                           { label: "القدم السكرية", count: 14 },
-                          { label: "الشلل النصفي", count: 9 },
-                          { label: "كبار السن (سقوط)", count: 7 },
+                          { label: "إعادة تأهيل الحركة", count: 9 },
+                          { label: "تحليل المشي", count: 7 },
                         ].map((c) => (
                           <div key={c.label} className="flex items-center justify-between">
                             <span className="text-xs font-semibold text-slate-700">{c.label}</span>
@@ -376,7 +340,7 @@ export default function PlatformDashboard() {
                       { label: "متوسط الالتزام بالحد", value: "89%" },
                       { label: "حالات عاجلة اليوم", value: "3" },
                       { label: "لبادات مسلّمة", value: "62" },
-                      { label: "كبسولات مُعادة", value: "55" },
+                      { label: "وحدات Micro-Core المُعادة", value: "55" },
                     ].map((stat) => (
                       <div key={stat.label} className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm">
                         <p className="text-[9px] text-slate-500 uppercase tracking-[0.18em] font-bold">{stat.label}</p>
@@ -399,57 +363,6 @@ export default function PlatformDashboard() {
       {/* Toast */}
       <AnimatePresence>
         {toast && <Toast msg={toast} onClose={() => setToast(null)} />}
-      </AnimatePresence>
-
-      {/* Level 1 Fall Alert Simulation Modal */}
-      <AnimatePresence>
-        {showFallAlert && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-red-100 overflow-hidden"
-            >
-              <div className="bg-red-500 p-6 flex flex-col items-center justify-center text-white relative">
-                <button onClick={() => setShowFallAlert(false)} className="absolute top-4 left-4 p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors">
-                  <X className="w-4 h-4" />
-                </button>
-                <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-4 animate-pulse">
-                  <AlertTriangle className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold font-arabic mb-1">تنبيه مستوى أول (لحظي)</h3>
-                <p className="text-sm font-arabic font-medium opacity-90 text-center">انحراف مفاجئ في مركز الثقل (CoG &gt; 15°)</p>
-              </div>
-              <div className="p-6 bg-white flex flex-col gap-4">
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                    <Activity className="w-4 h-4 text-primary-blue" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-slate-900 font-arabic">استجابة الحشوة (Haptic)</h4>
-                    <p className="text-xs text-slate-600 mt-1 leading-relaxed font-arabic">تم تفعيل اهتزاز تصحيحي في الحذاء الأيسر لتنبيه المريض وإعادة ضبط التوازن.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                    <Bell className="w-4 h-4 text-emerald-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-slate-900 font-arabic">توجيه صوتي (Voice Prompt)</h4>
-                    <p className="text-xs text-slate-600 mt-1 leading-relaxed font-arabic">تم إطلاق تنبيه صوتي للمريض عبر التطبيق: &quot;الرجاء التوقف بأمان وتصحيح الوضعية&quot;.</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowFallAlert(false)}
-                  className="mt-2 w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm font-arabic transition-colors shadow-md"
-                >
-                  إغلاق التنبيه والمتابعة
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
       </AnimatePresence>
     </section>
   );

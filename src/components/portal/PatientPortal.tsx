@@ -58,7 +58,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
   const { t, language } = useLanguage();
   const { toast } = useToast();
 
-  // The pad stays in each shoe, only the capsule moves between them — this
+  // Each registered shoe has its own calibrated E-Fabric pad + Micro-Core unit — this
   // list is real, saved via /api/patients/[id] (type: "add_shoe").
   const [shoes, setShoes] = React.useState(patientData?.shoes ?? []);
   const [addingShoe, setAddingShoe] = React.useState(false);
@@ -235,7 +235,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
               )}
             </div>
 
-            <p className="text-[9px] font-mono font-bold text-slate-400 text-left w-full mb-4" dir="ltr">ID: DITHAR-CAPSULE-9842</p>
+            <p className="text-[9px] font-mono font-bold text-slate-400 text-left w-full mb-4" dir="ltr">ID: DITHAR-MICROCORE-9842</p>
 
             <div className="flex-1 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-y-3 w-full md:w-1/2" dir="ltr">
@@ -259,8 +259,8 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
 
               <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-3 mt-4 md:mt-0">
                 <Image
-                  src="/capsule-exploded.jpg"
-                  alt="Dithar magnetic capsule"
+                  src="/capsule-only.png"
+                  alt="Dithar Micro-Core — illustrative render"
                   width={110}
                   height={110}
                   className="object-contain drop-shadow-xl rounded-xl"
@@ -289,7 +289,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
             </div>
           </GlassCard>
 
-          {/* MY SHOES — the pad stays in the shoe, only the capsule moves */}
+          {/* MY SHOES — each shoe has its own calibrated E-Fabric pad + Micro-Core unit */}
           <GlassCard className="p-4 md:p-6 flex flex-col w-full overflow-hidden">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -359,9 +359,7 @@ export function PatientPortal({ patientData }: { patientData?: Patient }) {
             </div>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">{t.escalation_desc}</p>
             <div className="flex items-center gap-2 mt-3 text-[9px] font-bold text-slate-400">
-              <span className="flex items-center gap-1"><Bluetooth className="w-3 h-3" />{language === "ar" ? "اهتزاز" : "Vibrate"}</span>
-              <span>→</span>
-              <span className="flex items-center gap-1"><Wifi className="w-3 h-3" />{language === "ar" ? "إشعار" : "Notify"}</span>
+              <span className="flex items-center gap-1"><Wifi className="w-3 h-3" />{language === "ar" ? "تنبيه فوري" : "Instant alert"}</span>
               <span>→</span>
               <span className="flex items-center gap-1"><Users className="w-3 h-3" />{language === "ar" ? "العائلة" : "Family"}</span>
               <span>→</span>

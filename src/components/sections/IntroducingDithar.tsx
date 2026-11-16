@@ -27,20 +27,20 @@ export default function IntroducingDithar() {
     {
       id: "pressure",
       icon: <Activity className="w-5 h-5" />,
-      title: "حساسات الضغط (في اللبادة)",
-      titleEn: "Pressure Sensors (in the Pad)",
-      desc: "حساسات ضغط رقيقة داخل اللبادة التي تبقى في الحذاء تستجيب لوزن القدم — جُرّب هذا بأحمال 5 إلى 25 كغم في حذاء وشبشب. القياس الدقيق بالكيلوغرام لم يتحقق بعد؛ الحساس يتشبّع عند الأحمال الأعلى.",
+      title: "شبكة المستشعرات (في النسيج)",
+      titleEn: "Sensor Network (in the Fabric)",
+      desc: "عناصر استشعار موزعة على ست مناطق قياس ضمن طبقات النسيج نفسه، تستجيب لوزن القدم — جُرّب هذا بأحمال 5 إلى 25 كغم في حذاء وشبشب. القياس الدقيق بالكيلوغرام لم يتحقق بعد؛ الحساس الحالي يتشبّع عند الأحمال الأعلى.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#1e88c8",
       x: "45%",
       y: "45%",
     },
     {
-      id: "nfc",
+      id: "wiring",
       icon: <HelpCircle className="w-5 h-5" />,
-      title: "رقاقة NFC (في اللبادة)",
-      titleEn: "NFC Chip (in the Pad)",
-      desc: "تعرّف نوع الحذاء عند تركيب الكبسولة، فتستخدم المعايرة الخاصة بهذا الحذاء تلقائياً دون إدخال يدوي من المريض.",
+      title: "شبكة التوصيل المرنة",
+      titleEn: "Flexible Connection Network",
+      desc: "مسارات إلكترونية مرنة تنقل إشارات المستشعرات إلى وحدة Micro-Core، وتتحمل الانحناء والحركة المتكررة دون قطع الإشارة.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#06b6d4",
       x: "86%",
@@ -49,9 +49,9 @@ export default function IntroducingDithar() {
     {
       id: "eva",
       icon: <Zap className="w-5 h-5" />,
-      title: "طبقة EVA وطبقة قابلة للغسل",
-      titleEn: "EVA Comfort & Washable Layer",
-      desc: "طبقة EVA مريحة وطبقة علوية قابلة للغسل — لا بطارية ولا إلكترونيات تحت وزن الجسم، فقط الحساسات الرقيقة والرقاقة.",
+      title: "طبقة ملامسة القدم والحماية",
+      titleEn: "Skin-Contact & Protection Layers",
+      desc: "طبقة نسيجية مريحة للراحة وتقليل الاحتكاك من الأعلى، وطبقة حماية ودعم ميكانيكي من الأسفل تحمي المستشعرات والمسارات من الإجهاد والرطوبة والعرق.",
       color: "border-primary-blue text-primary-blue bg-primary-blue/5 dark:border-medical-blue/30 dark:text-medical-blue dark:bg-medical-blue/10",
       dotColor: "#fbbf24",
       x: "15%",
@@ -127,10 +127,10 @@ export default function IntroducingDithar() {
             تعرّف على دِثار
           </h2>
           <h3 className="text-lg md:text-xl font-light text-primary-blue dark:text-medical-blue mt-2 font-sans tracking-wide">
-            Meet Dithar: Pad + Magnetic Capsule
+            Meet Dithar: Smart E-Fabric + Micro-Core
           </h3>
           <p className="text-muted-text text-sm sm:text-base mt-4 leading-relaxed font-light font-arabic">
-            دِثار لبادة طبية ذكية رقيقة تبقى داخل كل حذاء، وكبسولة إلكترونية واحدة تنتقل بينها وتثبت مغناطيسياً على الكعب من الخارج. اللبادة لا تحمل بطارية أبداً — فالمريض لا ينقل لبادة من حذاء لحذاء، بل ينقل الكبسولة فقط بنقرة واحدة.
+            دِثار لبادة طبية ذكية بنسيج إلكتروني متعدد المستشعرات مدمج في طبقاتها، ووحدة Micro-Core صغيرة منخفضة البروز متصلة بالنسيج خارج مسار التحميل المباشر — بديل الكبسولة الخارجية الكبيرة. طبقات نسيجية مريحة وقابلة للفصل عند الحاجة للتنظيف أو الصيانة.
           </p>
 
           {/* Hotspots Buttons Grid */}

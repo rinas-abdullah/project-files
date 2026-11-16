@@ -1,32 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building, HeartHandshake, Shield, Sparkles, TrendingUp } from "lucide-react";
+import { Package, Building, Wrench, RefreshCw, FileCheck, TrendingUp } from "lucide-react";
 
 const segments = [
   {
-    icon: <Building className="w-6 h-6 text-primary-blue" />,
-    tag: "المستشفيات",
-    title: "اشتراك SaaS للرعاية المؤسسية",
-    desc: "حلول سحابية متكاملة تربط لباد دِثار الطبي الذكي بالسجلات الطبية لتتبع المرضى بعد الخروج وتقليل إعادة الدخول.",
+    icon: <Package className="w-6 h-6 text-primary-blue" />,
+    tag: "بيع الأجهزة",
+    title: "مبيعات اللبادة ووحدة Micro-Core",
+    desc: "بيع لبادة Dithar E-Fabric ووحدة Micro-Core للمستشفيات ومراكز التأهيل كجهاز طبي قائم بذاته.",
   },
   {
-    icon: <HeartHandshake className="w-6 h-6 text-medical-blue" />,
-    tag: "التأهيل",
-    title: "ترخيص للأجهزة وخدمات إعادة التأهيل",
-    desc: "مراكز العلاج الطبيعي والتأهيل تعتمد اللباد الذكي لقياس فعالية إعادة التأهيل وتوثيق التطور وتوزيع الأحمال.",
+    icon: <Building className="w-6 h-6 text-medical-blue" />,
+    tag: "ترخيص المنصة",
+    title: "ترخيص منصة المتابعة للمنشآت الطبية",
+    desc: "اشتراك دوري يتيح للمستشفيات والمنشآت الصحية الوصول لمنصة المتابعة والتنبيهات وتقارير الالتزام.",
   },
   {
-    icon: <Shield className="w-6 h-6 text-smart-green" />,
-    tag: "التأمين",
-    title: "شراكات تقاسم المخاطر",
-    desc: "تخفيض تكلفة المضاعفات الطبية يساعد شركات التأمين على خفض الإنفاق وتحسين مؤشرات الجودة الصحية.",
+    icon: <Wrench className="w-6 h-6 text-smart-green" />,
+    tag: "الصيانة والدعم",
+    title: "عقود الصيانة والدعم الفني",
+    desc: "عقود دورية لصيانة الأجهزة ومعايرتها وتحديث البرمجيات، تضمن استمرارية دقة القياس.",
   },
   {
-    icon: <Sparkles className="w-6 h-6 text-purple-400" />,
-    tag: "القطاع العام",
-    title: "مشروعات صحة وطنية",
-    desc: "حملات وطنية لتحسين رعاية كبار السن ومرضى التأهيل العصبي والحركي من خلال رصد مبكر ودعم قرارات السياسة الصحية.",
+    icon: <RefreshCw className="w-6 h-6 text-purple-400" />,
+    tag: "الاستبدال الدوري",
+    title: "استبدال النسيج الاستهلاكي",
+    desc: "دخل متكرر من استبدال طبقة النسيج الذكي بعد انتهاء عمرها الاستخدامي، دون حاجة لتغيير وحدة Micro-Core.",
+  },
+  {
+    icon: <FileCheck className="w-6 h-6 text-teal-500" />,
+    tag: "التكامل التنظيمي",
+    title: "التكامل مع الأنظمة التنظيمية",
+    desc: "دعم فني لربط بيانات الجهاز بمتطلبات الجهات التنظيمية والمنظومات الصحية التي تعتمده.",
   },
 ];
 
@@ -48,7 +54,7 @@ export default function BusinessModel() {
               Business Model
             </h3>
             <p className="mt-5 text-sm md:text-base leading-relaxed text-slate-600 dark:text-slate-300 max-w-xl font-light font-arabic unified-typography">
-              نموذج تجاري متعدد القنوات يدعم المستشفيات، التأمين، والمشروعات الصحية الوطنية بشرط واحد: تقليل التكلفة وتحسين نتائج المريض.
+              نموذج دخل متعدد المصادر: من بيع الأجهزة واستبدال النسيج الاستهلاكي، إلى ترخيص المنصة وعقود الصيانة والتكامل التنظيمي — مبني على استمرارية الاستخدام لا على بيع لمرة واحدة.
             </p>
 
             <div className="mt-8 grid gap-4 text-right">
@@ -65,7 +71,7 @@ export default function BusinessModel() {
                   نموذج نمو قوي
                 </p>
                 <p className="mt-3 text-sm text-slate-600 leading-relaxed font-arabic">
-                  ترخيص شهري وسنوي مع حوافز أداء يمنح دِثار قابلية توسع سريعة في الأسواق الصحية المؤسسية.
+                  ترخيص دوري للمنصة مع عقود صيانة ودعم يمنح دِثار مصدر دخل متكرر يتوسع مع عدد المنشآت المشتركة.
                 </p>
               </div>
             </div>

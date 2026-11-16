@@ -1,37 +1,44 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Activity, Cpu, Thermometer, Target } from "lucide-react";
+import { Activity, Cpu, Thermometer, Target, ShieldCheck, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const features = [
   {
-    titleAr: "الخط الأساسي الشخصي",
-    titleEn: "Personal Motion Baseline",
-    desc: "يبني ملف حركة فردي لكل مريض لاكتشاف التغيرات الحقيقية.",
+    titleAr: "التحليل الشخصي",
+    titleEn: "Personal Analysis",
+    desc: "ينشئ خطاً أساسياً للمستخدم من قياسات صالحة، ثم يتابع تغيّر المؤشرات مقارنة بسجل المستخدم نفسه.",
     icon: Activity,
     color: "text-primary-blue bg-primary-blue/10 border-primary-blue/30 dark:text-medical-blue dark:bg-medical-blue/15 dark:border-medical-blue/30",
   },
   {
-    titleAr: "كشف الانحرافات الدقيقة",
-    titleEn: "Micro-deviation Detection",
-    desc: "يراقب تغيرات الضغط والتوازن في كل لحظة قبل أن تصبح مشكلة.",
+    titleAr: "تحليل الضغط والحركة",
+    titleEn: "Pressure & Movement Analysis",
+    desc: "يربط بيانات الضغط بنشاط القدم لتفسير أوقات الوقوف والمشي وفترات التحميل.",
     icon: Target,
     color: "text-orange-500 bg-orange-500/10 border-orange-500/20",
   },
   {
-    titleAr: "تقييم الوضع الوظيفي",
-    titleEn: "Functional Health Scoring",
-    desc: "يولد تقرير استقرار بسيط وواضح للفريق الطبي.",
-    icon: Cpu,
+    titleAr: "اتجاهات الحرارة والرطوبة",
+    titleEn: "Temperature & Humidity Trends",
+    desc: "يعرض التغيّر عبر الزمن مع مراعاة اختلاف بيئة الحذاء وموضع المستشعر.",
+    icon: Thermometer,
     color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
   },
   {
-    titleAr: "ترتيب الأولوية للطبيب",
-    titleEn: "Priority Ranking for the Doctor",
-    desc: "يرفع المرضى الأكثر تجاوزاً للحد إلى أعلى قائمة الطبيب — دون أن يشخّص أو يقترح علاجاً.",
-    icon: Thermometer,
+    titleAr: "تقييم موثوقية البيانات",
+    titleEn: "Data Reliability Assessment",
+    desc: "يميّز بين البيانات الصالحة والناقصة وغير الموثوقة قبل استخدامها في التقارير والتنبيهات.",
+    icon: ShieldCheck,
     color: "text-slate-700 bg-slate-100 border-slate-200 dark:text-slate-100 dark:bg-slate-900/70 dark:border-zinc-800",
+  },
+  {
+    titleAr: "التنبيهات الشخصية",
+    titleEn: "Personalized Alerts",
+    desc: "تُضبط حدود التحميل وفق تعليمات المختص، وتُفعَّل التنبيهات عند رصد تجاوزات ضمن نطاق تم التحقق منه — دون أن تشخّص الحالة أو تقترح علاجاً.",
+    icon: Bell,
+    color: "text-rose-500 bg-rose-500/10 border-rose-500/20",
   },
 ];
 
@@ -134,7 +141,7 @@ export default function AiEngine() {
                       تحليل متكامل
                     </p>
                     <p className="mt-3 text-sm text-slate-900 dark:text-slate-100 font-arabic leading-relaxed">
-                      يربط الرصد الحركي والضغط والحرارة في رؤية واحدة.
+                      يربط الرصد الحركي والضغط والحرارة والرطوبة في رؤية واحدة.
                     </p>
                   </div>
                   <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/70">

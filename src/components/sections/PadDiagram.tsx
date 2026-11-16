@@ -14,16 +14,16 @@ type Callout = {
 
 const CALLOUTS: Callout[] = [
   // Right side, top to bottom
-  { id: "top", titleAr: "الطبقة العلوية", descAr: "قماش مسامي مضاد للبكتيريا", x: 50, y: 12, side: "right" },
-  { id: "comfort", titleAr: "طبقة الراحة", descAr: "إسفنج EVA يوزّع الضغط على القدم", x: 50, y: 29, side: "right" },
-  { id: "traces", titleAr: "مسارات التوصيل", descAr: "خطوط موصلة مطبوعة بين الحساسات", x: 58, y: 40, side: "right" },
-  { id: "sensors", titleAr: "حساسات الضغط", descAr: "أربعة حساسات رقيقة (الدوائر المضيئة) — جُرّبت بأحمال 5–25 كغم", x: 65, y: 43, side: "right" },
-  { id: "substrate", titleAr: "شريحة الحساسات", descAr: "طبقة مرنة شفافة تحمل الدوائر", x: 73, y: 46, side: "right" },
-  { id: "base", titleAr: "القاعدة", descAr: "طبقة EVA مرنة وخفيفة", x: 50, y: 85, side: "right" },
+  { id: "top", titleAr: "طبقة ملامسة القدم", descAr: "نسيج مريح يراعي التهوية والتعرق وملاءمة الجلد", x: 50, y: 12, side: "right" },
+  { id: "comfort", titleAr: "توزيع الضغط", descAr: "طبقة تساعد على توزيع الحمل بانتظام على القدم", x: 50, y: 29, side: "right" },
+  { id: "traces", titleAr: "شبكة التوصيل المرنة", descAr: "مسارات إلكترونية مرنة تنقل إشارات المستشعرات، وتتحمل الانحناء المتكرر", x: 58, y: 40, side: "right" },
+  { id: "sensors", titleAr: "شبكة المستشعرات", descAr: "عناصر استشعار موزعة على ست مناطق قياس — جُرّبت بأحمال 5–25 كغم", x: 65, y: 43, side: "right" },
+  { id: "substrate", titleAr: "الركيزة المرنة", descAr: "طبقة مرنة شفافة تحمل مسارات ومكوّنات الاستشعار", x: 73, y: 46, side: "right" },
+  { id: "base", titleAr: "الحماية والدعم الميكانيكي", descAr: "تحمي المستشعرات والمسارات من الإجهاد والرطوبة، وتحافظ على ثبات القياس", x: 50, y: 85, side: "right" },
   // Left side, top to bottom
-  { id: "magnet", titleAr: "نقطة التوصيل المغناطيسي", descAr: "تثبت عليها الكبسولة", x: 29, y: 46, side: "left" },
-  { id: "tab", titleAr: "لسان التوصيل", descAr: "عند الكعب من الجهة الخارجية", x: 22, y: 47, side: "left" },
-  { id: "nfc", titleAr: "رقاقة NFC", descAr: "تعرّف الكبسولة بنوع الحذاء", x: 38, y: 52, side: "left" },
+  { id: "microcore_link", titleAr: "نقطة الاتصال بـ Micro-Core", descAr: "توصيلة رفيعة تربط النسيج بوحدة المعالجة خارج مسار التحميل المباشر", x: 29, y: 46, side: "left" },
+  { id: "protected_zone", titleAr: "منطقة محمية خارج التحميل", descAr: "تضمن ألا توضع الإلكترونيات تحت وزن الجسم مباشرة", x: 22, y: 47, side: "left" },
+  { id: "heel_zone", titleAr: "منطقة قياس الكعب", descAr: "إحدى مناطق القياس الست — ضغط الكعب أثناء المشي والوقوف", x: 38, y: 52, side: "left" },
 ];
 
 export default function PadDiagram() {
@@ -32,7 +32,7 @@ export default function PadDiagram() {
       <div className="max-w-6xl mx-auto">
         <div className="relative rounded-[2rem] border border-slate-200/70 bg-white/70 backdrop-blur-sm shadow-[0_20px_60px_rgba(15,23,42,0.06)] p-6 sm:p-10">
           <div className="mb-2" dir="rtl">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-arabic">مكوّنات لباد دِثار</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-arabic">طبقات نسيج Dithar E-Fabric</h2>
           </div>
 
           {/* Desktop: real photo with leader-line callouts on both sides */}

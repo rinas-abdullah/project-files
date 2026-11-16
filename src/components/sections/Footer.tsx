@@ -109,7 +109,11 @@ export default function Footer() {
             </button>
 
             <p className="text-white/45 text-sm leading-relaxed font-arabic font-light max-w-xs text-right">
-              منصة رعاية صحية ذكية تعتمد على اللباد الطبي الذكي (Smart PAD) ومنصة سحابية بالذكاء الاصطناعي لمراقبة المرضى بشكل مستمر.
+              منصة رعاية صحية ذكية تعتمد على نسيج Dithar E-Fabric الذكي ووحدة Micro-Core، ومنصة سحابية بالذكاء الاصطناعي لمراقبة المرضى بشكل مستمر.
+            </p>
+
+            <p className="text-white/30 text-[11px] leading-relaxed font-arabic font-light max-w-xs text-right">
+              تأسست دِثار في يناير 2026، بالشراكة مع الخدمات الطبية بوزارة الداخلية ومستشفيات بن لادن.
             </p>
 
             {/* Social icons */}
@@ -192,14 +196,14 @@ export default function Footer() {
               جدة، المملكة العربية السعودية
             </span>
             <span className="hidden sm:block w-px h-3 bg-white/10" />
-            <a href="mailto:dithar.sa@outlook.com" className="flex items-center gap-1.5 hover:text-white/60 transition-colors duration-200" dir="ltr">
+            <a href="mailto:biliilez7200@gmail.com" className="flex items-center gap-1.5 hover:text-white/60 transition-colors duration-200" dir="ltr">
               <Mail className="w-3 h-3 text-white/20" />
-              dithar.sa@outlook.com
+              biliilez7200@gmail.com
             </a>
             <span className="hidden sm:block w-px h-3 bg-white/10" />
-            <a href="tel:+966571990916" className="flex items-center gap-1.5 hover:text-white/60 transition-colors duration-200" dir="ltr">
+            <a href="tel:+966502423872" className="flex items-center gap-1.5 hover:text-white/60 transition-colors duration-200" dir="ltr">
               <Phone className="w-3 h-3 text-white/20" />
-              +966 57 199 0916
+              +966 50 242 3872
             </a>
           </div>
 
@@ -258,7 +262,7 @@ export default function Footer() {
                 </div>
 
                 <p className="pt-2 border-t border-white/[0.06]">
-                  للتواصل: <a href="mailto:dithar.sa@outlook.com" className="text-primary-blue hover:underline" dir="ltr">dithar.sa@outlook.com</a>
+                  للتواصل: <a href="mailto:biliilez7200@gmail.com" className="text-primary-blue hover:underline" dir="ltr">biliilez7200@gmail.com</a>
                 </p>
               </div>
             </motion.div>
@@ -298,7 +302,7 @@ export default function Footer() {
 
                 <div className="space-y-2 mt-4">
                   <h4 className="font-semibold text-primary-blue text-base">1. الاستخدام المخصص والمسؤولية الطبية</h4>
-                  <p>منظومة دِثار (اللبادة والكبسولة والمستشعرات والذكاء الاصطناعي) هي أداة لمراقبة وتحليل المؤشرات الحيوية ودعم القرارات الطبية، وليست بديلاً للتشخيص السريري المباشر أو حالات الطوارئ الطبية الحرجة، وليست معتمدة من أي هيئة غذاء ودواء أو مُجرّبة سريرياً على مرضى حتى الآن. يجب دائماً استشارة الطبيب المختص عند اتخاذ أي قرار علاجي.</p>
+                  <p>منظومة دِثار (نسيج Dithar E-Fabric ووحدة Micro-Core والمستشعرات والذكاء الاصطناعي) هي أداة لمراقبة وتحليل المؤشرات الحيوية ودعم القرارات الطبية، وليست بديلاً للتشخيص السريري المباشر أو حالات الطوارئ الطبية الحرجة، وليست معتمدة من أي هيئة غذاء ودواء أو مُجرّبة سريرياً على مرضى حتى الآن. يجب دائماً استشارة الطبيب المختص عند اتخاذ أي قرار علاجي.</p>
                 </div>
 
                 <div className="space-y-2">

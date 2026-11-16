@@ -1,13 +1,13 @@
 ﻿"use client";
 
 import { motion } from "framer-motion";
-import { ShieldAlert, Accessibility, Shield, Clipboard, Users, Building, Activity, Baby } from "lucide-react";
+import { Shield, Clipboard, Users, Building, Activity, Footprints, Waypoints, Home } from "lucide-react";
 
 export default function UseCases() {
   const launchCase = {
     icon: <Clipboard className="w-9 h-9 text-teal-500" />,
     title: "التأهيل بعد جراحات القدم والكاحل • Post-Surgical Rehab",
-    desc: "فئة الإطلاق. الطبيب يحدد حد التحميل الجزئي للوزن (مثل 15 كغم لأول أسبوعين)، والكبسولة تنبّه المريض فوراً عند تجاوزه، بينما يتابع الطبيب الالتزام بين المواعيد ويعدّل الحد مع تقدّم التأهيل.",
+    desc: "فئة الإطلاق. الطبيب يحدد حد التحميل الجزئي للوزن (مثل 15 كغم لأول أسبوعين)، والنظام يرسل تنبيهاً فورياً للمريض عند تجاوزه، بينما يتابع الطبيب الالتزام بين المواعيد ويعدّل الحد مع تقدّم التأهيل.",
     measures: "الحمل على القدم المصابة، وعدد مرات تجاوز الحد، والخطوات",
     alerts: "فوراً عند تجاوز الحد الذي حدده الطبيب",
     notifies: "المريض فوراً، والطبيب في تقرير الالتزام",
@@ -24,29 +24,29 @@ export default function UseCases() {
       border: "hover:border-red-500/30",
     },
     {
-      icon: <ShieldAlert className="w-8 h-8 text-smart-green" />,
-      title: "الجلطات الدماغية (الشلل النصفي) • Stroke / Hemiplegia",
-      measures: "توزيع الوزن بين القدمين، وتناظر المشي",
-      alerts: "اعتماد زائد على القدم السليمة",
-      notifies: "المريض أثناء التمارين، وأخصائي العلاج الطبيعي",
+      icon: <Footprints className="w-8 h-8 text-smart-green" />,
+      title: "إعادة تأهيل الحركة • Movement Rehabilitation",
+      measures: "نطاق الحركة ومدة النشاط والالتزام بخطة التمارين",
+      alerts: "انخفاض النشاط عن المستوى الذي حدده المختص",
+      notifies: "المريض، وأخصائي العلاج الطبيعي",
       gradient: "from-smart-green/10 to-transparent",
       border: "hover:border-smart-green/30",
     },
     {
-      icon: <Accessibility className="w-8 h-8 text-medical-blue" />,
-      title: "كبار السن (السقوط) • Elderly / Falls",
-      measures: "الميلان والتوازن والسقوط، وقلة الحركة",
-      alerts: "سقوط محتمل، أو انعدام حركة لفترة غير معتادة",
-      notifies: "العائلة فوراً",
+      icon: <Waypoints className="w-8 h-8 text-medical-blue" />,
+      title: "تحليل المشي • Gait Analysis",
+      measures: "توزيع الضغط وتناظر الخطوة أثناء المشي",
+      alerts: "اختلال واضح ومستمر في نمط المشي",
+      notifies: "الطبيب المختص في تقرير المتابعة",
       gradient: "from-medical-blue/10 to-transparent",
       border: "hover:border-medical-blue/30",
     },
     {
-      icon: <Baby className="w-8 h-8 text-purple-400" />,
-      title: "تشوهات القدم الخلقية (مثل القدم الحنفاء) • Congenital Deformities",
-      measures: "مدة لبس الجبيرة يومياً",
-      alerts: "إذا قلّت ساعات اللبس عن المدة المطلوبة",
-      notifies: "الوالدان، والطبيب في التقرير",
+      icon: <Home className="w-8 h-8 text-purple-400" />,
+      title: "المتابعة المنزلية للحالات المزمنة • Home Care",
+      measures: "الالتزام اليومي بالتوصيات خارج العيادة",
+      alerts: "انقطاع الاستخدام، أو قياسات خارج النطاق المعتاد",
+      notifies: "العائلة ومزود الرعاية المنزلية",
       gradient: "from-purple-500/10 to-transparent",
       border: "hover:border-purple-500/30",
     },

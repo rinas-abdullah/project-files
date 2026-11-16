@@ -8,6 +8,7 @@ import {
   IntroducingDithar,
   DeviceSpecs,
   AiEngine,
+  PrototypeResults,
   PatientJourney,
   UseCases,
   WhyDithar,
@@ -24,7 +25,7 @@ const PadDiagram = dynamic(() => import("@/components/sections/PadDiagram"), {
 
 const CapsuleExplodedView = dynamic(() => import("@/components/sections/CapsuleExplodedView"), {
   ssr: true,
-  loading: () => <div className="w-full min-h-[400px] flex items-center justify-center text-slate-400 font-arabic text-sm">جاري تحميل عرض الكبسولة...</div>
+  loading: () => <div className="w-full min-h-[400px] flex items-center justify-center text-slate-400 font-arabic text-sm">جاري تحميل عرض Micro-Core...</div>
 });
 
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks"), {
@@ -67,6 +68,8 @@ export default function Home() {
         <DigitalTwin />
         {/* 7. AI Engine */}
         <AiEngine />
+        {/* 7b. First Prototype & Early Test Results */}
+        <PrototypeResults />
         {/* 8. Platform Dashboard */}
         <PlatformDashboard />
         {/* 9. Patient Journey */}
