@@ -10,6 +10,16 @@ Design rationale, the audit of the previous site and the design system are in [`
 
 ---
 
+## The walk (`/`)
+
+The front door is a story told as a walk along the Jeddah corniche, from dawn to moonrise, in eight stops. Scrolling down moves the walker sideways through the scenes. It is available in English and Arabic (RTL), and in Arabic the walk runs right to left. The classic editorial home page now lives at `/index`.
+
+- `src/story/content.ts`: all of the walk's copy in English and Arabic (facts come from `src/data`)
+- `src/story/chapters.tsx`: the eight stops
+- `src/story/art.tsx`: the illustrations as inline SVG, including the walker character
+- `src/story/StoryPage.tsx`: scroll → walk engine, day cycle, map and language switch
+- `src/story/story.css`: styles
+
 ## Run locally
 
 Requires Node 20 or later.

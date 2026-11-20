@@ -14,7 +14,7 @@ export default function HomePage() {
     title: `${profile.name} — Founder, Cybersecurity & AI Architect`,
     description:
       "Rinas Abdullah Murayr — founder, cybersecurity and AI architect, full-stack developer, UI/UX designer and Unity game developer based in Jeddah. Selected work: Dithar, Rasd Cyber, Rikaz, Mu'een, Muyassir.",
-    path: "/",
+    path: "/index",
   });
   return (
     <>

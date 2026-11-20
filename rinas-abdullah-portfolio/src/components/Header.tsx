@@ -18,7 +18,7 @@ export const navItems = [
 
 export function Header() {
   const { pathname } = useLocation();
-  const onHome = pathname === "/";
+  const onHome = pathname === "/index";
   const active = useActiveSection(
     navItems.map((n) => n.id),
     onHome,
@@ -93,7 +93,7 @@ export function Header() {
               return (
                 <li key={item.id}>
                   <Link
-                    to={{ pathname: "/", hash: `#${item.id}` }}
+                    to={{ pathname: "/index", hash: `#${item.id}` }}
                     aria-current={isActive ? "location" : undefined}
                     className={cn(
                       "relative flex items-baseline gap-1.5 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors",
@@ -161,7 +161,7 @@ export function Header() {
                     className="border-b border-[var(--rule)]"
                   >
                     <Link
-                      to={{ pathname: "/", hash: `#${item.id}` }}
+                      to={{ pathname: "/index", hash: `#${item.id}` }}
                       onClick={() => setOpen(false)}
                       className="flex items-baseline justify-between py-5"
                     >

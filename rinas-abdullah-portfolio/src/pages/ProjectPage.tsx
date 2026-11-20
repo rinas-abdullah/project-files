@@ -41,7 +41,7 @@ export default function ProjectPage() {
       {/* Case header */}
       <header className="shell pt-28 md:pt-36">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="flex items-center justify-between gap-4 border-b border-[var(--rule)] pb-3">
-          <Link to={{ pathname: "/", hash: "#work" }} className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-steel hover:text-paper">
+          <Link to={{ pathname: "/index", hash: "#work" }} className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-steel hover:text-paper">
             <ArrowLeft aria-hidden className="size-4 transition-transform group-hover:-translate-x-1" /> All work
           </Link>
           <span className="t-label">
